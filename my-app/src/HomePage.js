@@ -1,91 +1,187 @@
 import React from 'react';
 import { Api } from './Api';
+import { List } from './List';
 
 export class HomePage extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      recipes: []
+
     };
     this.hover = this.hover.bind(this);
   }
 
   componentDidMount() {
-    let url = `https://api.spoonacular.com/recipes/random?apiKey=${Api}&number=9&tags=dessert`;
 
-    fetch(url)
-      .then(res => res.json()).then((result) => {
-        // console.log('from homePage after ajax');
-        // console.log(this.state);
+    var offset = Math.floor(Math.random() * 900);
+    let baseURL = `http://gateway.marvel.com/v1/public/`;
+
+    let comicsUrl = `${baseURL}comics?apikey=${Api}&offset=${offset}`;
+    fetch(comicsUrl)
+      .then(res => res.json()).then((results) => {
+        // console.log('from homePage after ajax comics');
+        // console.log(results);
 
         this.setState({
-            recipes: result.recipes,
+            comics: results.data.results
         });
 
-        document.getElementsByClassName('loading')[0].style.display = 'none';
-        document.getElementsByClassName('hp')[0].style.display = 'flex';
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('hp')[0].style.display = 'flex';
 
         // console.log(this.state);
         }, (error) => {
             console.log(error);
         }
     )
+
+
+    let charactersUrl = `${baseURL}characters?apikey=${Api}&offset=${offset}`;
+    fetch(charactersUrl)
+      .then(res => res.json()).then((results) => {
+        // console.log('from homePage after ajax characters');
+        // console.log(results);
+
+        this.setState({
+            characters: results.data.results
+        });
+
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('hp')[0].style.display = 'flex';
+
+        // console.log(this.state);
+        }, (error) => {
+            console.log(error);
+        }
+    )
+
+    // let creatorsUrl = `${baseURL}creators?apikey=${Api}&offset=${offset}`;
+    // fetch(creatorsUrl)
+    //   .then(res => res.json()).then((results) => {
+    //     // console.log('from homePage after ajax creators');
+    //     // console.log(results);
+    //
+    //     this.setState({
+    //         authors: results.data.results
+    //     });
+    //
+    //     // document.getElementsByClassName('loading')[0].style.display = 'none';
+    //     // document.getElementsByClassName('hp')[0].style.display = 'flex';
+    //
+    //     // console.log(this.state);
+    //     }, (error) => {
+    //         console.log(error);
+    //     }
+    // )
+
+    let eventsUrl = `${baseURL}events?apikey=${Api}`;
+    fetch(eventsUrl)
+      .then(res => res.json()).then((results) => {
+        // console.log('from homePage after ajax events');
+        // console.log(results);
+
+        this.setState({
+            events: results.data.results
+        });
+
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('hp')[0].style.display = 'flex';
+
+        // console.log(this.state);
+        }, (error) => {
+            console.log(error);
+        }
+    )
+
+    let seriesUrl = `${baseURL}series?apikey=${Api}&offset=${offset}`;
+    fetch(seriesUrl)
+      .then(res => res.json()).then((results) => {
+        // console.log('from homePage after ajax series');
+        // console.log(results);
+
+        this.setState({
+            series: results.data.results
+        });
+
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('hp')[0].style.display = 'flex';
+
+        // console.log(this.state);
+        }, (error) => {
+            console.log(error);
+        }
+    )
+
+    // let storiesUrl = `${baseURL}stories?apikey=${Api}&offset=${offset}`;
+    // fetch(storiesUrl)
+    //   .then(res => res.json()).then((results) => {
+    //     // console.log('from homePage after ajax stories');
+    //     // console.log(results);
+    //
+    //     this.setState({
+    //         stories: results.data.results
+    //     });
+    //
+    //     // document.getElementsByClassName('loading')[0].style.display = 'none';
+    //     // document.getElementsByClassName('hp')[0].style.display = 'flex';
+    //
+    //     // console.log(this.state);
+    //     }, (error) => {
+    //         console.log(error);
+    //     }
+    // )
+
   }
 
   hover(e){
-    // console.log(e);
-    // console.log(e.currentTarget);
 
-    //get div
-    var div = e.currentTarget;
-    div = div.querySelector('div');
-    // console.log(div);
-
-    //add & remove class
-    if(div.className === ""){
-      div.classList.add("active");
-    } else {
-      div.classList.remove("active");
-    }
   }
 
   render() {
+    console.log(this.state);
+    // <List url='comic'  list={this.state.comics} />
+    let comics = ``;
+    if(this.state.comics !== undefined){
+      comics =  <List url='comics' list={this.state.comics} />
+    }
 
-    let recipes = this.state.recipes;
-    // console.log(`from home page`);
-    // console.log(recipes);
+    let characters = ``;
+    if(this.state.characters !== undefined){
+      characters =  <List url='characters' list={this.state.characters} />
+    }
 
-    var $this = this;
+    let series = ``;
+    if(this.state.series !== undefined){
+      series =  <List url='series' list={this.state.series} />
+    }
 
-    let li = recipes.map(function(val, i) {
-      var id = val.id;
-      var title = val.title;
-      var href = `/apps/recipe-finder/react/#/recipe/${id}`;
-      var imgSrc = `https://spoonacular.com/recipeImages/${id}-636x393.jpg`;
+    let events = ``;
+    if(this.state.events !== undefined){
+      events =  <List url='events' list={this.state.events} />
+    }
 
-      return (
-        <li key={id} onMouseEnter={$this.hover} onMouseLeave={$this.hover}>
-          <a href={href} data-id={id} className="recipe">
-            <img src={imgSrc} alt={title} title={title} data-id={id} />
-            <div>
-              <h2>{val.title}</h2>
-              <p>Cook time: {val.readyInMinutes} min</p>
-              <p>Servings: {val.servings}</p>
-            </div>
-          </a>
-        </li>
-      );
-    });
+    // let stories = ``;
+    // if(this.state.stories !== undefined){
+    //   stories =  <List url='stories' list={this.state.stories} />
+    // }
 
-    // <ul className="hp" dangerouslySetInnerHTML={{__html: li}}></ul>
+    // let authors = ``;
+    // if(this.state.authors !== undefined){
+    //   authors =  <List url='authors' list={this.state.authors} />
+    // }
 
     return (
       <React.Fragment>
         <div className="homepage">
-          <ul className="hp">
-            {li}
-          </ul>
+          <h2>Comics</h2>
+          {comics}
+          <h2>Characters</h2>
+          {characters}
+          <h2>Series</h2>
+          {series}
+          <h2>Events</h2>
+          {events}
         </div>
       </React.Fragment>
     );

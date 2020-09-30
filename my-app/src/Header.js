@@ -46,16 +46,16 @@ export class Header extends React.Component {
       <React.Fragment>
         <HashRouter>
           <header className="header pdp">
-            <h1><a href="/apps/recipe-finder/react/">Recipe Finder</a></h1>
+            <h1><a href="/apps/marvel-comics/">Marvel Comics</a></h1>
             <input type="text" placeholder="search" onKeyUp={this.search} onBlur={this.blur} />
           </header>
 
           <section className="main">
               <Loading />
               <Route exact path="/"  component={HomePage} />
-              <Route path="/recipe/:recipeId" component={PdpPage} />
+              <Route path="/:Category/:Id" component={PdpPage} />
               <Route path="/search/:searchTerm" component={SearchPage} />
-
+              <Route path="/:stories/:storyId" component={SearchPage} />
           </section>
         </HashRouter>
       </React.Fragment>
