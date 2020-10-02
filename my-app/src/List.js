@@ -22,22 +22,43 @@ export class List extends React.Component {
       let path = val.thumbnail.path;
       if(path.indexOf(`image_not_available`) == -1){
 
-        let href = `/apps/marvel-comics#/${baseURL}/${val.id}`;
-        let name = ``;
-        if(val.name !== undefined){
-          name = val.name;
-        } else if(val.title !== undefined){
-          name = val.title;
-        }
+        if(val.id !== undefined){
 
-        return(
-          <li>
-            <a href={href}>
+          let href = `/apps/marvel-comics#/${baseURL}/${val.id}`;
+          let name = ``;
+          if(val.name !== undefined){
+            name = val.name;
+          } else if(val.title !== undefined){
+            name = val.title;
+          }
+
+          return(
+            <li key={i}>
+              <a href={href}>
+                <Image name={name} href={path} size="portrait" ext={val.thumbnail.extension}  />
+                <h2>{name}</h2>
+              </a>
+            </li>
+          )
+
+        } else {
+
+          let name = ``;
+          if(val.name !== undefined){
+            name = val.name;
+          } else if(val.title !== undefined){
+            name = val.title;
+          }
+
+          return(
+            <li>
               <Image name={name} href={path} size="portrait" ext={val.thumbnail.extension}  />
               <h2>{name}</h2>
-            </a>
-          </li>
-        )
+            </li>
+          )
+
+        }
+
 
       }
 
