@@ -2,6 +2,7 @@ import React from 'react';
 import { Api } from './Api';
 import { List } from './List';
 import Image from './Image';
+import { List2 } from './List2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
@@ -17,7 +18,7 @@ export class CharactersPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      comics: [],
+
     };
     this.handleClick = this.handleClick.bind(this);
     this.changePdp = this.changePdp.bind(this);
@@ -26,64 +27,92 @@ export class CharactersPage extends React.Component {
   componentDidMount() {
     let $this = this;
     let id  = this.props.match.params.Id;
-    let baseURL = `http://gateway.marvel.com/v1/public/`;
+    let baseURL = `http://gateway.marvel.com/v1/public/characters`;
 
-    let url = `${baseURL}characters/${id}?apikey=${Api}`;
-    // console.log(url);
-    fetch(url)
+    //character data
+    let characterURL = `${baseURL}/${id}?apikey=${Api}`;
+    fetch(characterURL)
       .then(res => res.json()).then((results) => {
-        // console.log('from pdp page after ajax');
         // console.log(results);
 
         this.setState({
             data: results.data.results[0]
         });
 
-        // {
-        // series: {
-        //   thumb: resulting.data.results[0].thumbnail.path,
-        //   ext: resulting.data.results[0].thumbnail.extension
-        // }
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('hp')[0].style.display = 'flex';
 
-        let comicsArr = [];
-        let comics = results.data.results[0].comics.items;
-        comics.map(function(val, i){
-          // console.log(val.resourceURI);
-          return fetch(`${val.resourceURI}?apikey=${Api}`).then(res => res.json()).then((resulting) => {
-               // console.log('from pdp page after ajax');
-               // console.log(resulting);
-               var thumb = resulting.data.results[0].thumbnail;
-               comicsArr.push(thumb);
+      }, (error) => {
+        console.log(error);
+    });
 
-               }, (error) => {
-                   console.log(error);
-           });
+    //character comics data
+    let comicsURL = `${baseURL}/${id}/comics?apikey=${Api} `;
+    fetch(comicsURL)
+      .then(res => res.json()).then((results) => {
+        // console.log(results);
 
+        this.setState({
+            comics: results.data.results
         });
-
-        // console.log(comicsArr);
-        this.setState((state, prop) => {
-            // console.log(state.comics.length);
-            if(state.comics.length == 0){
-              // console.log('no comics match');
-              state.comics = comicsArr;
-            }
-            // console.log(state.comics);
-            // console.log(state.comics.length);
-        });
-
-
 
         // document.getElementsByClassName('loading')[0].style.display = 'none';
         // document.getElementsByClassName('hp')[0].style.display = 'flex';
 
-        // console.log(this.state);
-        }, (error) => {
-            console.log(error);
-        }
-    )
+      }, (error) => {
+        console.log(error);
+    });
 
+    //character events data
+    let eventsURL = `${baseURL}/${id}/events?apikey=${Api} `;
+    fetch(eventsURL)
+      .then(res => res.json()).then((results) => {
+        // console.log(results.data.results);
 
+        this.setState({
+            events: results.data.results
+        });
+
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('hp')[0].style.display = 'flex';
+
+      }, (error) => {
+        console.log(error);
+    });
+
+    //character series data
+    let seriesURL = `${baseURL}/${id}/series?apikey=${Api} `;
+    fetch(seriesURL)
+      .then(res => res.json()).then((results) => {
+        // console.log(results.data.results);
+
+        this.setState({
+            series: results.data.results
+        });
+
+        // document.getElementsByClassName('loading')[0].style.display = 'none';
+        // document.getElementsByClassName('hp')[0].style.display = 'flex';
+
+      }, (error) => {
+        console.log(error);
+    });
+
+    //character stories data
+    // let storiesURL = `${baseURL}/${id}/stories?apikey=${Api} `;
+    // fetch(storiesURL)
+    //   .then(res => res.json()).then((results) => {
+    //     console.log(results.data.results);
+    //
+    //     this.setState({
+    //         stories: results.data.results
+    //     });
+    //
+    //     // document.getElementsByClassName('loading')[0].style.display = 'none';
+    //     // document.getElementsByClassName('hp')[0].style.display = 'flex';
+    //
+    //   }, (error) => {
+    //     console.log(error);
+    // });
 
   }
 
@@ -103,68 +132,20 @@ export class CharactersPage extends React.Component {
 
       let name = data.name;
 
-      // let comicsList = data.comics.items;
-      // comicsList = comicsList.map(function(val, i){
-      //   let href = val.resourceURI;
-      //   href = href.split('comics/')[1];
-      //   href = `/apps/marvel-comics#/comics/${href}`
-      //   return(
-      //     <li key={i}>
-      //       <a href={href}>
-      //         <h3>{val.name}</h3>
-      //       </a>
-      //     </li>
-      //   )
-      // });
+      let comics = ``;
+      if(this.state.comics !== undefined){
+        comics = <List2 header="comics" url="comics" list={this.state.comics}  />
+      }
 
-      let comicsList = this.state.comics;
-      console.log(comicsList[0]);
-      comicsList.map(function(val, i){
-        console.log(val);
-      });
+      let events = ``;
+      if(this.state.events !== undefined){
+        events = <List2 header="events" url="events" list={this.state.events}  />
+      }
 
-      let eventsList = data.events.items;
-      eventsList = eventsList.map(function(val, i){
-        let href = val.resourceURI;
-        href = href.split('events/')[1];
-        href = `/apps/marvel-comics#/events/${href}`
-        return(
-          <li key={i}>
-            <a href={href}>
-              <h3>{val.name}</h3>
-            </a>
-          </li>
-        )
-      });
-
-      let seriesList = data.series.items;
-      seriesList = seriesList.map(function(val, i){
-        let href = val.resourceURI;
-        href = href.split('series/')[1];
-        href = `/apps/marvel-comics#/series/${href}`
-        return(
-          <li key={i}>
-            <a href={href}>
-              <h3>{val.name}</h3>
-            </a>
-          </li>
-        )
-      });
-
-      let storiesList = data.stories.items;
-      storiesList = storiesList.map(function(val, i){
-        let href = val.resourceURI;
-        href = href.split('stories/')[1];
-        href = `/apps/marvel-comics#/stories/${href}`
-        return(
-          <li key={i}>
-            <a href={href}>
-              <h3>{val.name}</h3>
-            </a>
-          </li>
-        )
-      });
-
+      let series = ``;
+      if(this.state.series !== undefined){
+        series = <List2 header="series" url="series" list={this.state.series}  />
+      }
 
 
       return (
@@ -173,25 +154,11 @@ export class CharactersPage extends React.Component {
             <h1>{name}</h1>
             <Image name={name} href={data.thumbnail.path} ext={data.thumbnail.extension} size='portrait'  />
 
-            <h2>comics</h2>
-            <ul>
+            {comics}
 
-            </ul>
+            {events}
 
-            <h2>events</h2>
-            <ul>
-              {eventsList}
-            </ul>
-
-            <h2>series</h2>
-            <ul>
-              {eventsList}
-            </ul>
-
-            <h2>stories</h2>
-            <ul>
-              {storiesList}
-            </ul>
+            {series}
 
           </div>
         </React.Fragment>

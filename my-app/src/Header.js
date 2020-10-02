@@ -1,7 +1,6 @@
 import React from 'react';
 import { HomePage } from './HomePage';
-import {ComicsPage} from './ComicsPage';
-import {CharactersPage} from './CharactersPage';
+import {LandingPage} from './LandingPage';
 import {PdpPage} from './PdpPage';
 import {SearchPage} from './SearchPage';
 import {Loading} from './Loading';
@@ -43,6 +42,12 @@ export class Header extends React.Component {
     // <Switch>
     // </Switch>
 
+    // <Route path="/comics/:Id" component={ComicsPage} />
+    // <Route path="/characters/:Id" component={CharactersPage} />
+    // <Route path="/series/:Id" component={PdpPage} />
+    // <Route path="/stories/:Id" component={PdpPage} />
+    // <Route path="/authors/:Id" component={PdpPage} />
+
   render() {
     return (
       <React.Fragment>
@@ -55,12 +60,8 @@ export class Header extends React.Component {
           <section className="main">
               <Loading />
               <Route exact path="/"  component={HomePage} />
-              <Route path="/comics/:Id" component={ComicsPage} />
-              <Route path="/characters/:Id" component={CharactersPage} />
-              <Route path="/events/:Id" component={PdpPage} />
-              <Route path="/series/:Id" component={PdpPage} />
-              <Route path="/stories/:Id" component={PdpPage} />
-              <Route path="/authors/:Id" component={PdpPage} />
+              <Route path="/:Category/:Id" component={PdpPage} />
+              <Route path="/:Category/" component={LandingPage} />
               <Route path="/search/:searchTerm" component={SearchPage} />
           </section>
         </HashRouter>

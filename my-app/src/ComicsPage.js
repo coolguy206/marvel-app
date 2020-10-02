@@ -26,46 +26,23 @@ export class ComicsPage extends React.Component {
   componentDidMount() {
     let $this = this;
     let id  = this.props.match.params.Id;
-    let baseURL = `http://gateway.marvel.com/v1/public/`;
+    let baseURL = `http://gateway.marvel.com/v1/public/comics`;
 
-    let url = `${baseURL}comics/${id}?apikey=${Api}`;
-    // console.log(url);
-    fetch(url).then(res => res.json()).then((results) => {
-        // console.log('from pdp page after ajax');
-        // console.log(results);
+    //comic book
+    let comicURL = `${baseURL}/${id}?apikey=${Api}`;
+    fetch(comicURL).then(res => res.json()).then((results) => {
+      // console.log(results);
 
-        this.setState({
-            data: results.data.results[0],
-            stories: results.data.results[0].stories.items
-        });
+      this.setState({
+          data: results.data.results[0],
+      });
 
-        let url2 = `${results.data.results[0].series.resourceURI}?apikey=${Api}`;
-         // console.log(url);
-        return fetch(url2).then(res => res.json()).then((resulting) => {
-             // console.log('from pdp page after ajax');
-             console.log(resulting);
+      // document.getElementsByClassName('loading')[0].style.display = 'none';
+      // document.getElementsByClassName('hp')[0].style.display = 'flex';
 
-             this.setState({
-               series: {
-                 thumb: resulting.data.results[0].thumbnail.path,
-                 ext: resulting.data.results[0].thumbnail.extension
-               }
-             });
-
-
-             // console.log(this.state);
-             }, (error) => {
-                 console.log(error);
-         });
-
-        // document.getElementsByClassName('loading')[0].style.display = 'none';
-        // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        // console.log(this.state);
-        }, (error) => {
-            console.log(error);
+      }, (error) => {
+        console.log(error);
     });
-
 
   }
 
