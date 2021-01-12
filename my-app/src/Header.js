@@ -4,6 +4,8 @@ import {LandingPage} from './LandingPage';
 import {PdpPage} from './PdpPage';
 import {SearchPage} from './SearchPage';
 import {Loading} from './Loading';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import {
   BrowserRouter as Router,
   Switch,
@@ -53,8 +55,19 @@ export class Header extends React.Component {
       <React.Fragment>
         <HashRouter>
           <header className="header pdp">
-            <h1><a href="/apps/marvel-comics/">Marvel Comics</a></h1>
+            <a href="/apps/marvel-comics/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Marvel-Comics-Logo.svg/1280px-Marvel-Comics-Logo.svg.png" alt="Marvel Logo" /></a>
+            <FontAwesomeIcon icon={faSearch} size="3x" />
             <input type="text" placeholder="search" onKeyUp={this.search} onBlur={this.blur} />
+            <nav>
+              <ul>
+                <li><a href="/apps/marvel-comics/#/characters">characters</a></li>
+                <li><a href="/apps/marvel-comics/#/comics">comics</a></li>
+                <li><a href="/apps/marvel-comics/#/creators">creators</a></li>
+                <li><a href="/apps/marvel-comics/#/events">events</a></li>
+                <li><a href="/apps/marvel-comics/#/series">series</a></li>
+                <li><a href="/apps/marvel-comics/#/stories">stories</a></li>
+              </ul>
+            </nav>
           </header>
 
           <section className="main">

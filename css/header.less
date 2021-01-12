@@ -1,3 +1,49 @@
 @import 'vars.less';
 
-.header {}
+.header {
+  text-align: center;
+  position: relative;
+
+  img {
+    width: 200px;
+    display: inline-block;
+  }
+
+  svg {
+    position: absolute;
+    right: 1%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  input {
+    display:none;
+  }
+
+  nav {
+    margin: 1% 0;
+
+    ul {
+      display: flex;
+      list-style-type: none;
+      justify-content: center;
+      align-content: space-between;
+
+      li {
+        margin: 0 1%;
+
+        a {
+          @media screen and (max-width: 1680px){
+            font-size: 1.5vw;
+          }
+          @media screen and (max-width: 1024px){
+            font-size: 3vw;
+          }
+          text-decoration:none;
+          font-size: 26px;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}

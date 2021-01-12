@@ -9,3 +9,17 @@ body {
   line-height: 150%;
   font-family: sans-serif;
 }
+
+.header {
+  text-align: center;
+  position: relative;
+}
+
+.footer {
+  text-align: center;
+}
+
+.homepage {
+  display: flex;
+  flex-wrap: wrap;
+}
