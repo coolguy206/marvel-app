@@ -1,13 +1,21 @@
 import React from 'react';
 import { Api } from './Api';
 import { List } from './List';
+import Image from './Image';
+import MakeFeatured from './MakeFeatured';
+import Slider from "react-slick";
+
 
 export class HomePage extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-
+      comics:[],
+      characters: [],
+      events:[],
+      series:[],
+	  
     };
     this.hover = this.hover.bind(this);
   }
@@ -137,13 +145,87 @@ export class HomePage extends React.Component {
   hover(e){
 
   }
+  
 
   render() {
-    console.log(this.state);
-    // <List url='comic'  list={this.state.comics} />
+ 
+    var comicsArr = this.state.comics;
+    var comicsLength = comicsArr.length;
+    var comic1 = '';
+	var comic2 = ``;
+	
+    if(comicsLength == 20){
+	  
+		comic1 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="true" number="0" title="comics" />
+	  
+		comic2 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="false" number="10" title="comics" />
+    }
+	
+	
+	var charactersArr = this.state.characters;
+    var charactersLength = charactersArr.length;
+    var character = '';
+	var randomCharacter1 = Math.floor(Math.random() * Math.floor(20));
+	var randomCharacter2 = Math.floor(Math.random() * Math.floor(20));
+	//console.log(`random numbers`);
+	//console.log(randomCharacter1, randomCharacter2);
+	
+	
+    if(charactersLength == 20){
+	  
+		character = <MakeFeatured arr={charactersArr} url="/apps/marvel-comics#/characters/" id="false" number="10" title="characters" />
+		/*
+		var bgURL1 = charactersArr[randomCharacter1].thumbnail.path + '.' + charactersArr[randomCharacter1].thumbnail.extension;
+		var bgURL2 = charactersArr[randomCharacter2].thumbnail.path + '.' + charactersArr[randomCharacter1].thumbnail.extension;
+		console.log(bgURL1,bgURL2);
+		document.body.style.background = 'url('+ bgURL1 +') no-repeat top left /30%, url('+ bgURL2 +') no-repeat top right /30%, #000';
+		*/
+    }
+	
+	
+	
+	var seriesArr = this.state.series;
+    var seriesLength = seriesArr.length;
+    var series = '';
+	
+    if(seriesLength == 20){
+	  
+		series = <MakeFeatured arr={seriesArr} url="/apps/marvel-comics#/series/" id="false" number="10" title="series" />
+	 
+    }
+	
+	
+	var eventsArr = this.state.events;
+    var eventsLength = eventsArr.length;
+    var event = '';
+	
+    if(eventsLength == 20){
+	  
+		event = <MakeFeatured arr={eventsArr} url="/apps/marvel-comics#/events/" id="false" number="10" title="events" />
+	 
+    }
+	
+	
+	
+
+    // if(this.state.comics !== undefined){
+    //   var comicsArr = this.state.comics;
+    //   var comicsLength = comicsArr.length;
+    //
+    //   var featured_1 = this.state.comics[0];
+    //
+    //   var featured_2 = this.state.comics[comicsLength -1];
+    //
+    //   console.log(comicsArr);
+    //   console.log(comicsLength);
+    //   console.log(featured_1);
+    //   console.log(featured_2);
+    // }
+
+
     let comics = ``;
-    if(this.state.comics !== undefined){
-      comics =  <List url='comics' list={this.state.comics} />
+    if(comicsLength == 20){
+		comics =  <List url='comics' list={this.state.comics} />
     }
 
     let characters = ``;
@@ -151,9 +233,9 @@ export class HomePage extends React.Component {
       characters =  <List url='characters' list={this.state.characters} />
     }
 
-    let series = ``;
+    let seriesUL = ``;
     if(this.state.series !== undefined){
-      series =  <List url='series' list={this.state.series} />
+      seriesUL =  <List url='series' list={this.state.series} />
     }
 
     let events = ``;
@@ -171,17 +253,75 @@ export class HomePage extends React.Component {
     //   authors =  <List url='authors' list={this.state.authors} />
     // }
 
+    // if(this.state.comics !== undefined){
+    //   <a href="/#/comics/${featured_1.id}">
+    //     <Image name={featured_1.title} href={featured_1.thumbnail.path} ext={featured_1.thumbnail.ext} size="portrait" />
+    //   </a>
+    // }
+	
+	/*
+	var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
+  
+  <Slider {...settings}>
+					{comics}
+				</Slider>
+				*/
+
     return (
       <React.Fragment>
         <div className="homepage">
-          <h2>Comics</h2>
-          {comics}
-          <h2>Characters</h2>
-          {characters}
-          <h2>Series</h2>
-          {series}
-          <h2>Events</h2>
-          {events}
+          <div className="featured featured_1">
+			{comic1}
+          </div>
+
+          <div className="featured featured_2">
+			
+			<div>
+				{comic2}
+			</div>
+			
+			<div>
+				{character}
+			</div>
+			
+			<div>
+				{series}
+			</div>
+			
+			<div>
+				{event}
+			</div>
+			
+          </div>
+
+          <div id="hpcomics">
+            <h2>Comics</h2>
+				
+				{comics}
+			
+          </div>
+
+          <div>
+            <h2>Characters</h2>
+            {characters}
+          </div>
+
+          <div>
+            <h2>Series</h2>
+            {seriesUL}
+          </div>
+
+          <div>
+            <h2>Events</h2>
+            {events}
+          </div>
+
         </div>
       </React.Fragment>
     );

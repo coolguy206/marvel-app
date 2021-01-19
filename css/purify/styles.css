@@ -8,6 +8,7 @@ body {
   font-size: 100%;
   line-height: 150%;
   font-family: sans-serif;
+  background: #000;
 }
 
 .header {
@@ -22,4 +23,12 @@ body {
 .homepage {
   display: flex;
   flex-wrap: wrap;
+  max-width: 1680px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 1%;
+}
+
+.homepage div {
+  flex-basis: 100%;
 }
