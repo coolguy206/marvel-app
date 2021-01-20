@@ -19,16 +19,3 @@ body {
 .footer {
   text-align: center;
 }
-
-.homepage {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 1680px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 1%;
-}
-
-.homepage div {
-  flex-basis: 100%;
-}

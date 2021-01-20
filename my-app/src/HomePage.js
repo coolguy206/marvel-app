@@ -3,7 +3,6 @@ import { Api } from './Api';
 import { List } from './List';
 import Image from './Image';
 import MakeFeatured from './MakeFeatured';
-import Slider from "react-slick";
 
 
 export class HomePage extends React.Component {
@@ -225,22 +224,22 @@ export class HomePage extends React.Component {
 
     let comics = ``;
     if(comicsLength == 20){
-		comics =  <List url='comics' list={this.state.comics} />
+		comics =  <List url='comics' list={this.state.comics} slider='true'/>
     }
 
     let characters = ``;
     if(this.state.characters !== undefined){
-      characters =  <List url='characters' list={this.state.characters} />
+      characters =  <List url='characters' list={this.state.characters} slider='true' />
     }
 
     let seriesUL = ``;
     if(this.state.series !== undefined){
-      seriesUL =  <List url='series' list={this.state.series} />
+      seriesUL =  <List url='series' list={this.state.series} slider='true' />
     }
 
     let events = ``;
     if(this.state.events !== undefined){
-      events =  <List url='events' list={this.state.events} />
+      events =  <List url='events' list={this.state.events} slider='true' />
     }
 
     // let stories = ``;
@@ -259,23 +258,11 @@ export class HomePage extends React.Component {
     //   </a>
     // }
 	
-	/*
-	var settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
-  
-  <Slider {...settings}>
-					{comics}
-				</Slider>
-				*/
+	
 
     return (
       <React.Fragment>
-        <div className="homepage">
+        <div className="hp top">
           <div className="featured featured_1">
 			{comic1}
           </div>
@@ -299,30 +286,37 @@ export class HomePage extends React.Component {
 			</div>
 			
           </div>
+		  
+		</div>
 
-          <div id="hpcomics">
+         <div className="hp">
             <h2>Comics</h2>
-				
-				{comics}
+			{comics}
 			
           </div>
 
-          <div>
+          <div className="hp">
             <h2>Characters</h2>
+			
             {characters}
+			
           </div>
 
-          <div>
+          <div className="hp">
             <h2>Series</h2>
+			
             {seriesUL}
+			
           </div>
 
-          <div>
+          <div className="hp">
             <h2>Events</h2>
+			
             {events}
+			
           </div>
 
-        </div>
+        
       </React.Fragment>
     );
 

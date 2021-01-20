@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from './Image';
+import Slider from "react-slick";
 
 export class List extends React.Component {
 
@@ -18,6 +19,8 @@ export class List extends React.Component {
   render() {
     let baseURL = this.props.url;
     let listItems = this.props.list;
+	let slider = this.props.slider;
+	var elem = ``;
     let li = listItems.map(function(val, i){
 
       // if(path.indexOf(`image_not_available`) == -1){
@@ -32,12 +35,14 @@ export class List extends React.Component {
       }
 
         if(val.id !== undefined){
+			
+		//<h2>{name}</h2>
 
           return(
             <li key={i}>
               <a href={href}>
                 <Image name={name} href={val.thumbnail.path} size="portrait" ext={val.thumbnail.extension}  />
-                <h2>{name}</h2>
+               
               </a>
             </li>
           )
@@ -47,7 +52,7 @@ export class List extends React.Component {
           return(
             <li>
               <Image name={name} href={val.thumbnail.path} size="portrait" ext={val.thumbnail.extension}  />
-              <h2>{name}</h2>
+             
             </li>
           )
 
@@ -56,12 +61,60 @@ export class List extends React.Component {
       // }
 
     });
+	
+	var settings = {
+    infinite: true,
+	autoplaySpeed: 4000,
+    speed: 1000,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+	arrows: false,
+	autoplay:true,
+	dots: false,
+	centerMode:true,
+	responsive: [
+	{
+      breakpoint: 1025,
+      settings: {
+        slidesToShow: 3,
+		//centerMode: true
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2,
+		//centerMode: true
+      }
+    },
+	{
+      breakpoint: 414,
+      settings: {
+        slidesToShow: 1,
+		//centerMode: true
+      }
+    },
+	]
+  };
+  
+  if(slider == 'true'){
+	  elem = <ul>
+				<Slider {...settings}>
+					{li}
+				</Slider>
+			</ul>
+  } else {
+	elem = <ul>
+	{li}
+</ul>	
+	
+  }
 
     return (
       <React.Fragment>
-        <ul>
-          {li}
-        </ul>
+        
+          {elem}
+        
       </React.Fragment>
     );
 
