@@ -36,7 +36,7 @@ export default class Image extends React.Component {
 
     return (
       <React.Fragment>
-        <img src={href} alt={alt} />
+        <img src={href} alt={alt} title={alt}/>
       </React.Fragment>
     );
 

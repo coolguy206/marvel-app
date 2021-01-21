@@ -147,7 +147,8 @@ export class HomePage extends React.Component {
   
 
   render() {
- 
+	console.log(this.state);
+	
     var comicsArr = this.state.comics;
     var comicsLength = comicsArr.length;
     var comic1 = '';
@@ -258,6 +259,22 @@ export class HomePage extends React.Component {
     //   </a>
     // }
 	
+	
+	if(comicsLength == 20 && charactersLength == 20 && seriesLength == 20 && eventsLength == 20) {
+		
+		document.getElementsByClassName('loading')[0].style.display = 'none';
+		var hps = document.getElementsByClassName('hp');
+		//console.log(hps);
+		
+		for (let val of hps) {
+			//console.log(val);
+			if(val.className == "hp top"){
+				val.style.display = 'flex';
+			} else {
+				val.style.display = 'block';
+			}
+		}
+	}
 	
 
     return (

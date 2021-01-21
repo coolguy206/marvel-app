@@ -19,7 +19,7 @@ export default class MakeFeatured extends React.Component {
 	var title = this.props.title;
 	var baseURL = this.props.url;
     var arr = this.props.arr;
-	var num = this.props.number;
+	var num = Number(this.props.number);
 	var id = this.props.id;
 	
 	//console.log(`num`);
@@ -32,8 +32,18 @@ export default class MakeFeatured extends React.Component {
 	var featuredURL = baseURL;
 	
 	featured = arr[num];
+	
+	var featuredImgURL = featured.thumbnail.path;
+	if(featuredImgURL == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
+		
+		featured = arr[num +1];
+		featuredImgURL = featured.thumbnail.path;
+			
+	}
+	
+	featuredImg =  <Image name={featured.title} href={featuredImgURL} ext={featured.thumbnail.extension} size="portrait_uncanny" />
 	  
-	featuredImg =  <Image name={featured.title} href={featured.thumbnail.path} ext={featured.thumbnail.extension} size="portrait_uncanny" />
+	
 	
 	if(id == "true"){
 	  
