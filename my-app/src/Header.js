@@ -12,7 +12,7 @@ import {
   Route,
   HashRouter,
    // Link,
-   // useParams
+   //useParams
 } from "react-router-dom";
 
 export class Header extends React.Component {
@@ -54,7 +54,7 @@ export class Header extends React.Component {
     return (
       <React.Fragment>
         <HashRouter>
-          <header className="header pdp">
+          <header className="header">
             <a href="/apps/marvel-comics/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Marvel-Comics-Logo.svg/1280px-Marvel-Comics-Logo.svg.png" alt="Marvel Logo" /></a>
             <FontAwesomeIcon icon={faSearch} size="3x" />
             <input type="text" placeholder="search" onKeyUp={this.search} onBlur={this.blur} />
@@ -74,7 +74,7 @@ export class Header extends React.Component {
               <Loading />
               <Route exact path="/"  component={HomePage} />
               <Route path="/:Category/:Id" component={PdpPage} />
-              <Route path="/:Category/" component={LandingPage} />
+              <Route exact path="/:Category/" component={LandingPage} />
               <Route path="/search/:searchTerm" component={SearchPage} />
           </section>
         </HashRouter>

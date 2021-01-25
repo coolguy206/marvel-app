@@ -1,3 +1,29 @@
 @import 'vars.less';
 
-.pdp {}
+.pdp {
+	max-width: 1680px;
+	margin: 0 auto;
+	background: #fff;
+	padding: 1%;
+	display:none; 
+	flex-wrap:wrap;
+	
+	div {
+		@media screen and (max-width: 414px){
+			flex-basis: 100%;
+			text-align:center !important;
+			padding: 5% !important;
+		}
+		
+		flex-basis: 50%;
+		
+		&.first {
+			text-align: right;
+			padding: 0 2% 0 0;
+		}
+		
+		&.second {
+			padding: 0 0 0 2%;
+		}
+	}
+}

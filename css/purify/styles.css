@@ -21,3 +21,24 @@ body {
   color: #fff;
   padding: 1% 0;
 }
+
+.pdp {
+  max-width: 1680px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 1%;
+  display: none;
+  flex-wrap: wrap;
+}
+
+.pdp div {
+  flex-basis: 50%;
+}
+
+@media screen and (max-width:414px) {
+  .pdp div {
+    flex-basis: 100%;
+    text-align: center !important;
+    padding: 5% !important;
+  }
+}

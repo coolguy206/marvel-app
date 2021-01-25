@@ -20,43 +20,87 @@ export class List extends React.Component {
     let baseURL = this.props.url;
     let listItems = this.props.list;
 	let slider = this.props.slider;
-	var elem = ``;
+	
+	let elem = ``;
+	let href = ``;
+	let name = ``;
+	
     let li = listItems.map(function(val, i){
-
-    // if(path.indexOf(`image_not_available`) == -1){
-    let href = `/apps/marvel-comics#/${baseURL}/${val.id}`;
-    let name = ``;
-    if(baseURL == 'creators'){
-        name = val.fullName;
-    } else if(val.name !== undefined){
+   
+	
+    if(baseURL == 'creators' || baseURL == 'stories' || baseURL == 'series' || baseURL == 'events'){
+		//console.log("pdp page creators");
         name = val.name;
-    } else if(val.title !== undefined){
-        name = val.title;
+		//console.log(name);
+		href = val.resourceURI;
+		href = href.split('/');
+		let hrefLength = href.length;
+		let id = href[hrefLength -1];
+		href = `/apps/marvel-comics#/${baseURL}/${id}`;
+		let role = val.role;
+		if(role !== undefined){
+			role = `- ` + role;
+		} else {
+			role = ``;
+		}
+		//console.log(href);
+		return (
+			<li key={i}>
+				<a href={href} >{name} {role}</a>
+			</li>
+		)
     }
-
-	if(val.thumbnail.path !== "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available"){
+	
+	
+	
+	else if(baseURL == 'comics' || baseURL == 'characters'){
+		//console.log('pdp page comics');
+		href = `/apps/marvel-comics#/${baseURL}/${val.id}`;
+		name = val.name;
+		if(name == undefined){
+			name = val.title;
+		}
 		
-		if(val.id !== undefined){
+		if(val.thumbnail !== undefined){
+			if(val.thumbnail.path !== "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available"){
+		
+				if(val.id !== undefined){
 			
-			return(
-				<li key={i}>
-					<a href={href}>
-						<Image name={name} href={val.thumbnail.path} size="portrait" ext={val.thumbnail.extension} />
-					</a>
-				</li>
-			)
+					return(
+						<li key={i}>
+							<a href={href}>
+								<Image name={name} href={val.thumbnail.path} size="portrait" ext={val.thumbnail.extension} />
+							</a>
+						</li>
+					)
 
-        } else {
+				} else {
 
-			return(
-				<li>
-					<Image name={name} href={val.thumbnail.path} size="portrait" ext={val.thumbnail.extension}  />
-				</li>
-			)
+					return(
+						<li>
+							<Image name={name} href={val.thumbnail.path} size="portrait" ext={val.thumbnail.extension}  />
+						</li>
+					)
 
-        }
+				}
 
-    }
+			}
+		} else {
+			href = val.resourceURI;
+			href = href.split('/');
+			let hrefLength = href.length;
+			let id = href[hrefLength -1];
+			href = `/apps/marvel-comics#/${baseURL}/${id}`;
+			
+			return (
+			<li key={i}>
+				<a href={href} >{name}</a>
+			</li>
+		)
+			
+		}
+	}
+
 
     });
 	
@@ -96,23 +140,24 @@ export class List extends React.Component {
   };
   
   if(slider == 'true'){
-	  elem = <ul>
-				<Slider {...settings}>
-					{li}
-				</Slider>
-			</ul>
-  } else {
+	  
 	elem = <ul>
-	{li}
-</ul>	
+		<Slider {...settings}>
+			{li}
+		</Slider>
+	</ul>
+	
+  } else {
+	  
+	elem = <ul>
+		{li}
+	</ul>	
 	
   }
 
     return (
       <React.Fragment>
-        
           {elem}
-        
       </React.Fragment>
     );
 

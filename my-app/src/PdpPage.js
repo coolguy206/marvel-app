@@ -15,38 +15,36 @@ import { faCarrot } from '@fortawesome/free-solid-svg-icons';
 
 export class PdpPage extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+	constructor(props){
+		super(props);
+		this.state = {
+			data: {},
+		};
+		this.handleClick = this.handleClick.bind(this);
+		this.changePdp = this.changePdp.bind(this);
+	}
 
-    };
-    this.handleClick = this.handleClick.bind(this);
-    this.changePdp = this.changePdp.bind(this);
-  }
+	componentDidMount() {
+		let $this = this;
+		let id  = this.props.match.params.Id;
+		let cat  = this.props.match.params.Category;
+		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
 
-  componentDidMount() {
-    let $this = this;
-    let id  = this.props.match.params.Id;
-    let cat  = this.props.match.params.Category;
-    let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+		// on page load data
+		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
+		fetch(dataURL).then(res => res.json()).then((results) => {
+			// console.log(results);
 
-    // on page load data
-    let dataURL = `${baseURL}/${id}?apikey=${Api}`;
-    fetch(dataURL)
-      .then(res => res.json()).then((results) => {
-        // console.log(results);
+			this.setState({
+				data: results.data.results[0]
+			});
 
-        this.setState({
-            data: results.data.results[0]
-        });
-
-        // document.getElementsByClassName('loading')[0].style.display = 'none';
-        // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-      }, (error) => {
-        console.log(error);
-    });
-
+		}, (error) => {
+			console.log(error);
+		});
+	}
+	
+/*
     if(cat !== 'characters' && cat !== 'creators'){
       //characters data
       let charactersURL = `${baseURL}/${id}/characters?apikey=${Api}`;
@@ -165,102 +163,170 @@ export class PdpPage extends React.Component {
           console.log(error);
       });
     }
+	
+*/
 
 
-  }
+	handleClick(e) {
 
-  handleClick(e) {
+	}
+ 
 
-  }
+	changePdp(e){
 
-  changePdp(e){
-
-  }
-
-  render() {
-    console.log(this.state);
-    let cat  = this.props.match.params.Category;
-    // console.log(cat);
-
-    let data = this.state.data;
-
-    // console.log(data);
-
-    if(data !== undefined){
-      // console.log(data);
-
-      let name = ``;
-      if(cat == 'creators'){
-        name = data.fullName;
-      }else if(data.name !== undefined){
-        name = data.name;
-      } else if(data.title !== undefined){
-        name = data.title;
-      }
-
-      let description = ``;
-      if(data.description !== `` && data.description !== null){
-        description = <p>{data.description}</p>
-      }
-
-      let comics = ``;
-      if(this.state.comics !== undefined && this.state.comics.length !== 0){
-        comics = <List2 header="comics" url="comics" list={this.state.comics}  />
-      }
-
-      let characters = ``;
-      if(this.state.characters !== undefined && this.state.characters.length !== 0){
-        characters = <List2 header="characters" url="characters" list={this.state.characters}  />
-      }
-
-      let events = ``;
-      if(this.state.events !== undefined && this.state.events.length !== 0){
-        events = <List2 header="events" url="events" list={this.state.events}  />
-      }
-
-      let series = ``;
-      if(this.state.series !== undefined && this.state.series.length !== 0){
-        series = <List2 header="series" url="series" list={this.state.series}  />
-      }
-
-      let stories = ``;
-      if(this.state.stories !== undefined && this.state.stories.length !== 0){
-        stories = <List2 header="stories" url="stories" list={this.state.stories}  />
-      }
-
-      let creators = ``;
-      if(this.state.creators !== undefined && this.state.creators.length !== 0){
-        creators = <List2 header="creators" url="creators" list={this.state.creators}  />
-      }
+	}
 
 
+	render() {
+	 
+		console.log(this.state.data);
+		let img =``;
+		let data = ``;
+		let title = ``;
+		let desc = ``;
+		let pageCount = ``;
+		let issue =``;
+		let urls =``;
+		
+		let comics = ``;
+		let comicsList = ``;
+		
+		let events = ``;
+		let eventsList = ``;
+	
+		let stories = ``;
+		let storiesList = ``;
+	
+		let series = ``;
+		let seriesList = ``;
+	
+		let creators = ``;
+		let creatorsList = ``;
+	
+		let li = ``;
+	
+	
+		if(this.state.data.id !== undefined) {
+			//console.log('empty data');
+	
+			let cat  = this.props.match.params.Category;
+			// console.log(cat);
+	
+			data = this.state.data;
+	
+			title =  data.title;
+			if(title == undefined) {
+				title = data.name;
+			}
+	
+			desc =  data.description;
+			if (desc !== null) {
+				desc = <p>{desc}</p>
+			}
+	
+			if(data.pageCount !== undefined){
+				pageCount = <p>Pages: {data.pageCount}</p>;
+			}
+			
+			if(data.issueNumber !== undefined){
+				issue = <p>Issue # {data.issueNumber}</p>;
+			}
+	
+	
+			img = <Image name={data.title} href={data.thumbnail.path} ext={data.thumbnail.extension} size='portrait'  />
+	
+			urls = data.urls;
+	
+			if(urls.length == 1){
+				urls = <a href={data.urls[0].url} target="_blank">learn more</a>
+			} else {
+				li = urls.map(function(val, i){
+					return(
+						<li key={i}><a href={val.url} target="_blank">{val.type}</a></li>
+					)
+				});
+				urls = <ul>{li}</ul>
+			}
+	
+			if(data.creators !== undefined){
+				creators = <h2>creators</h2>
+				creatorsList = <List url="creators" list={data.creators.items} slider="false" />
+			}
+			
+			if(data.comics !== undefined){
+				comics = <h2>comics</h2>
+				comicsList = <List url="comics" list={data.comics.items} slider="false" />
+			}
+			
+			if(data.events !== undefined && data.events.length > 0){
+				events = <h2>events</h2>
+				eventsList = <List url="events" list={data.events.items} slider="false" />
+			}
+	
+	
+	
+			stories = <h2>Stories</h2>
+			storiesList = <ul><List url="stories" list={data.stories.items} slider="false" /></ul>
+	
+			if(data.series.available == 0){
+				console.log('pdp series do nothing');
+			} else if(data.series.available == 1 || data.series.available == undefined){
+				console.log('pdp 1 series');
+				let seriesHref = data.series.resourceURI;
+				seriesHref = seriesHref.split('/');
+				let seriesHrefLength = seriesHref.length;
+				let seriesId = seriesHref[seriesHrefLength -1];
+				seriesHref = `/apps/marvel-comics#/series/${seriesId}`;
+				series = <h2>series</h2>
+				seriesList = <a href={seriesHref}>{data.series.name}</a>
+			
+			} else {
+				series = <h2>series</h2>
+				seriesList = <List url="series" list={data.series.items} slider="false" />
+			}
+	
+			document.getElementsByClassName('loading')[0].style.display = 'none';
+			var pdpPage = document.getElementsByClassName('pdp');
+			pdpPage[0].style.display = 'flex';
 
-      return (
-        <React.Fragment>
-          <div className="pdp">
-            <h1>{name}</h1>
-            <Image name={name} href={data.thumbnail.path} ext={data.thumbnail.extension} size='portrait'  />
-            {description}
 
-            {comics}
+		} // end of if
+	
 
-            {characters}
+		return (
+			<React.Fragment>
+				<div className="pdp">
+		  
+					<div className="first">
+						<h1 className="mobile">{title}</h1>
+						{img}
+					</div>
+			
+					<div className="second">
+						<h1 className="desktop">{title}</h1>
+						{desc}
+						{issue}
+						{pageCount}
+						{urls}
+						
+						{comics}
+						{comicsList}
+						
+						{events}
+						{eventsList}
+						
+						{series}
+						{seriesList}
+						
+						{creators}
+						{creatorsList}
+					
+					</div>
+			
+				</div>
+			</React.Fragment>
+		);
 
-            {events}
-
-            {series}
-
-            {stories}
-
-            {creators}
-
-          </div>
-        </React.Fragment>
-      );
-
-    } else {
-      return null;
-    }
 
 
   } //end of render
