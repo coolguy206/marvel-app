@@ -173,7 +173,31 @@ export class PdpPage extends React.Component {
  
 
 	changePdp(e){
+		console.log(`pdp changePdp`);
+		//console.log(e);
+		//console.log(e.target);
+		
+		let url = e.target.href;
+		let urlArr = url.split('/');
+		let cat = urlArr[urlArr.length - 2];
+		let id = urlArr[urlArr.length -1];
+		//console.log(url, urlArr, cat, id);
+		
+		
+		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
 
+		// on page load data
+		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
+		fetch(dataURL).then(res => res.json()).then((results) => {
+			//console.log(results);
+
+			this.setState({
+				data: results.data.results[0]
+			});
+
+		}, (error) => {
+			console.log(error);
+		});
 	}
 
 
@@ -221,7 +245,7 @@ export class PdpPage extends React.Component {
 	
 			desc =  data.description;
 			if (desc !== null) {
-				desc = <p>{desc}</p>
+				desc = <p dangerouslySetInnerHTML={{ __html: desc }} />
 			}
 	
 			if(data.pageCount !== undefined){
@@ -249,40 +273,44 @@ export class PdpPage extends React.Component {
 			}
 	
 			if(data.creators !== undefined){
-				creators = <h2>creators</h2>
-				creatorsList = <List url="creators" list={data.creators.items} slider="false" />
+			creators = <h2>creators</h2>
+				creatorsList = <List url="creators" list={data.creators.items} slider="false" changePdp={this.changePdp} />
 			}
 			
 			if(data.comics !== undefined){
 				comics = <h2>comics</h2>
-				comicsList = <List url="comics" list={data.comics.items} slider="false" />
+				comicsList = <List url="comics" list={data.comics.items} slider="false" changePdp={this.changePdp} />
 			}
 			
 			if(data.events !== undefined && data.events.length > 0){
 				events = <h2>events</h2>
-				eventsList = <List url="events" list={data.events.items} slider="false" />
+				eventsList = <List url="events" list={data.events.items} slider="false" changePdp={this.changePdp} />
 			}
 	
 	
 	
 			stories = <h2>Stories</h2>
-			storiesList = <ul><List url="stories" list={data.stories.items} slider="false" /></ul>
-	
-			if(data.series.available == 0){
+			storiesList = <ul><List url="stories" list={data.stories.items} slider="false" changePdp={this.changePdp} /></ul>
+			
+			
+			if(data.series == undefined){
+				console.log('pdp no series');
+			}
+			else if(data.series.available == 0){
 				console.log('pdp series do nothing');
 			} else if(data.series.available == 1 || data.series.available == undefined){
-				console.log('pdp 1 series');
+				//console.log('pdp 1 series');
 				let seriesHref = data.series.resourceURI;
 				seriesHref = seriesHref.split('/');
 				let seriesHrefLength = seriesHref.length;
 				let seriesId = seriesHref[seriesHrefLength -1];
 				seriesHref = `/apps/marvel-comics#/series/${seriesId}`;
 				series = <h2>series</h2>
-				seriesList = <a href={seriesHref}>{data.series.name}</a>
+				seriesList = <a href={seriesHref} onClick={this.changePdp}>{data.series.name}</a>
 			
 			} else {
 				series = <h2>series</h2>
-				seriesList = <List url="series" list={data.series.items} slider="false" />
+				seriesList = <List url="series" list={data.series.items} slider="false" changePdp={this.changePdp} />
 			}
 	
 			document.getElementsByClassName('loading')[0].style.display = 'none';

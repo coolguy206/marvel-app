@@ -20,6 +20,10 @@ export class List extends React.Component {
     let baseURL = this.props.url;
     let listItems = this.props.list;
 	let slider = this.props.slider;
+	let changePdp = this.props.changePdp;
+	
+	//console.log('List.js changePdp');
+	//console.log(changePdp);
 	
 	let elem = ``;
 	let href = ``;
@@ -46,7 +50,7 @@ export class List extends React.Component {
 		//console.log(href);
 		return (
 			<li key={i}>
-				<a href={href} >{name} {role}</a>
+				<a href={href} onClick={changePdp}>{name} {role}</a>
 			</li>
 		)
     }
@@ -68,7 +72,7 @@ export class List extends React.Component {
 			
 					return(
 						<li key={i}>
-							<a href={href}>
+							<a href={href} onClick={changePdp}>
 								<Image name={name} href={val.thumbnail.path} size="portrait" ext={val.thumbnail.extension} />
 							</a>
 						</li>
@@ -94,7 +98,7 @@ export class List extends React.Component {
 			
 			return (
 			<li key={i}>
-				<a href={href} >{name}</a>
+				<a href={href} onClick={changePdp}>{name}</a>
 			</li>
 		)
 			
