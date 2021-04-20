@@ -10,6 +10,7 @@ export class LandingPage extends React.Component {
 
     };
     this.hover = this.hover.bind(this);
+    // this.changeLanding = this.changeLanding.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +49,35 @@ export class LandingPage extends React.Component {
 
 
   }
+/*
+  changeLanding(e){
+		console.log(`landing changeLanding`);
+		//console.log(e);
+		//console.log(e.target);
 
+		let url = e.target.href;
+		let urlArr = url.split('/');
+		let cat = urlArr[urlArr.length - 2];
+		let id = urlArr[urlArr.length -1];
+		//console.log(url, urlArr, cat, id);
+
+
+		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+
+		// on page load data
+		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
+		fetch(dataURL).then(res => res.json()).then((results) => {
+			console.log(results);
+
+			// this.setState({
+			// 	data: results.data.results[0]
+			// });
+
+		}, (error) => {
+			console.log(error);
+		});
+	}
+*/
   hover(e){
 
   }
@@ -60,6 +89,16 @@ export class LandingPage extends React.Component {
     let data = ``;
     if(this.state.data !== undefined){
       data =  <List url={cat} list={this.state.data} />
+    }
+
+    //document.getElementsByClassName('landing-page')[0].style.display = 'block';
+    var landing =  document.getElementsByClassName('landing-page')[0];
+    if(landing !== undefined){
+      landing.style.display = 'block';
+    }
+    var loading = document.getElementsByClassName('loading')[0];
+    if(loading !== undefined){
+      loading.style.display = 'none';
     }
 
     return (

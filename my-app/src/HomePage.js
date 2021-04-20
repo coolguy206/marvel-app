@@ -14,7 +14,7 @@ export class HomePage extends React.Component {
       characters: [],
       events:[],
       series:[],
-	  
+
     };
     this.hover = this.hover.bind(this);
   }
@@ -144,24 +144,24 @@ export class HomePage extends React.Component {
   hover(e){
 
   }
-  
+
 
   render() {
 	console.log(this.state);
-	
+
     var comicsArr = this.state.comics;
     var comicsLength = comicsArr.length;
     var comic1 = '';
 	var comic2 = ``;
-	
+
     if(comicsLength == 20){
-	  
+
 		comic1 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="true" number="0" title="comics" />
-	  
+
 		comic2 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="false" number="10" title="comics" />
     }
-	
-	
+
+
 	var charactersArr = this.state.characters;
     var charactersLength = charactersArr.length;
     var character = '';
@@ -169,10 +169,10 @@ export class HomePage extends React.Component {
 	var randomCharacter2 = Math.floor(Math.random() * Math.floor(20));
 	//console.log(`random numbers`);
 	//console.log(randomCharacter1, randomCharacter2);
-	
-	
+
+
     if(charactersLength == 20){
-	  
+
 		character = <MakeFeatured arr={charactersArr} url="/apps/marvel-comics#/characters/" id="false" number="10" title="characters" />
 		/*
 		var bgURL1 = charactersArr[randomCharacter1].thumbnail.path + '.' + charactersArr[randomCharacter1].thumbnail.extension;
@@ -181,32 +181,32 @@ export class HomePage extends React.Component {
 		document.body.style.background = 'url('+ bgURL1 +') no-repeat top left /30%, url('+ bgURL2 +') no-repeat top right /30%, #000';
 		*/
     }
-	
-	
-	
+
+
+
 	var seriesArr = this.state.series;
     var seriesLength = seriesArr.length;
     var series = '';
-	
+
     if(seriesLength == 20){
-	  
+
 		series = <MakeFeatured arr={seriesArr} url="/apps/marvel-comics#/series/" id="false" number="10" title="series" />
-	 
+
     }
-	
-	
+
+
 	var eventsArr = this.state.events;
     var eventsLength = eventsArr.length;
     var event = '';
-	
+
     if(eventsLength == 20){
-	  
+
 		event = <MakeFeatured arr={eventsArr} url="/apps/marvel-comics#/events/" id="false" number="10" title="events" />
-	 
+
     }
-	
-	
-	
+
+
+
 
     // if(this.state.comics !== undefined){
     //   var comicsArr = this.state.comics;
@@ -238,9 +238,9 @@ export class HomePage extends React.Component {
       seriesUL =  <List url='series' list={this.state.series} slider='true' />
     }
 
-    let events = ``;
+    let eventsUL = ``;
     if(this.state.events !== undefined){
-      events =  <List url='events' list={this.state.events} slider='true' />
+      eventsUL =  <List url='events' list={this.state.events} slider='true' />
     }
 
     // let stories = ``;
@@ -258,14 +258,14 @@ export class HomePage extends React.Component {
     //     <Image name={featured_1.title} href={featured_1.thumbnail.path} ext={featured_1.thumbnail.ext} size="portrait" />
     //   </a>
     // }
-	
-	
+
+
 	if(comicsLength == 20 && charactersLength == 20 && seriesLength == 20 && eventsLength == 20) {
-		
+
 		document.getElementsByClassName('loading')[0].style.display = 'none';
 		var hps = document.getElementsByClassName('hp');
 		//console.log(hps);
-		
+
 		for (let val of hps) {
 			//console.log(val);
 			if(val.className == "hp top"){
@@ -275,7 +275,7 @@ export class HomePage extends React.Component {
 			}
 		}
 	}
-	
+
 
     return (
       <React.Fragment>
@@ -285,55 +285,55 @@ export class HomePage extends React.Component {
           </div>
 
           <div className="featured featured_2">
-			
+
 			<div>
 				{comic2}
 			</div>
-			
+
 			<div>
 				{character}
 			</div>
-			
+
 			<div>
 				{series}
 			</div>
-			
+
 			<div>
 				{event}
 			</div>
-			
+
           </div>
-		  
+
 		</div>
 
          <div className="hp">
             <h2>Comics</h2>
 			{comics}
-			
+
           </div>
 
           <div className="hp">
             <h2>Characters</h2>
-			
+
             {characters}
-			
+
           </div>
 
           <div className="hp">
             <h2>Series</h2>
-			
+
             {seriesUL}
-			
+
           </div>
 
           <div className="hp">
             <h2>Events</h2>
-			
-            {events}
-			
+
+            {eventsUL}
+
           </div>
 
-        
+
       </React.Fragment>
     );
 

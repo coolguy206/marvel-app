@@ -21,18 +21,18 @@ export class List extends React.Component {
     let listItems = this.props.list;
 	let slider = this.props.slider;
 	let changePdp = this.props.changePdp;
-	
+
 	//console.log('List.js changePdp');
 	//console.log(changePdp);
-	
+
 	let elem = ``;
 	let href = ``;
 	let name = ``;
-	
+
     let li = listItems.map(function(val, i){
-   
-	
-    if(baseURL == 'creators' || baseURL == 'stories' || baseURL == 'series' || baseURL == 'events'){
+
+
+    if(baseURL == 'creators' || baseURL == 'stories'){
 		//console.log("pdp page creators");
         name = val.name;
 		//console.log(name);
@@ -54,22 +54,22 @@ export class List extends React.Component {
 			</li>
 		)
     }
-	
-	
-	
-	else if(baseURL == 'comics' || baseURL == 'characters'){
+
+
+
+	else if(baseURL == 'comics' || baseURL == 'characters' || baseURL == 'series' || baseURL == 'events'){
 		//console.log('pdp page comics');
 		href = `/apps/marvel-comics#/${baseURL}/${val.id}`;
 		name = val.name;
 		if(name == undefined){
 			name = val.title;
 		}
-		
+
 		if(val.thumbnail !== undefined){
 			if(val.thumbnail.path !== "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available"){
-		
+
 				if(val.id !== undefined){
-			
+
 					return(
 						<li key={i}>
 							<a href={href} onClick={changePdp}>
@@ -95,19 +95,19 @@ export class List extends React.Component {
 			let hrefLength = href.length;
 			let id = href[hrefLength -1];
 			href = `/apps/marvel-comics#/${baseURL}/${id}`;
-			
+
 			return (
 			<li key={i}>
 				<a href={href} onClick={changePdp}>{name}</a>
 			</li>
 		)
-			
+
 		}
 	}
 
 
     });
-	
+
 	var settings = {
     infinite: true,
 	autoplaySpeed: 4000,
@@ -142,21 +142,21 @@ export class List extends React.Component {
     },
 	]
   };
-  
+
   if(slider == 'true'){
-	  
+
 	elem = <ul>
 		<Slider {...settings}>
 			{li}
 		</Slider>
 	</ul>
-	
+
   } else {
-	  
+
 	elem = <ul>
 		{li}
-	</ul>	
-	
+	</ul>
+
   }
 
     return (
