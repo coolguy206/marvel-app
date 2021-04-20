@@ -1,0 +1,33 @@
+@import 'vars.less';
+@featured_2_cta-color: #000;
+
+.landing-page {
+	max-width: 1680px;
+	margin: 0 auto;
+	background: #fff;
+	padding: 1%;
+	display:none;
+
+	h1 {
+		text-transform:uppercase;
+		margin: 0 0 2%;
+text-align: center;
+font-size: 40px;
+	}
+
+	ul {
+		list-style-type:none;
+		display:flex;
+		flex-wrap:wrap;
+
+		li {
+			@media screen and (max-width: 414px){
+				flex-basis: 50%;
+			}
+			flex-basis: 25%;
+			text-align:center;
+			margin:0 0 4%;
+			padding: 0 1%;
+		}
+	}
+}
