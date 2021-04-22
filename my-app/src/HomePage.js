@@ -147,18 +147,21 @@ export class HomePage extends React.Component {
 
 
   render() {
-	console.log(this.state);
+	// console.log(this.state);
 
     var comicsArr = this.state.comics;
     var comicsLength = comicsArr.length;
     var comic1 = '';
+
 	var comic2 = ``;
 
     if(comicsLength == 20){
-
-		comic1 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="true" number="0" title="comics" />
+      var comic1Title = comicsArr[0].title;
+      // console.log(comic1Title);
+		comic1 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="true" number="0" title={comic1Title} />
 
 		comic2 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="false" number="10" title="comics" />
+  
     }
 
 
