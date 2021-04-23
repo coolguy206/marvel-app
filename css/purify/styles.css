@@ -8,7 +8,7 @@ body {
   font-size: 100%;
   line-height: 150%;
   font-family: sans-serif;
-  background: #000;
+  background: radial-gradient(circle, black, red, black) no-repeat;
 }
 
 .header {
@@ -16,10 +16,22 @@ body {
   position: relative;
 }
 
+@media screen and (max-width:768px) {
+  .header {
+    padding: 2% 0;
+  }
+}
+
 .footer {
   text-align: center;
   color: #fff;
   padding: 1% 0;
+}
+
+@media screen and (max-width:1024px) {
+  .footer {
+    padding: 4% 0;
+  }
 }
 
 .pdp {

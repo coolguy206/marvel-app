@@ -6,6 +6,8 @@ import {SearchPage} from './SearchPage';
 import {Loading} from './Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,6 +25,8 @@ export class Header extends React.Component {
     // };
     this.search = this.search.bind(this);
     this.blur = this.blur.bind(this);
+    this.expand = this.expand.bind(this);
+    this.close = this.close.bind(this);
   }
 
   search(e){
@@ -41,6 +45,19 @@ export class Header extends React.Component {
     window.location.reload();
   }
 
+  expand(e){
+    // console.log('expand function');
+    // console.log(e);
+    var nav = e.target.nextSibling.nextSibling.nextSibling.nextSibling;
+    nav.classList.add("expand");
+  }
+
+  close(e){
+    // console.log('close function');
+    // console.log(e);
+    e.target.parentNode.classList.remove("expand");
+  }
+
     // <Switch>
     // </Switch>
 
@@ -55,10 +72,13 @@ export class Header extends React.Component {
       <React.Fragment>
         <HashRouter>
           <header className="header">
+            <FontAwesomeIcon icon={faBars} size="3x" onClick={this.expand} />
             <a href="/apps/marvel-comics/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Marvel-Comics-Logo.svg/1280px-Marvel-Comics-Logo.svg.png" alt="Marvel Logo" /></a>
             <FontAwesomeIcon icon={faSearch} size="3x" />
+
             <input type="text" placeholder="search" onKeyUp={this.search} onBlur={this.blur} />
             <nav>
+              <FontAwesomeIcon icon={faTimesCircle} size="3x" onClick={this.close} />
               <ul>
                 <li><a href="/apps/marvel-comics/#/characters">characters</a></li>
                 <li><a href="/apps/marvel-comics/#/comics">comics</a></li>

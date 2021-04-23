@@ -1,7 +1,14 @@
 @import 'vars.less';
 @nav-cta-color: #fff;
 
+.expand {
+  top:-1% !important;
+}
+
 .header {
+  @media screen and (max-width:768px){
+    padding: 2% 0;
+  }
   text-align: center;
   position: relative;
 
@@ -11,10 +18,26 @@
   }
 
   svg {
+    @media screen and (max-width:768px){
+      display:inline;
+    }
     position: absolute;
-    right: 1%;
     top: 50%;
     transform: translateY(-50%);
+    color:#fff;
+    display:none;
+
+    &.fa-bars {
+      left:4%;
+    }
+
+    &.fa-search {
+      right:4%;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   input {
@@ -22,15 +45,57 @@
   }
 
   nav {
+    @media screen and (max-width: 768px){
+      position: fixed;
+background: rgba(255, 255, 255, 0.9);
+width: 100%;
+// top: -1%;
+top:-104%;
+height: 102%;
+z-index: 9999;
+transition: top .5s;
+padding: 5% 0;
+    }
+
     margin: 1% 0;
 
+    svg {
+      @media screen and (max-width:768px){
+        position: absolute;
+transform: translateY(0);
+top: 20%;
+right: 4%;
+display:inline;
+color:#000;
+      }
+      @media screen and (max-width:414px){
+        top:14%;
+      }
+      display:none;
+    }
+
     ul {
+      @media screen and (max-width:768px){
+        flex-wrap:wrap;
+        position: absolute;
+top: 50%;
+width: 100%;
+transform: translateY(-50%);
+      }
       display: flex;
       list-style-type: none;
       justify-content: center;
       align-content: space-between;
 
       li {
+        @media screen and (max-width:768px){
+          flex-basis: 100%;
+padding: 3% 0;
+border-top: 1px solid gray;
+        }
+        @media screen and (max-width:414px){
+          padding:5% 0;
+        }
         margin: 0 1%;
 
         a {
@@ -39,6 +104,12 @@
           }
           @media screen and (max-width: 1024px){
             font-size: 3vw;
+          }
+          @media screen and (max-width: 768px){
+            color:#000;
+          }
+          @media screen and (max-width:414px){
+            font-size: 7vw;
           }
           text-decoration:none;
           font-size: 26px;
