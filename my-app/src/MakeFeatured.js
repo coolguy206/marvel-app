@@ -46,7 +46,7 @@ export default class MakeFeatured extends React.Component {
   var featuredStyle = {
     background: `url(${featuredImgURL}.${featured.thumbnail.extension}) no-repeat center`, backgroundSize:`cover`
   };
-  console.log(featuredStyle);
+  // console.log(featuredStyle);
 
 
 	if(id == "true"){

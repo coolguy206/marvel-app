@@ -14,9 +14,11 @@ body {
 .header {
   text-align: center;
   position: relative;
+  max-width: 1680px;
+  margin: 0 auto;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:1024px) {
   .header {
     padding: 2% 0;
   }
