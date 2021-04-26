@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
+    <div className="bg"></div>
     <Header />
     <Footer />
   </React.StrictMode>,

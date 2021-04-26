@@ -1,5 +1,6 @@
 import React from 'react';
 import { HomePage } from './HomePage';
+import { Api } from './Api';
 import {LandingPage} from './LandingPage';
 import {PdpPage} from './PdpPage';
 import {SearchPage} from './SearchPage';
@@ -20,15 +21,54 @@ import {
 export class Header extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   searchRecipes: []
-    // };
+    this.state = {
+      data: []
+    };
     this.search = this.search.bind(this);
     this.blur = this.blur.bind(this);
     this.expand = this.expand.bind(this);
     this.close = this.close.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
+    this.changePage = this.changePage.bind(this);
+  }
+
+  changePage(e){
+    // var href = document.location.href;
+    // document.location.href = href;
+    // document.location.reload();
+
+    // console.log(e.target.innerText);
+    // // var offset = Math.floor(Math.random() * 900);
+    // let cat  = e.target.innerText;
+    // cat = cat.toLowerCase();
+    // let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+    //
+    // let url = ``;
+    // url = `${baseURL}?apikey=${Api}`
+    //
+    //   fetch(url)
+    //     .then(res => res.json()).then((results) => {
+    //       // console.log('from homePage after ajax comics');
+    //       // console.log(results);
+    //
+    //       this.setState({
+    //           data: results.data.results
+    //       });
+    //
+    //       var data = this.state.data;
+    //       data = JSON.stringify(data);
+    //       // console.log(data);
+    //       document.getElementById('logo').dataset.arr = data;
+    //       // console.log(document.getElementById('logo').dataset.arr);
+    //       // document.getElementsByClassName('loading')[0].style.display = 'none';
+    //       // document.getElementsByClassName('hp')[0].style.display = 'flex';
+    //
+    //       // console.log(this.state);
+    //       }, (error) => {
+    //           console.log(error);
+    //   });
+
   }
 
   search(e){
@@ -122,7 +162,8 @@ export class Header extends React.Component {
         <HashRouter>
           <header className="header">
             <FontAwesomeIcon icon={faBars} size="2x" onClick={this.expand} />
-            <a href="/apps/marvel-comics/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Marvel-Comics-Logo.svg/1280px-Marvel-Comics-Logo.svg.png" alt="Marvel Logo" /></a>
+
+            <a href="/apps/marvel-comics/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Marvel-Comics-Logo.svg/1280px-Marvel-Comics-Logo.svg.png" alt="Marvel Logo" id="logo" data-arr="" /></a>
 
             <div className="search-bar">
               <input type="text" placeholder="Search" onKeyUp={this.search} onBlur={this.blur} />
@@ -132,12 +173,10 @@ export class Header extends React.Component {
             <nav>
               <FontAwesomeIcon icon={faTimesCircle} size="2x" onClick={this.close} />
               <ul>
-                <li><a href="/apps/marvel-comics/#/characters">characters</a></li>
-                <li><a href="/apps/marvel-comics/#/comics">comics</a></li>
-                <li><a href="/apps/marvel-comics/#/creators">creators</a></li>
-                <li><a href="/apps/marvel-comics/#/events">events</a></li>
-                <li><a href="/apps/marvel-comics/#/series">series</a></li>
-                <li><a href="/apps/marvel-comics/#/stories">stories</a></li>
+                <li><a href="/apps/marvel-comics/#/characters" onClick={this.changePage}>characters</a></li>
+                <li><a href="/apps/marvel-comics/#/comics" onClick={this.changePage}>comics</a></li>
+                <li><a href="/apps/marvel-comics/#/events" onClick={this.changePage}>events</a></li>
+                <li><a href="/apps/marvel-comics/#/series" onClick={this.changePage}>series</a></li>
               </ul>
             </nav>
           </header>
