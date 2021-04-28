@@ -6,6 +6,7 @@ import {PdpPage} from './PdpPage';
 import {SearchPage} from './SearchPage';
 import {Loading} from './Loading';
 import {UpArrow} from './UpArrow';
+import {SearchBar} from './SearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -175,6 +176,8 @@ export class Header extends React.Component {
       <React.Fragment>
         <HashRouter>
 
+
+
           <header className="header">
             <FontAwesomeIcon icon={faBars} size="2x" onClick={this.expand} />
 
@@ -194,6 +197,7 @@ export class Header extends React.Component {
                 <li><a href="/apps/marvel-comics/#/series" onClick={this.changePage}>series</a></li>
               </ul>
             </nav>
+            <SearchBar />
           </header>
 
           <section className="main">
