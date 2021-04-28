@@ -5,31 +5,33 @@
 	margin: 0 auto;
 	background: #fff;
 	padding: 1%;
-	display:none; 
-	flex-wrap:wrap;
-	
+	display: none;
+	flex-wrap: wrap;
+
 	div {
-		@media screen and (max-width: 414px){
+		@media screen and (max-width: 414px) {
 			flex-basis: 100%;
-			text-align:center !important;
+			text-align: center !important;
 			padding: 5% !important;
 		}
-		
 		flex-basis: 50%;
-		
-		h1, h2, p, ul {
+
+		h1,
+		h2,
+		p,
+		ul {
 			margin: 0 0 2%;
 		}
-		
+
 		h2 {
 			text-transform: capitalize;
 		}
-		
+
 		&.first {
 			text-align: right;
 			padding: 0 2% 0 0;
 		}
-		
+
 		&.second {
 			padding: 0 0 0 2%;
 		}

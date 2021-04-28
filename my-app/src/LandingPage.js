@@ -86,6 +86,14 @@ export class LandingPage extends React.Component {
 */
   getMore(e){
     console.log(`getMore function`);
+    console.log(e.target);
+
+    var theButton = e.target;
+    theButton.style.display = 'none';
+
+    var theLoading = e.target.nextSibling;
+    theLoading.style.display = 'block';
+
     var offset = this.state.offset;
     let cat  = this.props.match.params.Category;
     let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
@@ -96,14 +104,14 @@ export class LandingPage extends React.Component {
 
       fetch(url)
         .then(res => res.json()).then((results) => {
-          console.log('ajax from button click landing page');
-          console.log(results);
+          // console.log('ajax from button click landing page');
+          // console.log(results);
 
           var offset = this.state.offset + results.data.offset;
-          console.log(offset);
+          // console.log(offset);
 
           var data = this.state.data;
-          console.log(data);
+          // console.log(data);
 
           var ajaxData = results.data.results;
           ajaxData.map(function(val,i){
@@ -116,6 +124,9 @@ export class LandingPage extends React.Component {
               data: data,
               offset: offset
           });
+
+          theButton.style.display = 'block';
+          theLoading.style.display = 'none';
 
           // document.getElementsByClassName('loading')[0].style.display = 'none';
           // document.getElementsByClassName('hp')[0].style.display = 'flex';
@@ -146,6 +157,10 @@ export class LandingPage extends React.Component {
         let id = val.id;
         let href = `/apps/marvel-comics#/${cat}/${id}`;
         let name = val.name;
+        console.log(name);
+        if(name == undefined){
+          name = val.title;
+        }
 
         return(
           <li key={i}>

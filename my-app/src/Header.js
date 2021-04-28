@@ -5,6 +5,7 @@ import {LandingPage} from './LandingPage';
 import {PdpPage} from './PdpPage';
 import {SearchPage} from './SearchPage';
 import {Loading} from './Loading';
+import {UpArrow} from './UpArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -33,7 +34,20 @@ export class Header extends React.Component {
     this.changePage = this.changePage.bind(this);
   }
 
+  componentDidMount() {
+    window.addEventListener('scroll', function(e){
+      // console.log(`header.js scroll event`);
+      // console.log(window.pageYOffset);
+      if(window.pageYOffset >= 208){
+        document.getElementsByClassName('back-to-top')[0].style.display = 'block';
+      } else {
+          document.getElementsByClassName('back-to-top')[0].style.display = 'none';
+      }
+    });
+  }
+
   changePage(e){
+    document.getElementsByTagName('nav')[0].classList.remove("expand");
     // var href = document.location.href;
     // document.location.href = href;
     // document.location.reload();
@@ -160,6 +174,7 @@ export class Header extends React.Component {
     return (
       <React.Fragment>
         <HashRouter>
+
           <header className="header">
             <FontAwesomeIcon icon={faBars} size="2x" onClick={this.expand} />
 
@@ -188,6 +203,9 @@ export class Header extends React.Component {
               <Route exact path="/:Category/" component={LandingPage} />
               <Route path="/search/:searchTerm" component={SearchPage} />
           </section>
+
+          <UpArrow />
+
         </HashRouter>
       </React.Fragment>
     );

@@ -1,21 +1,38 @@
 @import 'vars.less';
 @nav-cta-color: #fff;
 
-.expand {
-  top:-1% !important;
+.back-to-top {
+  @media screen and (max-width: 1024px){
+    color: darkred;
+  }
+  position: fixed;
+bottom: 5%;
+right: 13%;
+z-index: 9999;
+color: #fff;
+display:none;
+
+&:hover {
+  cursor:pointer;
 }
+}
+
+.expand {
+  top: -1% !important;
+}
+
 .show {
-  display:inline !important;
+  display: inline !important;
 }
 
 .header {
-  @media screen and (max-width:1024px){
+  @media screen and (max-width:1024px) {
     padding: 2% 0;
   }
   text-align: center;
   position: relative;
-  max-width:1680px;
-  margin:0 auto;
+  max-width: 1680px;
+  margin: 0 auto;
 
   img {
     width: 200px;
@@ -23,21 +40,21 @@
   }
 
   svg {
-    @media screen and (max-width:1024px){
-      display:inline;
+    @media screen and (max-width:1024px) {
+      display: inline;
     }
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    color:#fff;
-    display:none;
+    color: #fff;
+    display: none;
 
     &.fa-bars {
-      left:4%;
+      left: 4%;
     }
 
     &.fa-search {
-      right:4%;
+      right: 4%;
     }
 
     &:hover {
@@ -46,101 +63,98 @@
   }
 
   .search-bar {
-    @media screen and (max-width:1024px){
+    @media screen and (max-width:1024px) {
       top: 50%;
-transform: translateY(-50%);
-right: 4%;
+      transform: translateY(-50%);
+      right: 4%;
     }
     text-align: right;
-position: absolute;
-right: 0;
-width: 27%;
-bottom: 2%;
+    position: absolute;
+    right: 0;
+    width: 27%;
+    bottom: 2%;
 
     svg {
-      @media screen and (max-width:1024px){
-top: 50%;
-transform: translateY(-50%);
+      @media screen and (max-width:1024px) {
+        top: 50%;
+        transform: translateY(-50%);
       }
       display: inline;
-position: relative;
-top: 0;
-transform: translateY(0);
-right: 0;
+      position: relative;
+      top: 0;
+      transform: translateY(0);
+      right: 0;
     }
+
     input {
-      @media screen and (max-width:1024px){
+      @media screen and (max-width:1024px) {
         width: 80%;
-top: 50%;
-transform: translateY(-50%);
+        top: 50%;
+        transform: translateY(-50%);
       }
-      @media screen and (max-width:768px){
+      @media screen and (max-width:768px) {
         position: fixed;
-left: -180%;
-width: 230%;
-color: #000;
-border: 5px solid #000;
-padding: 4%;
-background: #fff;
-top: 210%;
-transform: translateY(0);
+        left: -180%;
+        width: 230%;
+        color: #000;
+        border: 5px solid #000;
+        padding: 4%;
+        background: #fff;
+        top: 210%;
+        transform: translateY(0);
       }
-      display:none;
-      border:none;
-      border-bottom:1px solid #fff;
-      color:#fff;
+      display: none;
+      border: none;
+      border-bottom: 1px solid #fff;
+      color: #fff;
       font-size: 26px;
-      background:none;
-      position:relative;
+      background: none;
+      position: relative;
 
       &:focus {
-        outline:none;
+        outline: none;
       }
     }
   }
 
-
-
   nav {
-    @media screen and (max-width: 1024px){
+    @media screen and (max-width: 1024px) {
       position: fixed;
-background: rgba(255, 255, 255, 0.9);
-width: 100%;
-// top: -1%;
-top:-104%;
-height: 102%;
-z-index: 9999;
-transition: top .5s;
-padding: 5% 0;
+      background: rgba(255, 255, 255, 0.9);
+      width: 100%; // top: -1%;
+      top: -104%;
+      height: 102%;
+      z-index: 9999;
+      transition: top 0.5s;
+      padding: 5% 0;
     }
-
     margin: 1% 0;
 
     svg {
-      @media screen and (max-width:1024px){
+      @media screen and (max-width:1024px) {
         position: absolute;
-transform: translateY(0);
-top: 7%;
-right: 4%;
-display:inline;
-color:#000;
+        transform: translateY(0);
+        top: 7%;
+        right: 4%;
+        display: inline;
+        color: #000;
       }
-      @media screen and (max-width:768px){
+      @media screen and (max-width:768px) {
         top: 20%;
       }
-      @media screen and (max-width:414px){
-        top:14%;
+      @media screen and (max-width:414px) {
+        top: 14%;
       }
-      display:none;
+      display: none;
     }
 
     ul {
-      @media screen and (max-width:1024px){
-        flex-wrap:wrap;
+      @media screen and (max-width:1024px) {
+        flex-wrap: wrap;
         position: absolute;
-top: 50%;
-width: 100%;
-transform: translateY(-50%);
+        top: 50%;
+        width: 100%;
+        transform: translateY(-50%);
       }
       display: flex;
       list-style-type: none;
@@ -148,34 +162,34 @@ transform: translateY(-50%);
       align-content: space-between;
 
       li {
-        @media screen and (max-width:1024px){
+        @media screen and (max-width:1024px) {
           flex-basis: 100%;
-padding: 3% 0;
-border-top: 1px solid gray;
+          padding: 3% 0;
+          border-top: 1px solid gray;
         }
-        @media screen and (max-width:414px){
-          padding:5% 0;
+        @media screen and (max-width:414px) {
+          padding: 5% 0;
         }
         margin: 0 1%;
 
         a {
-          @media screen and (max-width: 1680px){
+          @media screen and (max-width: 1680px) {
             font-size: 1.5vw;
           }
-          @media screen and (max-width: 1024px){
+          @media screen and (max-width: 1024px) {
             font-size: 3vw;
-            color:#000;
+            color: #000;
           }
-          @media screen and (max-width: 768px){
+          @media screen and (max-width: 768px) {
             // color:#000;
           }
-          @media screen and (max-width:414px){
+          @media screen and (max-width:414px) {
             font-size: 7vw;
           }
-          text-decoration:none;
+          text-decoration: none;
           font-size: 26px;
           text-transform: capitalize;
-		  color: @nav-cta-color;
+          color: @nav-cta-color;
         }
       }
     }

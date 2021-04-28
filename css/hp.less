@@ -6,28 +6,27 @@
 	margin: 0 auto;
 	background: #fff;
 	padding: 1%;
-	display:none;
+	display: none;
 
 	h2 {
-		@media screen and (max-width:414px){
+		@media screen and (max-width:414px) {
 			font-size: 7vw;
 		}
-		text-transform:uppercase;
+		text-transform: uppercase;
 		text-align: center;
-margin: 0 0 1%;
-font-size: 32px;
+		margin: 0 0 1%;
+		font-size: 32px;
 	}
 
 	ul {
-		list-style-type:none;
+		list-style-type: none;
 		//display:flex;
 		//flex-wrap:wrap;
-
 		li {
-			@media screen and (max-width:768px){
+			@media screen and (max-width:768px) {
 				padding: 5%;
 			}
-			@media screen and (max-width:414px){
+			@media screen and (max-width:414px) {
 				padding: 3%;
 			}
 			padding: 3%;
@@ -36,99 +35,92 @@ font-size: 32px;
 }
 
 .top {
-  //display: flex;
-  flex-wrap: wrap;
+	//display: flex;
+	flex-wrap: wrap;
 
-
-  div {
-	flex-basis: 100%;
+	div {
+		flex-basis: 100%;
 
 		&.featured {
-			flex-basis:50%;
-			text-align:center;
+			flex-basis: 50%;
+			text-align: center;
 
 			img {
-				width:40%;
+				width: 40%;
 			}
-
 		}
 
 		&.featured_1 {
-			@media screen and (max-width:768px){
+			@media screen and (max-width:768px) {
 				flex-basis: 100%;
 			}
-			@media screen and (max-width:414px){
+			@media screen and (max-width:414px) {
 				padding: 2%;
 			}
 
-				h2 {
-					// display:none;
-				}
-				a {
-					background:none !important;
-					img {
-						@media screen and (max-width:768px){
-							width: 60%;
-						}
-						@media screen and (max-width:414px){
-							width: 100%;
-						}
+			h2 {
+				// display:none;
+			}
+
+			a {
+				background: none !important;
+
+				img {
+					@media screen and (max-width:768px) {
+						width: 60%;
+					}
+					@media screen and (max-width:414px) {
+						width: 100%;
 					}
 				}
-
-
+			}
 		}
 
-		&.featured_2{
-			@media screen and (max-width:768px){
+		&.featured_2 {
+			@media screen and (max-width:768px) {
 				flex-basis: 100%;
 			}
-			display:flex;
-			flex-wrap:wrap;
+			display: flex;
+			flex-wrap: wrap;
 
 			div {
-				@media screen and (max-width:768px){
+				@media screen and (max-width:768px) {
 					padding: 2%;
 				}
 				flex-basis: 50%;
-				text-align:center;
-				padding:0 2% 0 0;
-				overflow:hidden;
+				text-align: center;
+				padding: 0 2% 0 0;
+				overflow: hidden;
 				text-transform: uppercase;
 
-				&:nth-of-type(even){
-					@media screen and (max-width:768px){
+				&:nth-of-type(even) {
+					@media screen and (max-width:768px) {
 						padding: 2%;
 					}
 					padding: 0;
 				}
 
 				a {
-					@media screen and (max-width:768px){
+					@media screen and (max-width:768px) {
 						// height: 40vh;
 						background: none !important;
 					}
-					text-decoration:none;
+					text-decoration: none;
 					color: @featured_2_cta-color;
-
-					display:block;
-					height:100%;
+					display: block;
+					height: 100%;
 				}
 
-				h2 {
-
-				}
+				h2 {}
 
 				img {
-					@media screen and (max-width:768px){
-						width:100%;
-						display:block;
+					@media screen and (max-width:768px) {
+						width: 100%;
+						display: block;
 					}
-					display:none;
+					display: none;
 				}
 			}
 		}
-
 	}
-
 }
