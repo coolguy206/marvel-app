@@ -12,7 +12,8 @@ export class SearchPage extends React.Component {
     super(props);
     this.state = {
       searchTerm: this.props.match.params.searchTerm,
-      number: 50
+      number: 50,
+      stuff: this.props.stuff
     };
     this.changeSearch = this.changeSearch.bind(this);
   }
@@ -23,8 +24,8 @@ export class SearchPage extends React.Component {
 
     let searchTerm  = this.state.searchTerm;
     // console.log(searchTerm);
-    var offset = Math.floor(Math.random() * 900);
-    var url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${Api}&query=${searchTerm}&number=${this.state.number}&offset=${offset}&instructionsRequired=true&addRecipeInformation=true&addRecipeNutrition=true`;
+    // var offset = Math.floor(Math.random() * 900);
+    // var url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${Api}&query=${searchTerm}&number=${this.state.number}&offset=${offset}&instructionsRequired=true&addRecipeInformation=true&addRecipeNutrition=true`;
     // console.log(url)
 
     // fetch(url).then(res => res.json()).then((result) => {
@@ -73,6 +74,7 @@ export class SearchPage extends React.Component {
   }
 
   render() {
+    console.log(this.state);
 
     return (
       <React.Fragment>

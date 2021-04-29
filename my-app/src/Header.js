@@ -24,7 +24,8 @@ export class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      search:[]
     };
     this.search = this.search.bind(this);
     this.blur = this.blur.bind(this);
@@ -105,21 +106,46 @@ export class Header extends React.Component {
   show(e){
     var searchInput =  ``;
     // console.log(e.target);
-    if(e.target.nodeName == 'svg'){
-      // console.log('it is a svg');
-      searchInput = e.target.previousSibling;
+    // if(e.target.nodeName == 'svg'){
+    //   // console.log('it is a svg');
+    //   searchInput = e.target.previousSibling;
+    //
+    // } else if(e.target.nodeName == 'path') {
+    //   // console.log('it is a path');
+    //   searchInput = e.target.parentNode.previousSibling;
+    //
+    // }
 
-    } else if(e.target.nodeName == 'path') {
-      // console.log('it is a path');
-      searchInput = e.target.parentNode.previousSibling;
-
-    }
+    searchInput = document.getElementById('search-bar');
 
     if(searchInput.classList.length !== 1){
       searchInput.classList.add("show");
     } else {
       searchInput.classList.remove("show");
     }
+
+    let cat  = searchInput.childNodes[1].value;
+    let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+
+    let url = ``;
+
+    url = `${baseURL}?apikey=${Api}&limit=100`;
+
+      fetch(url)
+        .then(res => res.json()).then((results) => {
+          console.log('ajax from search icon click');
+          console.log(results);
+
+          this.setState({
+            search: results.data.results
+          });
+
+          console.log(`state`);
+          console.log(this.state);
+          }, (error) => {
+              console.log(error);
+      });
+
 
   }
 
@@ -170,6 +196,7 @@ export class Header extends React.Component {
     // <Route path="/series/:Id" component={PdpPage} />
     // <Route path="/stories/:Id" component={PdpPage} />
     // <Route path="/authors/:Id" component={PdpPage} />
+      // <Route path="/search/:searchTerm" component={SearchPage} />
 
   render() {
     return (
@@ -197,7 +224,7 @@ export class Header extends React.Component {
                 <li><a href="/apps/marvel-comics/#/series" onClick={this.changePage}>series</a></li>
               </ul>
             </nav>
-            <SearchBar />
+            <SearchBar results={this.state.search} />
           </header>
 
           <section className="main">
@@ -205,7 +232,8 @@ export class Header extends React.Component {
               <Route exact path="/"  component={HomePage} />
               <Route path="/:Category/:Id" component={PdpPage} />
               <Route exact path="/:Category/" component={LandingPage} />
-              <Route path="/search/:searchTerm" component={SearchPage} />
+              <Route path="/search/:searchTerm" render={(props) => <SearchPage stuff="some stuff..." {...props} /> } />
+
           </section>
 
           <UpArrow />
