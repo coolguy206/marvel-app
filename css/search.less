@@ -10,13 +10,56 @@
 	background: #fff;
 	padding: 1%;
 	display: none;
+  min-height: 1024px;
 
 	h1 {
 		text-transform: uppercase;
-		margin: 0 0 2%;
+		margin: 0 0 1%;
 		text-align: center;
 		font-size: 40px;
+    font-family: @headers-font
 	}
+
+  &>h2 {
+    text-align: center;
+text-transform: uppercase;
+font-size: 40px;
+margin: 0 0 2%;
+  }
+
+  &> div {
+    @media screen and (max-width:1024px){
+      width:100%;
+    }
+    position: absolute;
+top: 50%;
+transform: translate(-50%, -50%);
+left: 50%;
+text-align:center;
+width: 40%;
+
+    h3 {
+      font-size: 24px;
+      margin: 0 0 4%;
+    }
+
+    #search-bar {
+      display: block;
+position: relative;
+left: 0;
+top: 0;
+transform: translate(0,0);
+text-align: center;
+margin: 0 auto;
+
+  svg {
+    display:none;
+  }
+}
+
+  }
+
+
 
 	.loading {
 		color: #000;

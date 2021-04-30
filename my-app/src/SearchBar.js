@@ -28,6 +28,8 @@ export class SearchBar extends React.Component {
 
     var url = `/apps/marvel-comics/#/search/${cat}/${str}`;
     window.location.href = url;
+
+    this.close();
     // console.log(this.props.results);
     // this.setState({
     //   results: this.props.results
@@ -112,19 +114,19 @@ export class SearchBar extends React.Component {
     // console.log(this.props.results);
     // console.log(this.state);
 
-    var searchResults = ``;
-    var resultsLength = this.state.results;
-    if(resultsLength.length > 1){
-      searchResults = this.state.results;
-    } else {
-      searchResults = this.props.results;
-    }
+    // var searchResults = ``;
+    // var resultsLength = this.state.results;
+    // if(resultsLength.length > 1){
+    //   searchResults = this.state.results;
+    // } else {
+    //   searchResults = this.props.results;
+    // }
 
 
 
-    var li = searchResults.map(function(val,i){
-      return(<li key={i} id={val.id}>{val.name}</li>);
-    });
+    // var li = searchResults.map(function(val,i){
+    //   return(<li key={i} id={val.id}>{val.name}</li>);
+    // });
 
     return (
       <React.Fragment>
@@ -143,7 +145,7 @@ export class SearchBar extends React.Component {
             <input type="text" placeholder="Search" />
             <input type="button" value="Search" onClick={this.filter}  />
             <ul id="autocomplete">
-              {li}
+            
               <li onClick={this.loadMore} style={{display:'block !important'}}>Load More</li>
             </ul>
           </div>
