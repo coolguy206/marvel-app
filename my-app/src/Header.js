@@ -124,27 +124,27 @@ export class Header extends React.Component {
       searchInput.classList.remove("show");
     }
 
-    let cat  = searchInput.childNodes[1].value;
-    let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
-
-    let url = ``;
-
-    url = `${baseURL}?apikey=${Api}&limit=100`;
-
-      fetch(url)
-        .then(res => res.json()).then((results) => {
-          console.log('ajax from search icon click');
-          console.log(results);
-
-          this.setState({
-            search: results.data.results
-          });
-
-          console.log(`state`);
-          console.log(this.state);
-          }, (error) => {
-              console.log(error);
-      });
+    // let cat  = searchInput.childNodes[1].value;
+    // let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+    //
+    // let url = ``;
+    //
+    // url = `${baseURL}?apikey=${Api}&limit=100`;
+    //
+    //   fetch(url)
+    //     .then(res => res.json()).then((results) => {
+    //       console.log('ajax from search icon click');
+    //       console.log(results);
+    //
+    //       this.setState({
+    //         search: results.data.results
+    //       });
+    //
+    //       console.log(`state`);
+    //       console.log(this.state);
+    //       }, (error) => {
+    //           console.log(error);
+    //   });
 
 
   }
@@ -232,7 +232,7 @@ export class Header extends React.Component {
               <Route exact path="/"  component={HomePage} />
               <Route path="/:Category/:Id" component={PdpPage} />
               <Route exact path="/:Category/" component={LandingPage} />
-              <Route path="/search/:searchTerm" render={(props) => <SearchPage stuff="some stuff..." {...props} /> } />
+              <Route path="/search/:searchCat/:searchTerm" render={(props) => <SearchPage stuff="some stuff..." {...props} /> } />
 
           </section>
 

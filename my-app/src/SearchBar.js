@@ -10,7 +10,7 @@ export class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      results: []
     };
     this.close = this.close.bind(this);
     this.filter = this.filter.bind(this);
@@ -18,31 +18,51 @@ export class SearchBar extends React.Component {
   }
 
   filter(e){
-    console.log('filter function from SearchBar');
+    // console.log('filter function from SearchBar');
+    // console.log(e.target);
+
+    var str = e.target.previousSibling.value;
+    str = str.toLowerCase();
+
+    var cat = e.target.parentNode.previousSibling.value;
+
+    var url = `/apps/marvel-comics/#/search/${cat}/${str}`;
+    window.location.href = url;
     // console.log(this.props.results);
-    this.setState({
-      results: this.props.results
-    });
-    console.log(this.state);
-    console.log(e.target.value);
-    var ul = document.getElementById('autocomplete');
-    ul.style.display = 'block';
-    var str = e.target.value;
-    var li = ul.childNodes;
-    console.log(li);
-    li.forEach(function(val, i){
-      var liStr = val.innerText;
-      // console.log(liStr, str);
-      if(liStr == 'Load More' || liStr.indexOf(str) !== -1){
-        val.style.display = 'block';
-      } else {
-        val.style.display = 'none';
-      }
-    });
+    // this.setState({
+    //   results: this.props.results
+    // });
+    // console.log(this.state);
+    // console.log(e.target.value);
+    // var ul = document.getElementById('autocomplete');
+    // ul.style.display = 'block';
+    // var str = e.target.value;
+    // str = str.toLowerCase();
+
+    // var li = ul.childNodes;
+    // // console.log(li);
+    // li.forEach(function(val, i){
+    //   var liStr = val.innerText;
+    //   liStr = liStr.toLowerCase();
+    //
+    //   if(liStr == 'load more' || liStr.indexOf(str) !== -1){
+    //
+    //     val.style.display = 'block';
+    //   } else {
+    //     // console.log('no match');
+    //     // console.log(liStr, str);
+    //     val.style.display = 'none';
+    //   }
+    // });
   }
 
   loadMore(e){
     console.log('loadMore function');
+    // this.setState({
+    //   results: this.props.results
+    // });
+    // console.log(this.state);
+
     var searchInput = document.getElementById('search-bar');
 
     let cat  = searchInput.childNodes[1].value;
@@ -65,6 +85,9 @@ export class SearchBar extends React.Component {
             thisState.push(val);
           });
 
+          document.getElementById('autocomplete').style.display =  'none';
+          searchInput.childNodes[2].childNodes[0].value= "";
+          searchInput.childNodes[2].childNodes[0].focus()
 
           // this.setState({
           //   search: results.data.results
@@ -89,7 +112,15 @@ export class SearchBar extends React.Component {
     // console.log(this.props.results);
     // console.log(this.state);
 
-    var searchResults = this.props.results;
+    var searchResults = ``;
+    var resultsLength = this.state.results;
+    if(resultsLength.length > 1){
+      searchResults = this.state.results;
+    } else {
+      searchResults = this.props.results;
+    }
+
+
 
     var li = searchResults.map(function(val,i){
       return(<li key={i} id={val.id}>{val.name}</li>);
@@ -109,7 +140,8 @@ export class SearchBar extends React.Component {
             <option value="creators">creators</option>
           </select>
           <div>
-            <input type="text" placeholder="Search" onKeyUp={this.filter} />
+            <input type="text" placeholder="Search" />
+            <input type="button" value="Search" onClick={this.filter}  />
             <ul id="autocomplete">
               {li}
               <li onClick={this.loadMore} style={{display:'block !important'}}>Load More</li>

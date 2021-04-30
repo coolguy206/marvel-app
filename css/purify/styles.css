@@ -55,3 +55,17 @@ body {
     padding: 5% !important;
   }
 }
+
+.search {
+  max-width: 1680px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 1%;
+  display: none;
+}
+
+@media screen and (max-width:1024px) {
+  .search {
+    padding: 4%;
+  }
+}
