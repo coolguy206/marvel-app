@@ -16,7 +16,8 @@ export class PdpPage extends React.Component {
 			comics: [],
 			events:[],
 			series:[],
-			stories:[]
+			stories:[],
+			creators:[]
 		};
 		this.handleClick = this.handleClick.bind(this);
 		this.changePdp = this.changePdp.bind(this);
@@ -98,6 +99,17 @@ export class PdpPage extends React.Component {
 				});
 			}
 
+			var creators = ``;
+			if(data.creators !== undefined){
+				creators = data.creators.items;
+				creators.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'creators');
+				});
+			}
+
 		}, (error) => {
 			console.log(error);
 		});
@@ -112,7 +124,7 @@ export class PdpPage extends React.Component {
 		let id  = infoId
 		let cat  = infoCat
 		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
-		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
+		let dataURL = `${baseURL}/${id}?apikey=${Api}&limit=10`;
 
 		fetch(dataURL).then(res => res.json()).then((results) => {
 			// console.log(`ajax from getInfo() pdpPage`);
@@ -150,6 +162,12 @@ export class PdpPage extends React.Component {
 				this.setState({
 					stories: arr,
 				});
+			} else if(infoCat == 'creators'){
+				arr = this.state.creators;
+				arr.push(data)
+				this.setState({
+					creators: arr,
+				});
 			}
 
 
@@ -164,28 +182,115 @@ export class PdpPage extends React.Component {
 		console.log(`pdp changePdp`);
 		//console.log(e);
 		console.log(e.target);
+		let url = ``;
+		if(e.target.tagName == "IMG"){
+			url = e.target.parentNode.href;
+		} else {
+			url = e.target.href;
+		}
 
-		let url = e.target.href;
+		this.setState({
+			data: {},
+			characters: [],
+			comics: [],
+			events:[],
+			series:[],
+			stories:[],
+			creators:[]
+		});
+
+		// let url = e.target.href;
 		let urlArr = url.split('/');
 		let cat = urlArr[urlArr.length - 2];
 		let id = urlArr[urlArr.length -1];
 		//console.log(url, urlArr, cat, id);
 
-
 		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
 
 		// on page load data
-		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
+		let dataURL = `${baseURL}/${id}?apikey=${Api}&limit=10`;
 		fetch(dataURL).then(res => res.json()).then((results) => {
 			//console.log(results);
+			var data = results.data.results[0];
+			var $this = this;
 
 			this.setState({
-				data: results.data.results[0]
+				data: data
 			});
+
+			//get images
+			var characters = ``;
+			if(data.characters !== undefined){
+				characters = data.characters.items;
+				characters.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'characters');
+				});
+			}
+
+			var comics = ``;
+			if(data.comics !== undefined){
+				comics = data.comics.items;
+				comics.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'comics');
+				});
+			}
+
+			var events = ``;
+			if(data.events !== undefined){
+				events = data.events.items;
+				events.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'events');
+				});
+			}
+
+			var series = ``;
+			if(data.series !== undefined){
+				series = data.series.items;
+				if(series !== undefined){
+					series.map(function(val, i){
+						var id = val.resourceURI;
+						id = id.split('/')[6];
+						// console.log(id);
+						$this.getInfo(id, 'series');
+					});
+				}
+			}
+
+			var stories = ``;
+			if(data.stories !== undefined){
+				stories = data.stories.items;
+				stories.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'stories');
+				});
+			}
+
+			var creators = ``;
+			if(data.creators !== undefined){
+				creators = data.creators.items;
+				creators.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'creators');
+				});
+			}
 
 		}, (error) => {
 			console.log(error);
 		});
+
 	}
 
 
@@ -246,6 +351,13 @@ export class PdpPage extends React.Component {
 		} else if(this.state.series.length !== 0 && this.state.series.length < 5){
 			console.log(`series is a go`);
 			series = <List url="series" list={this.state.series} slider="false" changePdp={this.changePdp} />
+		}
+
+		console.log('creators length');
+		console.log(this.state.creators.length);
+		if(this.state.creators.length !== 0){
+			console.log(`creators is a go`);
+			creators = <List url="creators" list={this.state.creators} slider="false" changePdp={this.changePdp} />
 		}
 
 		if(this.state.data.id !== undefined) {
@@ -311,6 +423,8 @@ export class PdpPage extends React.Component {
 							{issue}
 							{pageCount}
 							{urls}
+							<h2>Creators</h2>
+							{creators}
 						</div>
 					</div>
 

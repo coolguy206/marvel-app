@@ -35,6 +35,10 @@ export class List extends React.Component {
     if(baseURL == 'creators' || baseURL == 'stories'){
 		//console.log("pdp page creators");
         name = val.name;
+        // console.log(name);
+        if(name == undefined){
+          name = val.fullName;
+        }
 		//console.log(name);
 		href = val.resourceURI;
 		href = href.split('/');
@@ -42,6 +46,7 @@ export class List extends React.Component {
 		let id = href[hrefLength -1];
 		href = `/apps/marvel-comics#/${baseURL}/${id}`;
 		let role = val.role;
+    // console.log(role);
 		if(role !== undefined){
 			role = `- ` + role;
 		} else {
