@@ -44,10 +44,6 @@ body {
   flex-wrap: wrap;
 }
 
-.pdp div {
-  flex-basis: 50%;
-}
-
 @media screen and (max-width:414px) {
   .pdp div {
     flex-basis: 100%;

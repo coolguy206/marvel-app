@@ -4,14 +4,7 @@ import { List } from './List';
 import Image from './Image';
 import { List2 } from './List2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTag } from '@fortawesome/free-solid-svg-icons';
-import { faSquare } from '@fortawesome/free-regular-svg-icons';
-// import { faSquare } from '@fortawesome/free-solid-svg-icons';
-import { faCheckSquare } from '@fortawesome/free-solid-svg-icons';
-import { faHourglass } from '@fortawesome/free-solid-svg-icons';
-import { faUtensils } from '@fortawesome/free-solid-svg-icons';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
-import { faCarrot } from '@fortawesome/free-solid-svg-icons';
+
 
 export class PdpPage extends React.Component {
 
@@ -19,9 +12,15 @@ export class PdpPage extends React.Component {
 		super(props);
 		this.state = {
 			data: {},
+			characters: [],
+			comics: [],
+			events:[],
+			series:[],
+			stories:[]
 		};
 		this.handleClick = this.handleClick.bind(this);
 		this.changePdp = this.changePdp.bind(this);
+			this.getInfo = this.getInfo.bind(this);
 	}
 
 	componentDidMount() {
@@ -34,156 +33,145 @@ export class PdpPage extends React.Component {
 		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
 		fetch(dataURL).then(res => res.json()).then((results) => {
 			// console.log(results);
+			var data = results.data.results[0];
+			console.log(data);
 
 			this.setState({
-				data: results.data.results[0]
+				data: data
 			});
+
+			//get images
+			var characters = ``;
+			if(data.characters !== undefined){
+				characters = data.characters.items;
+				characters.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'characters');
+				});
+			}
+
+			var comics = ``;
+			if(data.comics !== undefined){
+				comics = data.comics.items;
+				comics.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'comics');
+				});
+			}
+
+			var events = ``;
+			if(data.events !== undefined){
+				events = data.events.items;
+				events.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'events');
+				});
+			}
+
+			var series = ``;
+			if(data.series !== undefined){
+				series = data.series.items;
+				if(series !== undefined){
+					series.map(function(val, i){
+						var id = val.resourceURI;
+						id = id.split('/')[6];
+						// console.log(id);
+						$this.getInfo(id, 'series');
+					});
+				}
+			}
+
+			var stories = ``;
+			if(data.stories !== undefined){
+				stories = data.stories.items;
+				stories.map(function(val, i){
+					var id = val.resourceURI;
+					id = id.split('/')[6];
+					// console.log(id);
+					$this.getInfo(id, 'stories');
+				});
+			}
 
 		}, (error) => {
 			console.log(error);
 		});
 	}
-	
-/*
-    if(cat !== 'characters' && cat !== 'creators'){
-      //characters data
-      let charactersURL = `${baseURL}/${id}/characters?apikey=${Api}`;
-      fetch(charactersURL)
-        .then(res => res.json()).then((results) => {
-          // console.log(results);
-
-          this.setState({
-              characters: results.data.results
-          });
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        }, (error) => {
-          console.log(error);
-      });
-    }
-
-
-    if(cat !== 'comics'){
-      // comics data
-      let comicsURL = `${baseURL}/${id}/comics?apikey=${Api} `;
-      fetch(comicsURL)
-        .then(res => res.json()).then((results) => {
-          // console.log(results);
-
-          this.setState({
-              comics: results.data.results
-          });
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        }, (error) => {
-          console.log(error);
-      });
-    }
-
-
-    if(cat !== 'events'){
-      // events data
-      let eventsURL = `${baseURL}/${id}/events?apikey=${Api} `;
-      fetch(eventsURL)
-        .then(res => res.json()).then((results) => {
-          // console.log(results.data.results);
-
-          this.setState({
-              events: results.data.results
-          });
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        }, (error) => {
-          console.log(error);
-      });
-    }
-
-
-    if(cat !== 'series' && cat !== 'comics'){
-      // series data
-      let seriesURL = `${baseURL}/${id}/series?apikey=${Api} `;
-      fetch(seriesURL)
-        .then(res => res.json()).then((results) => {
-          // console.log(results.data.results);
-
-          this.setState({
-              series: results.data.results
-          });
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        }, (error) => {
-          console.log(error);
-      });
-    }
-
-
-    if(cat !== 'stories'){
-      // stories data
-      let storiesURL = `${baseURL}/${id}/stories?apikey=${Api} `;
-      fetch(storiesURL)
-        .then(res => res.json()).then((results) => {
-          // console.log(results.data.results);
-
-          this.setState({
-              stories: results.data.results
-          });
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        }, (error) => {
-          console.log(error);
-      });
-    }
-
-
-    if(cat !== 'creators' && cat !== 'characters'){
-      // creators data
-      let creatorsURL = `${baseURL}/${id}/creators?apikey=${Api} `;
-      fetch(creatorsURL)
-        .then(res => res.json()).then((results) => {
-          // console.log(results.data.results);
-
-          this.setState({
-              creators: results.data.results
-          });
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        }, (error) => {
-          console.log(error);
-      });
-    }
-	
-*/
 
 
 	handleClick(e) {
 
 	}
- 
+
+	getInfo(infoId, infoCat){
+		let id  = infoId
+		let cat  = infoCat
+		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
+
+		fetch(dataURL).then(res => res.json()).then((results) => {
+			// console.log(`ajax from getInfo() pdpPage`);
+			// console.log(results);
+			var data = results.data.results[0];
+			var arr = ``;
+
+			if(infoCat == 'characters'){
+				arr = this.state.characters;
+				arr.push(data)
+				this.setState({
+					characters: arr,
+				});
+			} else if(infoCat == 'comics'){
+				arr = this.state.comics;
+				arr.push(data)
+				this.setState({
+					comics: arr,
+				});
+			} else if(infoCat == 'events'){
+				arr = this.state.events;
+				arr.push(data)
+				this.setState({
+					events: arr,
+				});
+			} else if(infoCat == 'series'){
+				arr = this.state.series;
+				arr.push(data)
+				this.setState({
+					series: arr,
+				});
+			} else if(infoCat == 'stories'){
+				arr = this.state.stories;
+				arr.push(data)
+				this.setState({
+					stories: arr,
+				});
+			}
+
+
+
+		}, (error) => {
+			console.log(error);
+		});
+	}
+
 
 	changePdp(e){
 		console.log(`pdp changePdp`);
 		//console.log(e);
-		//console.log(e.target);
-		
+		console.log(e.target);
+
 		let url = e.target.href;
 		let urlArr = url.split('/');
 		let cat = urlArr[urlArr.length - 2];
 		let id = urlArr[urlArr.length -1];
 		//console.log(url, urlArr, cat, id);
-		
-		
+
+
 		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
 
 		// on page load data
@@ -202,8 +190,9 @@ export class PdpPage extends React.Component {
 
 
 	render() {
-	 
-		console.log(this.state.data);
+
+		console.log(this.state);
+
 		let img =``;
 		let data = ``;
 		let title = ``;
@@ -211,56 +200,85 @@ export class PdpPage extends React.Component {
 		let pageCount = ``;
 		let issue =``;
 		let urls =``;
-		
+		let characters = ``;
 		let comics = ``;
-		let comicsList = ``;
-		
 		let events = ``;
-		let eventsList = ``;
-	
 		let stories = ``;
-		let storiesList = ``;
-	
 		let series = ``;
-		let seriesList = ``;
-	
 		let creators = ``;
-		let creatorsList = ``;
-	
 		let li = ``;
-	
-	
+
+		console.log('characters length');
+		console.log(this.state.characters.length);
+		if(this.state.characters.length !== 0 && this.state.characters.length > 5){
+			console.log(`characters is a go`);
+			characters = <List url="characters" list={this.state.characters} slider="true" changePdp={this.changePdp} />
+		} else if(this.state.characters.length !== 0 && this.state.characters.length < 5) {
+			console.log(`characters is a go`);
+			characters = <List url="characters" list={this.state.characters} slider="false" changePdp={this.changePdp} />
+		}
+
+		console.log('comics length');
+		console.log(this.state.comics.length);
+		if(this.state.comics.length !== 0 && this.state.comics.length > 5){
+			console.log(`comics is a go`);
+			comics = <List url="comics" list={this.state.comics} slider="true" changePdp={this.changePdp} />
+		} else if(this.state.comics.length !== 0 && this.state.comics.length < 5){
+			console.log(`comics is a go`);
+			comics = <List url="comics" list={this.state.comics} slider="false" changePdp={this.changePdp} />
+		}
+
+		console.log('events length');
+		console.log(this.state.events.length);
+		if(this.state.events.length !== 0 && this.state.events.length > 5){
+			console.log(`events is a go`);
+			events = <List url="events" list={this.state.events} slider="true" changePdp={this.changePdp} />
+		} else if(this.state.events.length !== 0 && this.state.events.length < 5){
+			console.log(`events is a go`);
+			events = <List url="events" list={this.state.events} slider="false" changePdp={this.changePdp} />
+		}
+
+		console.log('series length');
+		console.log(this.state.series.length);
+		if(this.state.series.length !== 0 && this.state.series.length > 5){
+			console.log(`series is a go`);
+			series = <List url="series" list={this.state.series} slider="true" changePdp={this.changePdp} />
+		} else if(this.state.series.length !== 0 && this.state.series.length < 5){
+			console.log(`series is a go`);
+			series = <List url="series" list={this.state.series} slider="false" changePdp={this.changePdp} />
+		}
+
 		if(this.state.data.id !== undefined) {
 			//console.log('empty data');
-	
+
 			let cat  = this.props.match.params.Category;
 			// console.log(cat);
-	
+
 			data = this.state.data;
-	
+
 			title =  data.title;
 			if(title == undefined) {
 				title = data.name;
 			}
-	
+
 			desc =  data.description;
 			if (desc !== null) {
 				desc = <p dangerouslySetInnerHTML={{ __html: desc }} />
 			}
-	
+
 			if(data.pageCount !== undefined){
 				pageCount = <p>Pages: {data.pageCount}</p>;
 			}
-			
+
 			if(data.issueNumber !== undefined){
 				issue = <p>Issue # {data.issueNumber}</p>;
 			}
-	
-	
+
+
 			img = <Image name={data.title} href={data.thumbnail.path} ext={data.thumbnail.extension} size='portrait'  />
-	
+
 			urls = data.urls;
-	
+
 			if(urls.length == 1){
 				urls = <a href={data.urls[0].url} target="_blank">learn more</a>
 			} else {
@@ -271,86 +289,47 @@ export class PdpPage extends React.Component {
 				});
 				urls = <ul>{li}</ul>
 			}
-	
-			if(data.creators !== undefined){
-			creators = <h2>creators</h2>
-				creatorsList = <List url="creators" list={data.creators.items} slider="false" changePdp={this.changePdp} />
-			}
-			
-			if(data.comics !== undefined){
-				comics = <h2>comics</h2>
-				comicsList = <List url="comics" list={data.comics.items} slider="false" changePdp={this.changePdp} />
-			}
-			
-			if(data.events !== undefined && data.events.length > 0){
-				events = <h2>events</h2>
-				eventsList = <List url="events" list={data.events.items} slider="false" changePdp={this.changePdp} />
-			}
-	
-	
-	
-			stories = <h2>Stories</h2>
-			storiesList = <ul><List url="stories" list={data.stories.items} slider="false" changePdp={this.changePdp} /></ul>
-			
-			
-			if(data.series == undefined){
-				console.log('pdp no series');
-			}
-			else if(data.series.available == 0){
-				console.log('pdp series do nothing');
-			} else if(data.series.available == 1 || data.series.available == undefined){
-				//console.log('pdp 1 series');
-				let seriesHref = data.series.resourceURI;
-				seriesHref = seriesHref.split('/');
-				let seriesHrefLength = seriesHref.length;
-				let seriesId = seriesHref[seriesHrefLength -1];
-				seriesHref = `/apps/marvel-comics#/series/${seriesId}`;
-				series = <h2>series</h2>
-				seriesList = <a href={seriesHref} onClick={this.changePdp}>{data.series.name}</a>
-			
-			} else {
-				series = <h2>series</h2>
-				seriesList = <List url="series" list={data.series.items} slider="false" changePdp={this.changePdp} />
-			}
-	
-			document.getElementsByClassName('loading')[0].style.display = 'none';
-			var pdpPage = document.getElementsByClassName('pdp');
-			pdpPage[0].style.display = 'flex';
 
+			document.getElementsByClassName('loading')[0].style.display = 'none';
+
+			var pdpPage = document.getElementsByClassName('pdp');
+			pdpPage[0].style.display = 'block';
 
 		} // end of if
-	
+
 
 		return (
 			<React.Fragment>
 				<div className="pdp">
-		  
+
 					<div className="first">
 						<h1 className="mobile">{title}</h1>
 						{img}
+						<div>
+							<h1 className="desktop">{title}</h1>
+							{desc}
+							{issue}
+							{pageCount}
+							{urls}
+						</div>
 					</div>
-			
+
 					<div className="second">
-						<h1 className="desktop">{title}</h1>
-						{desc}
-						{issue}
-						{pageCount}
-						{urls}
-						
+
+						<h2>characters</h2>
+						{characters}
+
+						<h2>comics</h2>
 						{comics}
-						{comicsList}
-						
+
+						<h2>events</h2>
 						{events}
-						{eventsList}
-						
+
+						<h2>series</h2>
 						{series}
-						{seriesList}
-						
-						{creators}
-						{creatorsList}
-					
+
 					</div>
-			
+
 				</div>
 			</React.Fragment>
 		);
