@@ -17,51 +17,150 @@ export class HomePage extends React.Component {
 
     };
     this.hover = this.hover.bind(this);
+    this.setStorage = this.setStorage.bind(this);
+    this.makeStorage = this.makeStorage.bind(this);
+  }
+
+  setStorage(str){
+    console.log(`set local storage`);
+    var data = localStorage.getItem(str);
+    data = JSON.parse(data);
+    //console.log(data);
+    return data;
+  }
+
+  makeStorage(theUrl, var1, str1){
+    fetch(theUrl).then(res => res.json()).then((results) => {
+        // console.log('from homePage after ajax comics');
+        // console.log(results);
+        var1 = {data: results.data.results, offset: results.data.limit}
+        // console.log(comics);
+        var1 = JSON.stringify(var1);
+        localStorage.setItem(str1, var1);
+
+        // this.setState({
+        //     comics: results.data.results
+        // });
+
+        // console.log(this.state);
+    }, (error) => {
+        console.log(error);
+    })
   }
 
   componentDidMount() {
 
-    var offset = Math.floor(Math.random() * 900);
+    var localStorageComics = window.localStorage.getItem("comics");
+    // console.log('HomePage.js componentDidMount');
+    // console.log(localStorageComics);
+
+    var comics = {};
+    var characters = {};
+    var events = {};
+    var series = {};
+
     let baseURL = `http://gateway.marvel.com/v1/public/`;
 
-    let comicsUrl = `${baseURL}comics?apikey=${Api}&offset=${offset}`;
-    fetch(comicsUrl)
-      .then(res => res.json()).then((results) => {
-        // console.log('from homePage after ajax comics');
-        // console.log(results);
+    if(localStorageComics == null){
+      // var offset = Math.floor(Math.random() * 900);
 
-        this.setState({
-            comics: results.data.results
-        });
+      let comicsUrl = `${baseURL}comics?apikey=${Api}`;
+      this.makeStorage(comicsUrl, comics, "comics");
+      /*
+      fetch(comicsUrl).then(res => res.json()).then((results) => {
+          // console.log('from homePage after ajax comics');
+          // console.log(results);
+          comics = {data: results.data.results, offset: results.data.limit}
+          // console.log(comics);
+          comics = JSON.stringify(comics);
+          localStorage.setItem("comics", comics);
 
-        // document.getElementsByClassName('loading')[0].style.display = 'none';
-        // document.getElementsByClassName('hp')[0].style.display = 'flex';
+          this.setState({
+              comics: results.data.results
+          });
 
-        // console.log(this.state);
-        }, (error) => {
-            console.log(error);
-        }
-    )
+          // console.log(this.state);
+      }, (error) => {
+          console.log(error);
+      })
+      */
+    } else {
+      // console.log(`local storage not empty`);
+      // comics = localStorage.getItem("comics");
+      // comics = JSON.parse(comics);
+      // console.log(comics);
+
+      comics = this.setStorage('comics');
+
+      this.setState({
+          comics: comics.data
+      });
+    }
+
+      let charactersUrl = `${baseURL}characters?apikey=${Api}`;
+      fetch(charactersUrl)
+        .then(res => res.json()).then((results) => {
+          console.log('from homePage after ajax characters');
+          console.log(results);
+
+          characters = {data: results.data.results, offset: results.data.limit}
+
+          console.log(characters);
+
+          this.setState({
+              characters: results.data.results
+          });
+
+          // console.log(this.state);
+          }, (error) => {
+              console.log(error);
+          }
+      )
 
 
-    let charactersUrl = `${baseURL}characters?apikey=${Api}&offset=${offset}`;
-    fetch(charactersUrl)
-      .then(res => res.json()).then((results) => {
-        // console.log('from homePage after ajax characters');
-        // console.log(results);
+      let eventsUrl = `${baseURL}events?apikey=${Api}`;
+      fetch(eventsUrl)
+        .then(res => res.json()).then((results) => {
+          console.log('from homePage after ajax events');
+          console.log(results);
 
-        this.setState({
-            characters: results.data.results
-        });
+          events = {data: results.data.results, offset: results.data.limit}
 
-        // document.getElementsByClassName('loading')[0].style.display = 'none';
-        // document.getElementsByClassName('hp')[0].style.display = 'flex';
+          console.log(events);
 
-        // console.log(this.state);
-        }, (error) => {
-            console.log(error);
-        }
-    )
+          this.setState({
+              events: results.data.results
+          });
+
+          // console.log(this.state);
+          }, (error) => {
+              console.log(error);
+          }
+      )
+
+      let seriesUrl = `${baseURL}series?apikey=${Api}`;
+      fetch(seriesUrl)
+        .then(res => res.json()).then((results) => {
+          console.log('from homePage after ajax series');
+          console.log(results);
+
+          series = {data: results.data.results, offset: results.data.limit}
+
+          console.log(series);
+
+          this.setState({
+              series: results.data.results
+          });
+
+
+          // console.log(this.state);
+          }, (error) => {
+              console.log(error);
+          }
+      )
+
+
+
 
     // let creatorsUrl = `${baseURL}creators?apikey=${Api}&offset=${offset}`;
     // fetch(creatorsUrl)
@@ -82,43 +181,6 @@ export class HomePage extends React.Component {
     //     }
     // )
 
-    let eventsUrl = `${baseURL}events?apikey=${Api}`;
-    fetch(eventsUrl)
-      .then(res => res.json()).then((results) => {
-        // console.log('from homePage after ajax events');
-        // console.log(results);
-
-        this.setState({
-            events: results.data.results
-        });
-
-        // document.getElementsByClassName('loading')[0].style.display = 'none';
-        // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        // console.log(this.state);
-        }, (error) => {
-            console.log(error);
-        }
-    )
-
-    let seriesUrl = `${baseURL}series?apikey=${Api}&offset=${offset}`;
-    fetch(seriesUrl)
-      .then(res => res.json()).then((results) => {
-        // console.log('from homePage after ajax series');
-        // console.log(results);
-
-        this.setState({
-            series: results.data.results
-        });
-
-        // document.getElementsByClassName('loading')[0].style.display = 'none';
-        // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-        // console.log(this.state);
-        }, (error) => {
-            console.log(error);
-        }
-    )
 
     // let storiesUrl = `${baseURL}stories?apikey=${Api}&offset=${offset}`;
     // fetch(storiesUrl)
@@ -161,7 +223,7 @@ export class HomePage extends React.Component {
 		comic1 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="true" number="0" title={comic1Title} />
 
 		comic2 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="false" number="10" title="comics" />
-  
+
     }
 
 
