@@ -1,6 +1,5 @@
 import React from 'react';
 import { HomePage } from './HomePage';
-import { Api } from './Api';
 import {LandingPage} from './LandingPage';
 import {PdpPage} from './PdpPage';
 import {SearchPage} from './SearchPage';
@@ -158,11 +157,11 @@ export class Header extends React.Component {
     // console.log('expand function');
     // console.log(e.target);
     var nav = ``;
-    if(e.target.nodeName == 'svg'){
+    if(e.target.nodeName === 'svg'){
       // console.log('it is a svg');
       nav = e.target.nextSibling.nextSibling.nextSibling;
       // console.log(nav);
-    } else if(e.target.nodeName == 'path') {
+    } else if(e.target.nodeName === 'path') {
       // console.log('it is a path');
       nav = e.target.parentNode.nextSibling.nextSibling.nextSibling;
       // console.log(nav);
@@ -175,12 +174,12 @@ export class Header extends React.Component {
   close(e){
     // console.log(e.target);
     var nav = ``;
-    if(e.target.nodeName == 'svg'){
+    if(e.target.nodeName === 'svg'){
       // console.log('it is a svg');
       nav = e.target.parentNode;
       // console.log(nav);
       // nav.classList.add("expand");
-    } else if(e.target.nodeName == 'path') {
+    } else if(e.target.nodeName === 'path') {
       // console.log('it is a path');
       nav = e.target.parentNode.parentNode;
       // console.log(nav);
