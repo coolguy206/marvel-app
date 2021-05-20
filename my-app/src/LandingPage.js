@@ -10,19 +10,62 @@ export class LandingPage extends React.Component {
     super(props);
     this.state = {
       offset: 20,
+      data: []
     };
     this.hover = this.hover.bind(this);
     this.getMore = this.getMore.bind(this);
-    // this.changeLanding = this.changeLanding.bind(this);
+    this.setStorage = this.setStorage.bind(this);
+  }
+
+  setStorage(str){
+    //console.log(`set local storage`);
+    var data = localStorage.getItem(str);
+    data = JSON.parse(data);
+    //console.log(data);
+    return data;
   }
 
   componentDidMount() {
-
+    var localStorageComics = window.localStorage.getItem("comics");
+    var localStorageCharacters = window.localStorage.getItem("characters");
+    var localStorageEvents = window.localStorage.getItem("events");
+    var localStorageSeries = window.localStorage.getItem("series");
+    var localStorageCreators = window.localStorage.getItem("creators");
+    var localStorageStories = window.localStorage.getItem("stories");
     // var offset = Math.floor(Math.random() * 900);
     let cat  = this.props.match.params.Category;
-    let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+    let baseURL = `http://gateway.marvel.com/v1/public/${cat}?apikey=${Api}`;
+    var theData = ``;
+    switch(cat){
+      case 'comics':
+        if(localStorageComics == null){
+          console.log(`landingPage.js local storage null`);
+          fetch(baseURL).then(res => res.json()).then((results) => {
+            console.log('from landing page after ajax');
+            //console.log(results);
+            // var offset = this.state.offset + results.data.offset;
+            // console.log(typeof offset);
+            theData = {data: results.data.results, offset: results.data.limit}
+            theData = JSON.stringify(theData);
+            localStorage.setItem("comics", theData);
+            this.setState({
+                data: results.data.results,
+                offset: results.data.limit
+            });
+          }, (error) => {
+            console.log(error);
+          });
+        } else {
+          console.log(`landingPage.js local storage not null`);
+          theData = this.setStorage('comics');
+          this.setState({
+              data: theData.data
+          });
+        }
+        break;
+    }
 
-    let url = ``;
+    //let url = ``;
     // if(cat !== 'stories'){
     //   if(cat !== 'events'){
     //     url = `${baseURL}?apikey=${Api}&offset=${offset}`;
@@ -30,8 +73,8 @@ export class LandingPage extends React.Component {
     //     url = `${baseURL}?apikey=${Api}`;
     //   }
 
-    url = `${baseURL}?apikey=${Api}`
-
+    //url = `${baseURL}`
+/*
       fetch(url)
         .then(res => res.json()).then((results) => {
           console.log('from landing page after ajax');
@@ -53,7 +96,7 @@ export class LandingPage extends React.Component {
       });
 
     // }
-
+*/
   }
 /*
   changeLanding(e){
@@ -86,56 +129,54 @@ export class LandingPage extends React.Component {
 */
   getMore(e){
     console.log(`getMore function`);
-    console.log(e.target);
-
+    //console.log(e.target);
     var theButton = e.target;
     theButton.style.display = 'none';
-
     var theLoading = e.target.nextSibling;
     theLoading.style.display = 'block';
-
     var offset = this.state.offset;
     let cat  = this.props.match.params.Category;
-    let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+    let baseURL = `http://gateway.marvel.com/v1/public/${cat}?apikey=${Api}&offset=${offset}`;
 
-    let url = ``;
+    var localStorageComics = window.localStorage.getItem("comics");
+    var localStorageCharacters = window.localStorage.getItem("characters");
+    var localStorageEvents = window.localStorage.getItem("events");
+    var localStorageSeries = window.localStorage.getItem("series");
+    var localStorageCreators = window.localStorage.getItem("creators");
+    var localStorageStories = window.localStorage.getItem("stories");
 
-    url = `${baseURL}?apikey=${Api}&offset=${offset}`;
+    fetch(baseURL).then(res => res.json()).then((results) => {
+      // console.log('ajax from button click landing page');
+      // console.log(results);
 
-      fetch(url)
-        .then(res => res.json()).then((results) => {
-          // console.log('ajax from button click landing page');
-          // console.log(results);
-
-          var offset = this.state.offset + results.data.offset;
-          // console.log(offset);
-
-          var data = this.state.data;
-          // console.log(data);
-
-          var ajaxData = results.data.results;
-          ajaxData.map(function(val,i){
-            data.push(val);
-          })
-
-          console.log(data);
-
-          this.setState({
-              data: data,
-              offset: offset
-          });
-
-          theButton.style.display = 'block';
-          theLoading.style.display = 'none';
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-          // console.log(this.state);
-          }, (error) => {
-              console.log(error);
+      var theData = this.setStorage('comics');
+      var ajaxData = results.data.results;
+      ajaxData.map(function(val,i){
+        theData.data.push(val);
       });
 
+      var x = theData.data;
+      x.forEach(function(val, i){
+        console.log(val.title);
+      });
+
+      theData.offset = theData.offset + results.data.offset;
+      // console.log(`theData`);
+      // console.log(theData);
+      var theData2 = JSON.stringify(theData);
+      localStorage.setItem("comics", theData2);
+      // this.setState({
+      //     data: theData.data,
+      //     offset: theData.offset
+      // });
+
+      theButton.style.display = 'block';
+      theLoading.style.display = 'none';
+
+      // console.log(this.state);
+    }, (error) => {
+      console.log(error);
+    });
   }
 
   hover(e){
@@ -157,7 +198,7 @@ export class LandingPage extends React.Component {
         let id = val.id;
         let href = `/apps/marvel-comics#/${cat}/${id}`;
         let name = val.name;
-        console.log(name);
+        //console.log(name);
         if(name == undefined){
           name = val.title;
         }
