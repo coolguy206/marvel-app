@@ -2,7 +2,8 @@ import React from 'react';
 import { Api } from './Api';
 import { List } from './List';
 import MakeFeatured from './MakeFeatured';
-
+import { setStorage } from './SetStorage';
+import { Fetch } from './Fetch';
 
 export class HomePage extends React.Component {
 
@@ -14,15 +15,12 @@ export class HomePage extends React.Component {
       events:[],
       series:[],
     };
-    this.setStorage = this.setStorage.bind(this);
+    this.x = this.x.bind(this);
   }
 
-  setStorage(str){
-    //console.log(`set local storage`);
-    var data = localStorage.getItem(str);
-    data = JSON.parse(data);
-    //console.log(data);
-    return data;
+  x(y){
+    console.log('from x');
+    console.log(y);
   }
 
   componentDidMount() {
@@ -48,6 +46,11 @@ export class HomePage extends React.Component {
     if(localStorageComics == null){
       // var offset = Math.floor(Math.random() * 900);
       let comicsUrl = `${baseURL}comics?apikey=${Api}`;
+      Fetch(comicsUrl, "comics").then((results) => {
+        this.setState({ comics: results.data.results});
+      });
+
+      /*
       fetch(comicsUrl).then(res => res.json()).then((results) => {
           // console.log('from homePage after ajax comics');
           // console.log(results);
@@ -62,8 +65,10 @@ export class HomePage extends React.Component {
       }, (error) => {
           console.log(error);
       });
+      */
     } else {
-      comics = this.setStorage('comics');
+      // comics = this.setStorage('comics');
+      comics = setStorage('comics');
       this.setState({
           comics: comics.data
       });
@@ -71,6 +76,10 @@ export class HomePage extends React.Component {
 
     if(localStorageCharacters == null){
       let charactersUrl = `${baseURL}characters?apikey=${Api}`;
+      Fetch(charactersUrl, "characters").then((results) => {
+        this.setState({ characters: results.data.results});
+      });
+      /*
       fetch(charactersUrl).then(res => res.json()).then((results) => {
         // console.log('from homePage after ajax characters');
         // console.log(results);
@@ -85,8 +94,9 @@ export class HomePage extends React.Component {
       }, (error) => {
         console.log(error);
       });
+      */
     } else {
-      characters = this.setStorage('characters');
+      characters = setStorage('characters');
       this.setState({
           characters: characters.data
       });
@@ -94,6 +104,10 @@ export class HomePage extends React.Component {
 
     if(localStorageEvents == null){
       let eventsUrl = `${baseURL}events?apikey=${Api}`;
+      Fetch(eventsUrl, "events").then((results) => {
+        this.setState({ events: results.data.results});
+      });
+      /*
       fetch(eventsUrl).then(res => res.json()).then((results) => {
         // console.log('from homePage after ajax events');
         // console.log(results);
@@ -108,8 +122,9 @@ export class HomePage extends React.Component {
       }, (error) => {
           console.log(error);
       });
+      */
     } else {
-      events = this.setStorage('events');
+      events = setStorage('events');
       this.setState({
           events: events.data
       });
@@ -117,6 +132,10 @@ export class HomePage extends React.Component {
 
     if(localStorageSeries == null){
       let seriesUrl = `${baseURL}series?apikey=${Api}`;
+      Fetch(seriesUrl, "series").then((results) => {
+        this.setState({ series: results.data.results});
+      });
+      /*
       fetch(seriesUrl).then(res => res.json()).then((results) => {
         // console.log('from homePage after ajax series');
         // console.log(results);
@@ -131,17 +150,18 @@ export class HomePage extends React.Component {
       }, (error) => {
           console.log(error);
       });
+      */
     } else {
-      series = this.setStorage('series');
+      series = setStorage('series');
       this.setState({
           series: series.data
       });
     }
 
-
-
     if(localStorageCreators == null){
       let creatorsUrl = `${baseURL}creators?apikey=${Api}`;
+      Fetch(creatorsUrl, "creators");
+      /*
       fetch(creatorsUrl).then(res => res.json()).then((results) => {
         // console.log('from homePage after ajax creators');
         // console.log(results);
@@ -155,15 +175,16 @@ export class HomePage extends React.Component {
       }, (error) => {
         console.log(error);
       });
+      */
     } else {
-      creators = this.setStorage('creators');
-      // this.setState({
-      //     series: series.data
-      // });
+      creators = setStorage('creators');
+
     }
 
     if(localStorageStories == null){
       let storiesUrl = `${baseURL}stories?apikey=${Api}`;
+      Fetch(storiesUrl, "stories");
+      /*
       fetch(storiesUrl).then(res => res.json()).then((results) => {
         // console.log('from homePage after ajax stories');
         // console.log(results);
@@ -177,28 +198,28 @@ export class HomePage extends React.Component {
       }, (error) => {
         console.log(error);
       });
+      */
     } else {
-      stories = this.setStorage('stories');
-      // this.setState({
-      //     series: series.data
-      // });
+      stories = setStorage('stories');
+
     }
 
   }
 
   render() {
-	// console.log(this.state);
+	console.log(this.state);
     var comicsArr = this.state.comics;
     var comicsLength = comicsArr.length;
     var comic1 = ``;
 	var comic2 = ``;
-	
+
 	var randomNum = Math.floor(Math.random() * Math.floor(20));
 	//var randomNum = Math.floor(Math.random() * Math.floor(20));
 	//console.log(`random numbers`);
 	//console.log(randomNum);
 
-    if(comicsLength === 20){
+    console.log(comicsLength);
+    if(comicsLength >= 20){
 		var comic1Title = comicsArr[randomNum].title;
 		// console.log(comic1Title);
 		comic1 = <MakeFeatured arr={comicsArr} url="/apps/marvel-comics#/comics/" id="true" number={randomNum} title={comic1Title} />
@@ -208,8 +229,8 @@ export class HomePage extends React.Component {
 	var charactersArr = this.state.characters;
     var charactersLength = charactersArr.length;
     var character = '';
-	
-    if(charactersLength === 20){
+
+    if(charactersLength >= 20){
 		character = <MakeFeatured arr={charactersArr} url="/apps/marvel-comics#/characters/" id="false" number={randomNum} title="characters" />
     }
 
@@ -217,7 +238,7 @@ export class HomePage extends React.Component {
     var seriesLength = seriesArr.length;
     var series = '';
 
-    if(seriesLength === 20){
+    if(seriesLength >= 20){
 		series = <MakeFeatured arr={seriesArr} url="/apps/marvel-comics#/series/" id="false" number={randomNum} title="series" />
     }
 
@@ -225,12 +246,12 @@ export class HomePage extends React.Component {
     var eventsLength = eventsArr.length;
     var event = '';
 
-    if(eventsLength === 20){
+    if(eventsLength >= 20){
 		event = <MakeFeatured arr={eventsArr} url="/apps/marvel-comics#/events/" id="false" number={randomNum} title="events" />
     }
 
     let comics = ``;
-    if(comicsLength === 20){
+    if(comicsLength >= 20){
 		comics =  <List url='comics' list={this.state.comics} slider='true'/>
     }
 
@@ -259,7 +280,7 @@ export class HomePage extends React.Component {
     //   authors =  <List url='authors' list={this.state.authors} />
     // }
 
-	if(comicsLength === 20 && charactersLength === 20 && seriesLength === 20 && eventsLength === 20) {
+	if(comicsLength >= 20 && charactersLength >= 20 && seriesLength >= 20 && eventsLength >= 20) {
 		document.getElementsByClassName('loading')[0].style.display = 'none';
 		var hps = document.getElementsByClassName('hp');
 		//console.log(hps);

@@ -3,6 +3,7 @@ import { Api } from './Api';
 import Image from './Image';
 import { List } from './List';
 import {Loading} from './Loading';
+import { setStorage } from './SetStorage';
 
 export class LandingPage extends React.Component {
 
@@ -14,15 +15,6 @@ export class LandingPage extends React.Component {
     };
     this.hover = this.hover.bind(this);
     this.getMore = this.getMore.bind(this);
-    this.setStorage = this.setStorage.bind(this);
-  }
-
-  setStorage(str){
-    //console.log(`set local storage`);
-    var data = localStorage.getItem(str);
-    data = JSON.parse(data);
-    //console.log(data);
-    return data;
   }
 
   componentDidMount() {
@@ -57,9 +49,10 @@ export class LandingPage extends React.Component {
           });
         } else {
           console.log(`landingPage.js local storage not null`);
-          theData = this.setStorage('comics');
+          theData = setStorage('comics');
           this.setState({
-              data: theData.data
+              data: theData.data,
+              offset: theData.offset
           });
         }
         break;
@@ -147,7 +140,7 @@ export class LandingPage extends React.Component {
 
     fetch(baseURL).then(res => res.json()).then((results) => {
       // console.log('ajax from button click landing page');
-      // console.log(results);
+      console.log(results);
 
       var theData = this.setStorage('comics');
       var ajaxData = results.data.results;
@@ -155,20 +148,28 @@ export class LandingPage extends React.Component {
         theData.data.push(val);
       });
 
-      var x = theData.data;
-      x.forEach(function(val, i){
-        console.log(val.title);
-      });
+      console.log('before');
+      console.log(theData);
+      theData.data = Array.from(new Set(theData.data.map(a => a.id))).map(id => {
+        return theData.data.find(a => a.id === id)
+      })
+      console.log('after');
+      console.log(theData);
+
+      // var x = theData.data;
+      // x.forEach(function(val, i){
+      //   console.log(val.title);
+      // });
 
       theData.offset = theData.offset + results.data.offset;
       // console.log(`theData`);
       // console.log(theData);
       var theData2 = JSON.stringify(theData);
       localStorage.setItem("comics", theData2);
-      // this.setState({
-      //     data: theData.data,
-      //     offset: theData.offset
-      // });
+      this.setState({
+          data: theData.data,
+          offset: theData.offset
+      });
 
       theButton.style.display = 'block';
       theLoading.style.display = 'none';
