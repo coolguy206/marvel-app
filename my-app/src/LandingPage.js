@@ -1,9 +1,11 @@
 import React from 'react';
 import { Api } from './Api';
 import Image from './Image';
-import { List } from './List';
+// import { List } from './List';
 import {Loading} from './Loading';
 import { setStorage } from './SetStorage';
+import { Fetch } from './Fetch';
+import { RemoveDuplicates } from './RemoveDuplicates';
 
 export class LandingPage extends React.Component {
 
@@ -13,7 +15,6 @@ export class LandingPage extends React.Component {
       offset: 20,
       data: []
     };
-    this.hover = this.hover.bind(this);
     this.getMore = this.getMore.bind(this);
   }
 
@@ -31,24 +32,15 @@ export class LandingPage extends React.Component {
     switch(cat){
       case 'comics':
         if(localStorageComics == null){
-          console.log(`landingPage.js local storage null`);
-          fetch(baseURL).then(res => res.json()).then((results) => {
-            console.log('from landing page after ajax');
-            //console.log(results);
-            // var offset = this.state.offset + results.data.offset;
-            // console.log(typeof offset);
-            theData = {data: results.data.results, offset: results.data.limit}
-            theData = JSON.stringify(theData);
-            localStorage.setItem("comics", theData);
+          // console.log(`landingPage.js local storage null`);
+          Fetch(baseURL, 'comics').then((results) => {
             this.setState({
-                data: results.data.results,
-                offset: results.data.limit
+              data: results.data.results,
+              offset: results.data.limit
             });
-          }, (error) => {
-            console.log(error);
           });
         } else {
-          console.log(`landingPage.js local storage not null`);
+          // console.log(`landingPage.js local storage not null`);
           theData = setStorage('comics');
           this.setState({
               data: theData.data,
@@ -56,40 +48,97 @@ export class LandingPage extends React.Component {
           });
         }
         break;
-    }
-
-    //let url = ``;
-    // if(cat !== 'stories'){
-    //   if(cat !== 'events'){
-    //     url = `${baseURL}?apikey=${Api}&offset=${offset}`;
-    //   } else {
-    //     url = `${baseURL}?apikey=${Api}`;
-    //   }
-
-    //url = `${baseURL}`
-/*
-      fetch(url)
-        .then(res => res.json()).then((results) => {
-          console.log('from landing page after ajax');
-          console.log(results);
-
-          var offset = this.state.offset + results.data.offset;
-          console.log(typeof offset);
-
-          this.setState({
+      case 'characters':
+        if(localStorageCharacters == null){
+          // console.log(`landingPage.js local storage null`);
+          Fetch(baseURL, 'characters').then((results) => {
+            this.setState({
               data: results.data.results,
+              offset: results.data.limit
+            });
           });
-
-          // document.getElementsByClassName('loading')[0].style.display = 'none';
-          // document.getElementsByClassName('hp')[0].style.display = 'flex';
-
-          // console.log(this.state);
-          }, (error) => {
-              console.log(error);
-      });
-
-    // }
-*/
+        } else {
+          // console.log(`landingPage.js local storage not null`);
+          theData = setStorage('characters');
+          this.setState({
+              data: theData.data,
+              offset: theData.offset
+          });
+        }
+        break;
+      case 'events':
+        if(localStorageEvents == null){
+          // console.log(`landingPage.js local storage null`);
+          Fetch(baseURL, 'events').then((results) => {
+            this.setState({
+              data: results.data.results,
+              offset: results.data.limit
+            });
+          });
+        } else {
+          // console.log(`landingPage.js local storage not null`);
+          theData = setStorage('events');
+          this.setState({
+              data: theData.data,
+              offset: theData.offset
+          });
+        }
+        break;
+      case 'series':
+        if(localStorageSeries == null){
+          // console.log(`landingPage.js local storage null`);
+          Fetch(baseURL, 'series').then((results) => {
+            this.setState({
+              data: results.data.results,
+              offset: results.data.limit
+            });
+          });
+        } else {
+          // console.log(`landingPage.js local storage not null`);
+          theData = setStorage('series');
+          this.setState({
+            data: theData.data,
+            offset: theData.offset
+          });
+        }
+        break;
+      case 'stories':
+        if(localStorageStories == null){
+          // console.log(`landingPage.js local storage null`);
+          Fetch(baseURL, 'stories').then((results) => {
+            this.setState({
+              data: results.data.results,
+              offset: results.data.limit
+            });
+          });
+        } else {
+          // console.log(`landingPage.js local storage not null`);
+          theData = setStorage('stories');
+          this.setState({
+            data: theData.data,
+            offset: theData.offset
+          });
+        }
+        break;
+      case 'creators':
+        if(localStorageCreators == null){
+          // console.log(`landingPage.js local storage null`);
+          Fetch(baseURL, 'creators').then((results) => {
+            this.setState({
+              data: results.data.results,
+              offset: results.data.limit
+            });
+          });
+        } else {
+          // console.log(`landingPage.js local storage not null`);
+          theData = setStorage('creators');
+          this.setState({
+            data: theData.data,
+            offset: theData.offset
+          });
+        }
+        break;
+    }
   }
 /*
   changeLanding(e){
@@ -131,41 +180,68 @@ export class LandingPage extends React.Component {
     let cat  = this.props.match.params.Category;
     let baseURL = `http://gateway.marvel.com/v1/public/${cat}?apikey=${Api}&offset=${offset}`;
 
-    var localStorageComics = window.localStorage.getItem("comics");
-    var localStorageCharacters = window.localStorage.getItem("characters");
-    var localStorageEvents = window.localStorage.getItem("events");
-    var localStorageSeries = window.localStorage.getItem("series");
-    var localStorageCreators = window.localStorage.getItem("creators");
-    var localStorageStories = window.localStorage.getItem("stories");
+    // var localStorageComics = window.localStorage.getItem("comics");
+    // var localStorageCharacters = window.localStorage.getItem("characters");
+    // var localStorageEvents = window.localStorage.getItem("events");
+    // var localStorageSeries = window.localStorage.getItem("series");
+    // var localStorageCreators = window.localStorage.getItem("creators");
+    // var localStorageStories = window.localStorage.getItem("stories");
 
     fetch(baseURL).then(res => res.json()).then((results) => {
       // console.log('ajax from button click landing page');
       console.log(results);
 
-      var theData = this.setStorage('comics');
+      var theData = ``;
+      switch(cat){
+        case "comics":
+          theData = setStorage('comics');
+          break;
+        case "characters":
+          theData = setStorage('characters');
+          break;
+        case "events":
+          theData = setStorage('events');
+          break;
+        case "series":
+          theData = setStorage('series');
+          break;
+        case "creators":
+          theData = setStorage('creators');
+          break;
+        case "stories":
+          theData = setStorage('stories');
+          break;
+      }
+
       var ajaxData = results.data.results;
-      ajaxData.map(function(val,i){
-        theData.data.push(val);
-      });
-
-      console.log('before');
-      console.log(theData);
-      theData.data = Array.from(new Set(theData.data.map(a => a.id))).map(id => {
-        return theData.data.find(a => a.id === id)
-      })
-      console.log('after');
-      console.log(theData);
-
-      // var x = theData.data;
-      // x.forEach(function(val, i){
-      //   console.log(val.title);
-      // });
+      theData = RemoveDuplicates(ajaxData, theData);
 
       theData.offset = theData.offset + results.data.offset;
       // console.log(`theData`);
       // console.log(theData);
       var theData2 = JSON.stringify(theData);
-      localStorage.setItem("comics", theData2);
+
+      switch(cat){
+        case "comics":
+            localStorage.setItem("comics", theData2);
+          break;
+        case "characters":
+            localStorage.setItem("characters", theData2);
+          break;
+        case "events":
+            localStorage.setItem("events", theData2);
+          break;
+        case "series":
+            localStorage.setItem("series", theData2);
+          break;
+        case "creators":
+          localStorage.setItem("creators", theData2);
+          break;
+        case "stories":
+          localStorage.setItem("stories", theData2);
+          break;
+      }
+
       this.setState({
           data: theData.data,
           offset: theData.offset
@@ -180,16 +256,12 @@ export class LandingPage extends React.Component {
     });
   }
 
-  hover(e){
-
-  }
-
   render() {
     console.log(this.state);
     // console.log(document.getElementById('logo').dataset.arr);
     // var arr = document.getElementById('logo').dataset.arr;
 
-    let data = ``;
+    // let data = ``;
     let li =``;
     let cat  = this.props.match.params.Category;
     if(this.state.data !== undefined){
@@ -200,7 +272,7 @@ export class LandingPage extends React.Component {
         let href = `/apps/marvel-comics#/${cat}/${id}`;
         let name = val.name;
         //console.log(name);
-        if(name == undefined){
+        if(name === undefined){
           name = val.title;
         }
 
@@ -214,21 +286,7 @@ export class LandingPage extends React.Component {
         )
 
       });
-
-
-
     }
-
-
-    // if(arr !== ''){
-    //   arr = JSON.parse(arr);
-    //   console.log(arr);
-    //   data =  <List url={cat} list={arr} />
-    // } else {
-    //   if(this.state.data !== undefined){
-    //     data =  <List url={cat} list={this.state.data} />
-    //   }
-    // }
 
     //document.getElementsByClassName('landing-page')[0].style.display = 'block';
     var landing =  document.getElementsByClassName('landing-page')[0];
