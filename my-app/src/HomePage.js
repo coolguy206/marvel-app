@@ -113,7 +113,7 @@ export class HomePage extends React.Component {
 	//console.log(`random numbers`);
 	//console.log(randomNum);
 
-    console.log(comicsLength);
+    // console.log(comicsLength);
     if(comicsLength >= 20){
 		var comic1Title = comicsArr[randomNum].title;
 		// console.log(comic1Title);

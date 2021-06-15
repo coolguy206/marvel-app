@@ -214,11 +214,19 @@ export class LandingPage extends React.Component {
       }
 
       var ajaxData = results.data.results;
+
+
+      ajaxData.map(function(val,i){
+        theData.data.push(val);
+      });
+
       theData = RemoveDuplicates(ajaxData, theData);
 
-      theData.offset = theData.offset + results.data.offset;
-      // console.log(`theData`);
       // console.log(theData);
+
+      theData.offset = results.data.offset + 20;
+      // console.log(`theData`);
+      console.log(theData);
       var theData2 = JSON.stringify(theData);
 
       switch(cat){

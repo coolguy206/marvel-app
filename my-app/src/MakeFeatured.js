@@ -24,7 +24,7 @@ export default class MakeFeatured extends React.Component {
 	//console.log(title);
 
     //var arrLength = arr.length;
-	
+
 	if(title === 'comics'){
 		if(num === 20){
 			num = num - 1;
@@ -35,12 +35,12 @@ export default class MakeFeatured extends React.Component {
 		}
 	}
 
-    var featured = ``;
+  var featured = ``;
 	var featuredImg =``;
 	var featuredURL = baseURL;
 	featured = arr[num];
-	
-	
+
+
 	var featuredImgURL = featured.thumbnail.path;
 	if(featuredImgURL === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
 		featured = arr[num +1];
@@ -50,7 +50,7 @@ export default class MakeFeatured extends React.Component {
 	featuredImg =  <Image name={featured.title} href={featuredImgURL} ext={featured.thumbnail.extension} size="portrait_uncanny" />
 
 	var featuredStyle = {
-		background: `url(${featuredImgURL}.${featured.thumbnail.extension}) no-repeat`, backgroundSize:`cover`
+		backgroundImage: `url(${featuredImgURL}.${featured.thumbnail.extension})`, backgroundRepeat: `no-repeat`, backgroundSize:`cover`
 	};
 	// console.log(featuredStyle);
 

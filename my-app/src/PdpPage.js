@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { setStorage } from './SetStorage';
 import { Fetch } from './Fetch';
 import { RemoveDuplicates } from './RemoveDuplicates';
+import {setObj} from './SetObj.js'
 
 export class PdpPage extends React.Component {
 
@@ -28,11 +29,17 @@ export class PdpPage extends React.Component {
 
 	componentDidMount() {
 		var localStorageComics = window.localStorage.getItem("comics");
+		localStorageComics = JSON.parse(localStorageComics);
 		var localStorageCharacters = window.localStorage.getItem("characters");
+		localStorageCharacters = JSON.parse(localStorageCharacters);
 		var localStorageEvents = window.localStorage.getItem("events");
+		localStorageEvents = JSON.parse(localStorageEvents);
 		var localStorageSeries = window.localStorage.getItem("series");
+		localStorageSeries = JSON.parse(localStorageSeries);
 		var localStorageCreators = window.localStorage.getItem("creators");
+		localStorageCreators = JSON.parse(localStorageCreators);
 		var localStorageStories = window.localStorage.getItem("stories");
+		localStorageStories = JSON.parse(localStorageStories);
 
 		let theData = ``;
 		let data = ``;
@@ -41,7 +48,7 @@ export class PdpPage extends React.Component {
 		let cat  = this.props.match.params.Category;
 		let baseURL = `http://gateway.marvel.com/v1/public/${cat}/${id}?apikey=${Api}`;
 
-		switch(cat){
+		/*switch(cat){
       case 'comics':
         if(localStorageComics == null){
           console.log(`PdpPage.js local storage null`);
@@ -54,10 +61,22 @@ export class PdpPage extends React.Component {
 						});
           });
         } else {
+			*/
           console.log(`PdpPage.js local storage not null`);
-          theData = setStorage('comics');
+					if(cat == 'comics'){
+						theData = setStorage('comics');
+					} else if(cat == 'characters'){
+							theData = setStorage('characters');
+					} else if(cat == 'events'){
+							theData = setStorage('events');
+					} else if(cat == 'series'){
+							theData = setStorage('series');
+					} else if(cat == 'creators'){
+							theData = setStorage('creators');
+					}
+
 					console.log(id);
-					console.log(theData);
+					// console.log(theData);
 
 					//find ID
 					for(var i = 0; i<theData.data.length; i++){
@@ -69,6 +88,12 @@ export class PdpPage extends React.Component {
 						}
 					}
 
+					this.setState({
+						data: data,
+						// creators: data.creators.items
+					});
+
+					/*
 					if(data == ``){
 						console.log(`no matches`);
 						fetch(baseURL).then(res => res.json()).then((results) => {
@@ -76,7 +101,7 @@ export class PdpPage extends React.Component {
 							data = results.data.results[0];
 							// console.log(data);
 
-							localStorageComics = JSON.parse(localStorageComics);
+							// localStorageComics = JSON.parse(localStorageComics);
 							// console.log(localStorageComics);
 							localStorageComics.data.push(data);
 							// console.log(localStorageComics);
@@ -100,19 +125,142 @@ export class PdpPage extends React.Component {
 							console.log(error);
 						});
 					} else {
+					*/
 						console.log(`we have matches`);
-						this.setState({
-							data: data,
-							creators: data.creators.items
+
+						// var dataCharacters = data.characters.items;
+						var dataCharacters = ``;
+						var dataEvents = ``;
+						var dataComics = data.collectedIssues;
+						var dataSeries = data.series.items;
+						var dataStories = data.stories.items;
+						var dataCreators = ``;
+
+						if(cat == 'characters'){
+							dataComics = data.comics.items;
+							dataEvents = data.events.items;
+							dataCharacters = undefined;
+							dataCreators = undefined;
+						} else if(cat == 'comics'){
+							dataEvents = data.events.items;
+							dataCharacters = data.characters.items;
+							dataCreators = data.creators.items;
+						} else if(cat == 'events'){
+							dataEvents = undefined;
+							dataCharacters = data.characters.items;
+							dataComics = data.comics.items;
+							dataCreators = data.creators.items;
+						}
+
+						if(dataCharacters !== undefined){
+							setObj(dataCharacters, localStorageCharacters, `characters`, this);
+						}
+						if(dataEvents !== undefined){
+							setObj(dataEvents, localStorageEvents, `events`, this);
+						}
+						if(dataComics !== undefined){
+							setObj(dataComics, localStorageComics, `comics`, this);
+						}
+						if(dataSeries !== undefined){
+							setObj(dataSeries, localStorageSeries, `series`, this);
+						}
+						if(dataStories !== undefined){
+							setObj(dataStories, localStorageStories, `stories`, this);
+						}
+						if(dataCreators !== undefined){
+							setObj(dataCreators, localStorageCreators, `creators`, this);
+						}
+
+
+
+
+/*
+						// console.log(dataCharacters);
+						dataCharacters = dataCharacters.map((val, i) => {
+							//get ids
+							var dataId = val.resourceURI;
+							return dataId;
 						});
-					}
+
+						// console.log(dataCharacters);
+
+						// matchCharacters is for setting the character state
+						var matchCharacters = [];
+						// leftOverCharacters is for setting the leftover characters not in local storage
+						var leftOverCharacters = [];
+
+						dataCharacters.map((val, i) => {
+							var match = false;
+							localStorageCharacters.data.map((arr, j) => {
+								// console.log(typeof arr.id);
+								if(arr.resourceURI === val){
+									// console.log(`match`);
+									// console.log(arr);
+									matchCharacters.push(arr);
+									match = true;
+								}
+							});
+							// console.log(match);
+
+							//push leftovers to w to get the rest of the characters
+							if(match == false){
+								leftOverCharacters.push(val);
+							}
+						});
+
+						var localStorageCharactersArr = localStorageCharacters.data;
+
+						// console.log(leftOverCharacters);
+						if(leftOverCharacters.length !== 0){
+							//get the rest of the characters
+							leftOverCharacters.map((val, i) => {
+								fetch(`${val}?apikey=${Api}`).then(res => res.json()).then((results) => {
+									// console.log(results);
+									var theData = results.data.results[0];
+									matchCharacters.push(theData);
+									// localStorageCharacters = JSON.parse(localStorageCharacters);
+									// console.log(localStorageCharacters);
+									// var q = localStorageCharacters.data;
+									localStorageCharactersArr.push(theData);
+
+									//remove duplicates
+									// localStorageCharacters.data = Array.from(new Set(localStorageCharacters.data.map(a => a.id))).map(id => {
+									// 	return localStorageCharacters.data.find(a => a.id === id)
+									// });
+
+									var arr = [matchCharacters, localStorageCharactersArr];
+
+									return arr;
+
+								}).then((arr) => {
+									this.setState({
+										characters: arr[0]
+									});
+
+									// console.log(arr[1]);
+								 	// console.log(localStorageCharacters);
+
+									var setLocalStorageCharacters = JSON.stringify(localStorageCharacters);
+									localStorage.setItem("characters", setLocalStorageCharacters);
+								});
+							});
+
+						} else {
+							this.setState({
+								characters: matchCharacters
+							});
+						}
+*/
+				/*} end of if statement*/
+
           // this.setState({
           //     data: theData.data,
           //     offset: theData.offset
           // });
-        }
+
+      /*} end of case comics
         break;
-		}
+		} end of switch */
 
 
 		// on page load data
@@ -383,7 +531,7 @@ export class PdpPage extends React.Component {
 
 	render() {
 
-		// console.log(this.state);
+		console.log(this.state);
 
 		let img =``;
 		let data = ``;
@@ -405,9 +553,11 @@ export class PdpPage extends React.Component {
 		if(this.state.characters.length !== 0 && this.state.characters.length > 5){
 			// console.log(`characters is a go`);
 			characters = <List url="characters" list={this.state.characters} slider="true" changePdp={this.changePdp} />
+			document.getElementsByClassName('characters')[0].style.display = "block";
 		} else if(this.state.characters.length !== 0 && this.state.characters.length < 5) {
 			// console.log(`characters is a go`);
 			characters = <List url="characters" list={this.state.characters} slider="false" changePdp={this.changePdp} />
+			document.getElementsByClassName('characters')[0].style.display = "block";
 		}
 
 		// console.log('comics length');
@@ -415,9 +565,11 @@ export class PdpPage extends React.Component {
 		if(this.state.comics.length !== 0 && this.state.comics.length > 5){
 			// console.log(`comics is a go`);
 			comics = <List url="comics" list={this.state.comics} slider="true" changePdp={this.changePdp} />
+			document.getElementsByClassName('comics')[0].style.display = "block";
 		} else if(this.state.comics.length !== 0 && this.state.comics.length < 5){
 			// console.log(`comics is a go`);
 			comics = <List url="comics" list={this.state.comics} slider="false" changePdp={this.changePdp} />
+			document.getElementsByClassName('comics')[0].style.display = "block";
 		}
 
 		// console.log('events length');
@@ -425,9 +577,11 @@ export class PdpPage extends React.Component {
 		if(this.state.events.length !== 0 && this.state.events.length > 5){
 			// console.log(`events is a go`);
 			events = <List url="events" list={this.state.events} slider="true" changePdp={this.changePdp} />
+			document.getElementsByClassName('events')[0].style.display = "block";
 		} else if(this.state.events.length !== 0 && this.state.events.length < 5){
 			// console.log(`events is a go`);
 			events = <List url="events" list={this.state.events} slider="false" changePdp={this.changePdp} />
+			document.getElementsByClassName('events')[0].style.display = "block";
 		}
 
 		// console.log('series length');
@@ -435,9 +589,11 @@ export class PdpPage extends React.Component {
 		if(this.state.series.length !== 0 && this.state.series.length > 5){
 			// console.log(`series is a go`);
 			series = <List url="series" list={this.state.series} slider="true" changePdp={this.changePdp} />
+			document.getElementsByClassName('series')[0].style.display = "block";
 		} else if(this.state.series.length !== 0 && this.state.series.length < 5){
 			// console.log(`series is a go`);
 			series = <List url="series" list={this.state.series} slider="false" changePdp={this.changePdp} />
+			document.getElementsByClassName('series')[0].style.display = "block";
 		}
 
 		// console.log('creators length');
@@ -445,6 +601,7 @@ export class PdpPage extends React.Component {
 		if(this.state.creators.length !== 0){
 			// console.log(`creators is a go`);
 			creators = <List url="creators" list={this.state.creators} slider="false" changePdp={this.changePdp} />
+			document.getElementsByClassName('creators')[0].style.display = "block";
 		}
 
 		if(this.state.data.id !== undefined) {
@@ -510,24 +667,34 @@ export class PdpPage extends React.Component {
 							{issue}
 							{pageCount}
 							{urls}
-							<h2>Creators</h2>
-							{creators}
+							<div className="creators">
+								<h2>Creators</h2>
+								{creators}
+							</div>
 						</div>
 					</div>
 
 					<div className="second">
 
-						<h2>characters</h2>
-						{characters}
+						<div className ="characters">
+							<h2>characters</h2>
+							{characters}
+						</div>
 
-						<h2>comics</h2>
-						{comics}
+						<div className="comics">
+							<h2>comics</h2>
+							{comics}
+						</div>
 
-						<h2>events</h2>
-						{events}
+						<div className ="events">
+							<h2>events</h2>
+							{events}
+						</div>
 
-						<h2>series</h2>
-						{series}
+						<div className="series">
+							<h2>series</h2>
+							{series}
+						</div>
 
 					</div>
 
