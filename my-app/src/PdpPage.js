@@ -127,29 +127,42 @@ export class PdpPage extends React.Component {
 					} else {
 					*/
 						console.log(`we have matches`);
-
+						console.log(data);
 						// var dataCharacters = data.characters.items;
 						var dataCharacters = ``;
 						var dataEvents = ``;
 						var dataComics = data.collectedIssues;
-						var dataSeries = data.series.items;
+						var dataSeries = ``;
 						var dataStories = data.stories.items;
 						var dataCreators = ``;
 
 						if(cat == 'characters'){
 							dataComics = data.comics.items;
 							dataEvents = data.events.items;
+							dataSeries = data.series.items;
 							dataCharacters = undefined;
 							dataCreators = undefined;
 						} else if(cat == 'comics'){
 							dataEvents = data.events.items;
 							dataCharacters = data.characters.items;
+							dataSeries = data.series.items;
 							dataCreators = data.creators.items;
 						} else if(cat == 'events'){
 							dataEvents = undefined;
 							dataCharacters = data.characters.items;
 							dataComics = data.comics.items;
 							dataCreators = data.creators.items;
+							dataSeries = data.series.items;
+						} else if(cat == 'series'){
+							dataCharacters = data.characters.items;
+							dataSeries = undefined;
+							dataComics = data.comics.items;
+							dataEvents = data.events.items;
+							dataCreators = data.creators.items;
+						} else if(cat == 'creators'){
+							dataCharacters = undefined;
+							dataEvents = data.events.items;
+							dataCreators = undefined;
 						}
 
 						if(dataCharacters !== undefined){
@@ -540,6 +553,8 @@ export class PdpPage extends React.Component {
 		let pageCount = ``;
 		let issue =``;
 		let urls =``;
+		let dates = ``;
+		let images = ``;
 		let characters = ``;
 		let comics = ``;
 		let events = ``;
@@ -554,7 +569,7 @@ export class PdpPage extends React.Component {
 			// console.log(`characters is a go`);
 			characters = <List url="characters" list={this.state.characters} slider="true" changePdp={this.changePdp} />
 			document.getElementsByClassName('characters')[0].style.display = "block";
-		} else if(this.state.characters.length !== 0 && this.state.characters.length < 5) {
+		} else if(this.state.characters.length !== 0 && this.state.characters.length <= 5) {
 			// console.log(`characters is a go`);
 			characters = <List url="characters" list={this.state.characters} slider="false" changePdp={this.changePdp} />
 			document.getElementsByClassName('characters')[0].style.display = "block";
@@ -566,7 +581,7 @@ export class PdpPage extends React.Component {
 			// console.log(`comics is a go`);
 			comics = <List url="comics" list={this.state.comics} slider="true" changePdp={this.changePdp} />
 			document.getElementsByClassName('comics')[0].style.display = "block";
-		} else if(this.state.comics.length !== 0 && this.state.comics.length < 5){
+		} else if(this.state.comics.length !== 0 && this.state.comics.length <= 5){
 			// console.log(`comics is a go`);
 			comics = <List url="comics" list={this.state.comics} slider="false" changePdp={this.changePdp} />
 			document.getElementsByClassName('comics')[0].style.display = "block";
@@ -578,7 +593,7 @@ export class PdpPage extends React.Component {
 			// console.log(`events is a go`);
 			events = <List url="events" list={this.state.events} slider="true" changePdp={this.changePdp} />
 			document.getElementsByClassName('events')[0].style.display = "block";
-		} else if(this.state.events.length !== 0 && this.state.events.length < 5){
+		} else if(this.state.events.length !== 0 && this.state.events.length <= 5){
 			// console.log(`events is a go`);
 			events = <List url="events" list={this.state.events} slider="false" changePdp={this.changePdp} />
 			document.getElementsByClassName('events')[0].style.display = "block";
@@ -590,7 +605,7 @@ export class PdpPage extends React.Component {
 			// console.log(`series is a go`);
 			series = <List url="series" list={this.state.series} slider="true" changePdp={this.changePdp} />
 			document.getElementsByClassName('series')[0].style.display = "block";
-		} else if(this.state.series.length !== 0 && this.state.series.length < 5){
+		} else if(this.state.series.length !== 0 && this.state.series.length <= 5){
 			// console.log(`series is a go`);
 			series = <List url="series" list={this.state.series} slider="false" changePdp={this.changePdp} />
 			document.getElementsByClassName('series')[0].style.display = "block";
@@ -613,7 +628,9 @@ export class PdpPage extends React.Component {
 			data = this.state.data;
 
 			title =  data.title;
-			if(title == undefined) {
+			if(cat == `creators`){
+				title = data.fullName;
+			} else if(title == undefined) {
 				title = data.name;
 			}
 
@@ -630,15 +647,49 @@ export class PdpPage extends React.Component {
 				issue = <p>Issue # {data.issueNumber}</p>;
 			}
 
+			if(data.dates !== undefined && data.dates.length !== 0 ){
+				dates = data.dates.map((val, i)=>{
+					var theDate = new Date(val.date).toDateString();
 
-			img = <Image name={data.title} href={data.thumbnail.path} ext={data.thumbnail.extension} size='portrait'  />
+					if(theDate !== `Invalid Date`){
+						theDate = theDate.split(' ');
+						theDate = `${theDate[1]} ${theDate[2]}, ${theDate[3]}`;
 
-			urls = data.urls;
+						var str = ``;
+						if(val.type == `onsaleDate`){
+							str = `On Sale Date`;
+						} else if(val.type == `focDate`){
+							str = `Final Order Cutoff Date`;
+						} else if(val.type == `unlimitedDate`){
+							str = `Unlimited Date`;
+						} else if(val.type == `digitalPurchaseDate`){
+							str = `Digital Purchase Date`;
+						}
 
-			if(urls.length == 1){
+						return(<p key={i}>{str}: {theDate}</p>)
+					}
+				});
+			}
+
+			if(data.images !== undefined){
+				if(data.images.length > 1){
+					images = data.images.map((val, i)=>{
+						return(<Image key={i} name={data.title} href={val.path} ext={val.extension} size='portrait'  />)
+					});
+				} else {
+					images = <Image name={data.title} href={data.images[0].path} ext={data.images[0].extension} size='portrait'  />
+				}
+
+			}
+
+			if(cat!== `comics`){
+				img = <Image name={data.title} href={data.thumbnail.path} ext={data.thumbnail.extension} size='portrait'  />
+			}
+
+			if(data.urls.length == 1){
 				urls = <a href={data.urls[0].url} target="_blank">learn more</a>
 			} else {
-				li = urls.map(function(val, i){
+				li = data.urls.map(function(val, i){
 					return(
 						<li key={i}><a href={val.url} target="_blank">{val.type}</a></li>
 					)
@@ -661,12 +712,22 @@ export class PdpPage extends React.Component {
 					<div className="first">
 						<h1 className="mobile">{title}</h1>
 						{img}
+
 						<div>
-							<h1 className="desktop">{title}</h1>
-							{desc}
-							{issue}
-							{pageCount}
-							{urls}
+							<div>
+								<h1 className="desktop">{title}</h1>
+								{desc}
+							</div>
+							<div>
+								{images}
+							</div>
+							<div>
+								{issue}
+								{pageCount}
+								{dates}
+								{urls}
+							</div>
+
 							<div className="creators">
 								<h2>Creators</h2>
 								{creators}

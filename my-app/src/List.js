@@ -110,7 +110,7 @@ export class List extends React.Component {
     if(slider === 'true'){
 	    elem = <ul><Slider {...settings}>{li}</Slider></ul>
     } else {
-	    elem = <ul>{li}</ul>
+	    elem = <ul className="no-slider">{li}</ul>
     }
 
     return (

@@ -48,7 +48,63 @@ export class Header extends React.Component {
   }
 
   changePage(e){
+    console.log(`header.js changePage function`);
+    // console.log(e.target.hash);
     document.getElementsByTagName('nav')[0].classList.remove("expand");
+
+    var str = e.target.hash;
+    str = str.split('#/')[1];
+    console.log(str);
+
+    var localStorageComics = window.localStorage.getItem("comics");
+    localStorageComics = JSON.parse(localStorageComics);
+    var localStorageCharacters = window.localStorage.getItem("characters");
+    localStorageCharacters = JSON.parse(localStorageCharacters);
+    var localStorageEvents = window.localStorage.getItem("events");
+    localStorageEvents = JSON.parse(localStorageEvents);
+    var localStorageSeries = window.localStorage.getItem("series");
+    localStorageSeries = JSON.parse(localStorageSeries);
+    var localStorageCreators = window.localStorage.getItem("creators");
+    localStorageCreators = JSON.parse(localStorageCreators);
+    var localStorageStories = window.localStorage.getItem("stories");
+    localStorageStories = JSON.parse(localStorageStories);
+
+    switch(str){
+      case 'comics':
+        console.log(`it is comics`);
+        console.log(localStorageComics.data);
+        this.setState({
+          data: localStorageComics.data
+        });
+        console.log(this.state);
+        break;
+      case 'characters':
+        console.log(`it is characters`);
+        console.log(localStorageCharacters.data);
+        this.setState({
+          data: localStorageCharacters.data
+        });
+        console.log(this.state);
+        break;
+      case 'events':
+        console.log(`it is events`);
+        console.log(localStorageEvents);
+        this.setState({
+          data: localStorageEvents.data
+        });
+        break;
+      case 'series':
+        console.log(`it is series`);
+        console.log(localStorageSeries);
+        this.setState({
+          data: localStorageSeries.data
+        });
+        break;
+    };
+
+
+
+
     // var href = document.location.href;
     // document.location.href = href;
     // document.location.reload();

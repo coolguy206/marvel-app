@@ -28,6 +28,9 @@
 		}
 
 		&.first {
+			@media screen and (max-width:414px){
+				flex-wrap:wrap;
+			}
 			// text-align: right;
 			// padding: 0 2% 0 0;
 			padding:0;
@@ -40,11 +43,41 @@
 			}
 
 			img {
+				@media screen and (max-width:414px){
+					margin: 0 0 4%;
+				}
 				margin:0 2% 0 0;
 			}
 
-			div {
+			p, a {
+				@media screen and (max-width:414px){
+					flex-basis:100%;
+				}
+			}
 
+			div {
+				@media screen and (max-width:414px){
+					display:flex;
+					flex-wrap:wrap;
+				}
+				div {
+					&:nth-of-type(1){
+						@media screen and (max-width:414px){
+							order:2;
+						}
+
+					}
+					&:nth-of-type(2){
+						@media screen and (max-width:414px){
+							order:1
+						}
+					}
+					&:nth-of-type(3){
+						@media screen and (max-width:414px){
+							order:3
+						}
+					}
+				}
 			}
 		}
 
@@ -54,6 +87,31 @@
 
 			.characters, .comics, .events, .series {
 				display:none;
+
+				ul {
+					div {
+						@media screen and (max-width: 414px){
+							padding:0 !important;
+						}
+					}
+					&.no-slider {
+						@media screen and (max-width:414px){
+							flex-wrap:wrap;
+						}
+						list-style-type:none;
+						display:flex;
+
+						li {
+							@media screen and (max-width:768px){
+								margin: 0 2% 0;
+							}
+							@media screen and (max-width:414px){
+								margin:0;
+							}
+							margin:0 .2% 0;
+						}
+					}
+				}
 			}
 		}
 	}
