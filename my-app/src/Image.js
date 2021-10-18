@@ -21,7 +21,7 @@ export default class Image extends React.Component {
   render() {
     var alt = this.props.name;
     var src = this.props.href;
-
+    var clss = this.props.className;
     var size = this.props.size;
     var sizesArr = this.state.sizes;
     sizesArr.map(function(val, i){
@@ -36,7 +36,7 @@ export default class Image extends React.Component {
 
     return (
       <React.Fragment>
-        <img src={href} alt={alt} title={alt}/>
+        <img src={href} className={clss} alt={alt} title={alt}/>
       </React.Fragment>
     );
 

@@ -32,7 +32,7 @@ export class List extends React.Component {
 	      href = href.split('/');
 	      let hrefLength = href.length;
 	      let id = href[hrefLength -1];
-	      href = `/apps/marvel-comics#/${baseURL}/${id}`;
+	      href = `/apps/marvel-comics/#/${baseURL}/${id}`;
 	      let role = val.role;
         // console.log(role);
 
@@ -42,11 +42,11 @@ export class List extends React.Component {
 		      role = ``;
 	      }
 		    //console.log(href);
-		    return (<li key={i}><a href={href} onClick={changePdp}>{name} {role}</a></li>);
+		    return (<li key={i}><a href={href} className="cta" onClick={changePdp}>{name} {role}</a></li>);
 
       } else if(baseURL === 'comics' || baseURL === 'characters' || baseURL === 'series' || baseURL === 'events'){
 		    //console.log('pdp page comics');
-	      href = `/apps/marvel-comics#/${baseURL}/${val.id}`;
+	      href = `/apps/marvel-comics/#/${baseURL}/${val.id}`;
 	      name = val.name;
 	      if(name === undefined){
 		      name = val.title;
@@ -65,7 +65,7 @@ export class List extends React.Component {
 			    href = href.split('/');
 			    let hrefLength = href.length;
 			    let id = href[hrefLength -1];
-		      href = `/apps/marvel-comics#/${baseURL}/${id}`;
+		      href = `/apps/marvel-comics/#/${baseURL}/${id}`;
 
 			    return (<li key={i}><a href={href} onClick={changePdp}>{name}</a></li>);
 		    }
@@ -91,14 +91,14 @@ export class List extends React.Component {
           }
         },
         {
-          breakpoint: 768,
+          breakpoint: 810,
           settings: {
             slidesToShow: 2,
 		        //centerMode: true
           }
         },
 	      {
-          breakpoint: 414,
+          breakpoint: 428,
           settings: {
             slidesToShow: 1,
 		        //centerMode: true

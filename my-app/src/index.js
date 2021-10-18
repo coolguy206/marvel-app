@@ -5,6 +5,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import * as serviceWorker from './serviceWorker';
 
+
 ReactDOM.render(
   <React.StrictMode>
     <div className="bg"></div>

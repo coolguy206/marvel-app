@@ -24,7 +24,8 @@ export class Header extends React.Component {
     super(props);
     this.state = {
       data: [],
-      search:[]
+      search:[],
+      cat: ``
     };
     this.search = this.search.bind(this);
     this.blur = this.blur.bind(this);
@@ -32,7 +33,6 @@ export class Header extends React.Component {
     this.close = this.close.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
-    this.changePage = this.changePage.bind(this);
   }
 
   componentDidMount() {
@@ -47,104 +47,9 @@ export class Header extends React.Component {
     });
   }
 
-  changePage(e){
-    console.log(`header.js changePage function`);
-    // console.log(e.target.hash);
-    document.getElementsByTagName('nav')[0].classList.remove("expand");
-
-    var str = e.target.hash;
-    str = str.split('#/')[1];
-    console.log(str);
-
-    var localStorageComics = window.localStorage.getItem("comics");
-    localStorageComics = JSON.parse(localStorageComics);
-    var localStorageCharacters = window.localStorage.getItem("characters");
-    localStorageCharacters = JSON.parse(localStorageCharacters);
-    var localStorageEvents = window.localStorage.getItem("events");
-    localStorageEvents = JSON.parse(localStorageEvents);
-    var localStorageSeries = window.localStorage.getItem("series");
-    localStorageSeries = JSON.parse(localStorageSeries);
-    var localStorageCreators = window.localStorage.getItem("creators");
-    localStorageCreators = JSON.parse(localStorageCreators);
-    var localStorageStories = window.localStorage.getItem("stories");
-    localStorageStories = JSON.parse(localStorageStories);
-
-    switch(str){
-      case 'comics':
-        console.log(`it is comics`);
-        console.log(localStorageComics.data);
-        this.setState({
-          data: localStorageComics.data
-        });
-        console.log(this.state);
-        break;
-      case 'characters':
-        console.log(`it is characters`);
-        console.log(localStorageCharacters.data);
-        this.setState({
-          data: localStorageCharacters.data
-        });
-        console.log(this.state);
-        break;
-      case 'events':
-        console.log(`it is events`);
-        console.log(localStorageEvents);
-        this.setState({
-          data: localStorageEvents.data
-        });
-        break;
-      case 'series':
-        console.log(`it is series`);
-        console.log(localStorageSeries);
-        this.setState({
-          data: localStorageSeries.data
-        });
-        break;
-    };
-
-
-
-
-    // var href = document.location.href;
-    // document.location.href = href;
-    // document.location.reload();
-
-    // console.log(e.target.innerText);
-    // // var offset = Math.floor(Math.random() * 900);
-    // let cat  = e.target.innerText;
-    // cat = cat.toLowerCase();
-    // let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
-    //
-    // let url = ``;
-    // url = `${baseURL}?apikey=${Api}`
-    //
-    //   fetch(url)
-    //     .then(res => res.json()).then((results) => {
-    //       // console.log('from homePage after ajax comics');
-    //       // console.log(results);
-    //
-    //       this.setState({
-    //           data: results.data.results
-    //       });
-    //
-    //       var data = this.state.data;
-    //       data = JSON.stringify(data);
-    //       // console.log(data);
-    //       document.getElementById('logo').dataset.arr = data;
-    //       // console.log(document.getElementById('logo').dataset.arr);
-    //       // document.getElementsByClassName('loading')[0].style.display = 'none';
-    //       // document.getElementsByClassName('hp')[0].style.display = 'flex';
-    //
-    //       // console.log(this.state);
-    //       }, (error) => {
-    //           console.log(error);
-    //   });
-
-  }
-
   search(e){
     if(e.keyCode ===  13){
-      // console.log('enter pressed');
+      console.log('enter pressed');
       // console.log(e.target.value);
       // var searchTerm = e.target.value;
       // window.location.hash = `#/search/${searchTerm}`;
@@ -170,7 +75,9 @@ export class Header extends React.Component {
     //   searchInput = e.target.parentNode.previousSibling;
     //
     // }
-
+    if(document.getElementsByClassName('filter-container')[0] !== undefined){
+      document.getElementsByClassName('filter-container')[0].style.display = "none";
+    }
     searchInput = document.getElementById('search-bar');
 
     if(searchInput.classList.length !== 1){
@@ -178,29 +85,6 @@ export class Header extends React.Component {
     } else {
       searchInput.classList.remove("show");
     }
-
-    // let cat  = searchInput.childNodes[1].value;
-    // let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
-    //
-    // let url = ``;
-    //
-    // url = `${baseURL}?apikey=${Api}&limit=100`;
-    //
-    //   fetch(url)
-    //     .then(res => res.json()).then((results) => {
-    //       console.log('ajax from search icon click');
-    //       console.log(results);
-    //
-    //       this.setState({
-    //         search: results.data.results
-    //       });
-    //
-    //       console.log(`state`);
-    //       console.log(this.state);
-    //       }, (error) => {
-    //           console.log(error);
-    //   });
-
 
   }
 
@@ -224,7 +108,6 @@ export class Header extends React.Component {
     }
     // console.log(nav.classList);
     nav.classList.add("expand");
-
   }
 
   close(e){
@@ -239,27 +122,20 @@ export class Header extends React.Component {
       // console.log('it is a path');
       nav = e.target.parentNode.parentNode;
       // console.log(nav);
+    } else if(e.target.nodeName === 'A') {
+      // console.log('it is a path');
+      nav = e.target.parentNode.parentNode.parentNode;
+      // console.log(nav);
     }
     nav.classList.remove("expand");
   }
 
-    // <Switch>
-    // </Switch>
-
-    // <Route path="/comics/:Id" component={ComicsPage} />
-    // <Route path="/characters/:Id" component={CharactersPage} />
-    // <Route path="/series/:Id" component={PdpPage} />
-    // <Route path="/stories/:Id" component={PdpPage} />
-    // <Route path="/authors/:Id" component={PdpPage} />
-      // <Route path="/search/:searchTerm" component={SearchPage} />
-
   render() {
+    // console.log(`header state`);
+    // console.log(this.state);
     return (
       <React.Fragment>
         <HashRouter>
-
-
-
           <header className="header">
             <FontAwesomeIcon icon={faBars} size="2x" onClick={this.expand} />
 
@@ -273,13 +149,14 @@ export class Header extends React.Component {
             <nav>
               <FontAwesomeIcon icon={faTimesCircle} size="2x" onClick={this.close} />
               <ul>
-                <li><a href="/apps/marvel-comics/#/characters" onClick={this.changePage}>characters</a></li>
-                <li><a href="/apps/marvel-comics/#/comics" onClick={this.changePage}>comics</a></li>
-                <li><a href="/apps/marvel-comics/#/events" onClick={this.changePage}>events</a></li>
-                <li><a href="/apps/marvel-comics/#/series" onClick={this.changePage}>series</a></li>
+                <li><a href="/apps/marvel-comics/#/characters" onClick={this.close}>characters</a></li>
+                <li><a href="/apps/marvel-comics/#/comics" onClick={this.close}>comics</a></li>
+                <li><a href="/apps/marvel-comics/#/events" onClick={this.close}>events</a></li>
+                <li><a href="/apps/marvel-comics/#/series" onClick={this.close}>series</a></li>
+                <li><a href="/apps/marvel-comics/#/creators" onClick={this.close}>creators</a></li>
               </ul>
             </nav>
-            <SearchBar results={this.state.search} />
+            <SearchBar />
           </header>
 
           <section className="main">
@@ -287,8 +164,7 @@ export class Header extends React.Component {
               <Route exact path="/"  component={HomePage} />
               <Route path="/:Category/:Id" component={PdpPage} />
               <Route exact path="/:Category/" component={LandingPage} />
-              <Route path="/search/:searchCat/:searchTerm" render={(props) => <SearchPage stuff="some stuff..." {...props} /> } />
-
+              <Route exact path="/search/:searchCat/:searchTerm" render={(props) => <SearchPage stuff="some stuff..." {...props} /> } />
           </section>
 
           <UpArrow />
@@ -297,5 +173,4 @@ export class Header extends React.Component {
       </React.Fragment>
     );
   }
-
 }

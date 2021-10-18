@@ -3,140 +3,156 @@ import { Api } from './Api';
 import Image from './Image';
 // import { List } from './List';
 import {Loading} from './Loading';
-import { setStorage } from './SetStorage';
-import { Fetch } from './Fetch';
-import { RemoveDuplicates } from './RemoveDuplicates';
+import Database from './Database';
+import EditData from './EditData';
+import PouchDB from 'pouchdb';
+import {FilterIcon} from './FilterIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class LandingPage extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      offset: 20,
-      data: []
+      offset: 0,
+      data: [],
+      cat: this.props.match.params.Category
     };
     this.getMore = this.getMore.bind(this);
   }
 
   componentDidMount() {
-    var localStorageComics = window.localStorage.getItem("comics");
-    var localStorageCharacters = window.localStorage.getItem("characters");
-    var localStorageEvents = window.localStorage.getItem("events");
-    var localStorageSeries = window.localStorage.getItem("series");
-    var localStorageCreators = window.localStorage.getItem("creators");
-    var localStorageStories = window.localStorage.getItem("stories");
-    // var offset = Math.floor(Math.random() * 900);
+    var offset = Math.floor(Math.random() * 900);
     let cat  = this.props.match.params.Category;
     let baseURL = `http://gateway.marvel.com/v1/public/${cat}?apikey=${Api}`;
-    var theData = ``;
+
+    var dbOffsets = new PouchDB('marvel-offsets');
+    dbOffsets.bulkDocs([
+      {_id: 'comics', offset: 20},
+      {_id: 'characters', offset: 20},
+      {_id: 'events', offset: 20},
+      {_id: 'series', offset: 20},
+    ]);
+    // dbOffsets.allDocs({include_docs: true}).then((docs) => {
+    //   console.log(`offset database`);
+    //   console.log(docs);
+    // });
+
+    var db = Database;
     switch(cat){
       case 'comics':
-        if(localStorageComics == null){
-          // console.log(`landingPage.js local storage null`);
-          Fetch(baseURL, 'comics').then((results) => {
-            this.setState({
-              data: results.data.results,
-              offset: results.data.limit
-            });
-          });
-        } else {
-          // console.log(`landingPage.js local storage not null`);
-          theData = setStorage('comics');
+        // set data
+        db.comics.allDocs({include_docs: true}).then((docs) => {
+          console.log(`comics all docs`);
+          console.log(docs);
+          return docs;
+        }).then((docs) => {
+          var data = EditData(docs.rows);
           this.setState({
-              data: theData.data,
-              offset: theData.offset
+            data: data
           });
-        }
+        });
+        //set offset
+        dbOffsets.get('comics').then((doc) => {
+          // handle doc
+          console.log(doc);
+          this.setState({
+            offset: doc.offset
+          });
+        });
         break;
       case 'characters':
-        if(localStorageCharacters == null){
-          // console.log(`landingPage.js local storage null`);
-          Fetch(baseURL, 'characters').then((results) => {
-            this.setState({
-              data: results.data.results,
-              offset: results.data.limit
-            });
-          });
-        } else {
-          // console.log(`landingPage.js local storage not null`);
-          theData = setStorage('characters');
+        //set data
+        db.characters.allDocs({include_docs: true}).then((docs) => {
+          console.log(`characters all docs`);
+          console.log(docs);
+          return docs;
+        }).then((docs) => {
+          var data = EditData(docs.rows);
           this.setState({
-              data: theData.data,
-              offset: theData.offset
+            data: data
           });
-        }
+        });
+        //set offset
+        dbOffsets.get('characters').then((doc) => {
+          // handle doc
+          console.log(doc);
+          return doc;
+        }).then((doc) => {
+          this.setState({
+            offset: doc.offset
+          });
+        });
         break;
       case 'events':
-        if(localStorageEvents == null){
-          // console.log(`landingPage.js local storage null`);
-          Fetch(baseURL, 'events').then((results) => {
-            this.setState({
-              data: results.data.results,
-              offset: results.data.limit
-            });
-          });
-        } else {
-          // console.log(`landingPage.js local storage not null`);
-          theData = setStorage('events');
+        //set data
+        db.events.allDocs({include_docs: true}).then((docs) => {
+          console.log(`events all docs`);
+          console.log(docs);
+          return docs;
+        }).then((docs) => {
+          var data = EditData(docs.rows);
           this.setState({
-              data: theData.data,
-              offset: theData.offset
+            data: data
           });
-        }
+        });
+        //set offset
+        dbOffsets.get('events').then((doc) => {
+          // handle doc
+          console.log(doc);
+          return doc;
+        }).then((doc) => {
+          this.setState({
+            offset: doc.offset
+          });
+        });
         break;
       case 'series':
-        if(localStorageSeries == null){
-          // console.log(`landingPage.js local storage null`);
-          Fetch(baseURL, 'series').then((results) => {
-            this.setState({
-              data: results.data.results,
-              offset: results.data.limit
-            });
-          });
-        } else {
-          // console.log(`landingPage.js local storage not null`);
-          theData = setStorage('series');
+        //set data
+        db.series.allDocs({include_docs: true}).then((docs) => {
+          console.log(`series all docs`);
+          console.log(docs);
+          return docs;
+        }).then((docs) => {
+          var data = EditData(docs.rows);
           this.setState({
-            data: theData.data,
-            offset: theData.offset
+            data: data
           });
-        }
+        });
+        //set offset
+        dbOffsets.get('series').then((doc) => {
+          // handle doc
+          console.log(doc);
+          return doc;
+        }).then((doc) => {
+          this.setState({
+            offset: doc.offset
+          });
+        });
         break;
       case 'stories':
-        if(localStorageStories == null){
-          // console.log(`landingPage.js local storage null`);
-          Fetch(baseURL, 'stories').then((results) => {
-            this.setState({
-              data: results.data.results,
-              offset: results.data.limit
-            });
-          });
-        } else {
-          // console.log(`landingPage.js local storage not null`);
-          theData = setStorage('stories');
+        db.stories.allDocs({include_docs: true}).then((docs) => {
+          console.log(`stories all docs`);
+          console.log(docs);
+          return docs;
+        }).then((docs) => {
+          var data = EditData(docs.rows);
           this.setState({
-            data: theData.data,
-            offset: theData.offset
+            data: data
           });
-        }
+        });
         break;
       case 'creators':
-        if(localStorageCreators == null){
-          // console.log(`landingPage.js local storage null`);
-          Fetch(baseURL, 'creators').then((results) => {
-            this.setState({
-              data: results.data.results,
-              offset: results.data.limit
-            });
-          });
-        } else {
-          // console.log(`landingPage.js local storage not null`);
-          theData = setStorage('creators');
+        db.creators.allDocs({include_docs: true}).then((docs) => {
+          console.log(`creators all docs`);
+          console.log(docs);
+          return docs;
+        }).then((docs) => {
+          var data = EditData(docs.rows);
           this.setState({
-            data: theData.data,
-            offset: theData.offset
+            data: data
           });
-        }
+        });
         break;
     }
   }
@@ -170,6 +186,7 @@ export class LandingPage extends React.Component {
 	}
 */
   getMore(e){
+
     console.log(`getMore function`);
     //console.log(e.target);
     var theButton = e.target;
@@ -179,97 +196,274 @@ export class LandingPage extends React.Component {
     var offset = this.state.offset;
     let cat  = this.props.match.params.Category;
     let baseURL = `http://gateway.marvel.com/v1/public/${cat}?apikey=${Api}&offset=${offset}`;
-
-    // var localStorageComics = window.localStorage.getItem("comics");
-    // var localStorageCharacters = window.localStorage.getItem("characters");
-    // var localStorageEvents = window.localStorage.getItem("events");
-    // var localStorageSeries = window.localStorage.getItem("series");
-    // var localStorageCreators = window.localStorage.getItem("creators");
-    // var localStorageStories = window.localStorage.getItem("stories");
+    var dbOffsets = new PouchDB('marvel-offsets');
 
     fetch(baseURL).then(res => res.json()).then((results) => {
       // console.log('ajax from button click landing page');
       console.log(results);
-
-      var theData = ``;
-      switch(cat){
-        case "comics":
-          theData = setStorage('comics');
-          break;
-        case "characters":
-          theData = setStorage('characters');
-          break;
-        case "events":
-          theData = setStorage('events');
-          break;
-        case "series":
-          theData = setStorage('series');
-          break;
-        case "creators":
-          theData = setStorage('creators');
-          break;
-        case "stories":
-          theData = setStorage('stories');
-          break;
-      }
-
-      var ajaxData = results.data.results;
-
-
-      ajaxData.map(function(val,i){
-        theData.data.push(val);
+      return results;
+    }).then((results) => {
+      var db = Database;
+      var updatedArray = [];
+      var theArray = results.data.results;
+      theArray.map((obj, i) => {
+        var doc = {};
+        doc["_id"] = `${cat}-${obj.id}`;
+        var returnedTarget = Object.assign(obj, doc)
+        // console.log(returnedTarget);
+        updatedArray.push(returnedTarget);
       });
-
-      theData = RemoveDuplicates(ajaxData, theData);
-
-      // console.log(theData);
-
-      theData.offset = results.data.offset + 20;
-      // console.log(`theData`);
-      console.log(theData);
-      var theData2 = JSON.stringify(theData);
+      // console.log(updatedArray);
+      // console.log(results.data.limit);
+      // console.log(this.state.offset);
+      var theOffset =  results.data.limit + this.state.offset;
+      // console.log(theOffset);
 
       switch(cat){
-        case "comics":
-            localStorage.setItem("comics", theData2);
-          break;
-        case "characters":
-            localStorage.setItem("characters", theData2);
-          break;
-        case "events":
-            localStorage.setItem("events", theData2);
-          break;
-        case "series":
-            localStorage.setItem("series", theData2);
-          break;
-        case "creators":
-          localStorage.setItem("creators", theData2);
-          break;
-        case "stories":
-          localStorage.setItem("stories", theData2);
-          break;
+        case 'comics':
+          // set data
+          db.comics.bulkDocs(updatedArray).then((docs) => {
+            console.log(`comics buldDocs`);
+            console.log(docs);
+            // return updatedArray;
+          }).then(() => {
+            db.comics.allDocs({include_docs: true}).then((results) => {
+              console.log(`geta all comics database`);
+              console.log(results);
+              return results;
+            }).then((results) => {
+              var data = [];
+              results.rows.map((val, i) => {
+                data.push(val.doc);
+              });
+              this.setState({
+                data: data
+              });
+            });
+          });
+
+          //set offset
+          dbOffsets.get('comics').then((doc) => {
+            console.log(`comics offset database`);
+            console.log(doc);
+            dbOffsets.put({
+              _id: 'comics',
+              _rev: doc._rev,
+              offset: theOffset
+            });
+            return theOffset;
+          }).then((theOffset) => {
+            this.setState({
+              offset: theOffset
+            });
+          });
+            break;
+        case 'characters':
+          // set data
+          db.characters.bulkDocs(updatedArray).then((docs) => {
+            console.log(`characters buldDocs`);
+            console.log(docs);
+            // return updatedArray;
+          }).then(() => {
+            db.characters.allDocs({include_docs: true}).then((results) => {
+              console.log(`geta all characters database`);
+              console.log(results);
+              return results;
+            }).then((results) => {
+              var data = [];
+              results.rows.map((val, i) => {
+                data.push(val.doc);
+              });
+              this.setState({
+                data: data
+              });
+            });
+          });
+
+          //set offset
+          dbOffsets.get('characters').then((doc) => {
+            console.log(`characters offset database`);
+            console.log(doc);
+            dbOffsets.put({
+              _id: 'characters',
+              _rev: doc._rev,
+              offset: theOffset
+            });
+            return theOffset;
+          }).then((theOffset) => {
+            this.setState({
+              offset: theOffset
+            });
+          });
+            break;
+        case 'events':
+          // set data
+          db.events.bulkDocs(updatedArray).then((docs) => {
+            console.log(`events buldDocs`);
+            console.log(docs);
+            // return updatedArray;
+          }).then(() => {
+            db.events.allDocs({include_docs: true}).then((results) => {
+              console.log(`geta all events database`);
+              console.log(results);
+              return results;
+            }).then((results) => {
+              var data = [];
+              results.rows.map((val, i) => {
+                data.push(val.doc);
+              });
+              this.setState({
+                data: data
+              });
+            });
+          });
+
+          //set offset
+          dbOffsets.get('events').then((doc) => {
+            console.log(`events offset database`);
+            console.log(doc);
+            dbOffsets.put({
+              _id: 'events',
+              _rev: doc._rev,
+              offset: theOffset
+            });
+            return theOffset;
+          }).then((theOffset) => {
+            this.setState({
+              offset: theOffset
+            });
+          });
+            break;
+        case 'series':
+          // set data
+          db.series.bulkDocs(updatedArray).then((docs) => {
+            console.log(`series buldDocs`);
+            console.log(docs);
+            // return updatedArray;
+          }).then(() => {
+            db.series.allDocs({include_docs: true}).then((results) => {
+              console.log(`geta all series database`);
+              console.log(results);
+              return results;
+            }).then((results) => {
+              var data = [];
+              results.rows.map((val, i) => {
+                data.push(val.doc);
+              });
+              this.setState({
+                data: data
+              });
+            });
+          });
+
+          //set offset
+          dbOffsets.get('series').then((doc) => {
+            console.log(`series offset database`);
+            console.log(doc);
+            dbOffsets.put({
+              _id: 'series',
+              _rev: doc._rev,
+              offset: theOffset
+            });
+            return theOffset;
+          }).then((theOffset) => {
+            this.setState({
+              offset: theOffset
+            });
+          });
+            break;
+        case 'stories':
+          // set data
+          db.stories.bulkDocs(updatedArray).then((docs) => {
+            console.log(`stories buldDocs`);
+            console.log(docs);
+            // return updatedArray;
+          }).then(() => {
+            db.stories.allDocs({include_docs: true}).then((results) => {
+              console.log(`geta all stories database`);
+              console.log(results);
+              return results;
+            }).then((results) => {
+              var data = [];
+              results.rows.map((val, i) => {
+                data.push(val.doc);
+              });
+              this.setState({
+                data: data
+              });
+            });
+          });
+
+          //set offset
+          dbOffsets.get('stories').then((doc) => {
+            console.log(`stories offset database`);
+            console.log(doc);
+            dbOffsets.put({
+              _id: 'stories',
+              _rev: doc._rev,
+              offset: theOffset
+            });
+            return theOffset;
+          }).then((theOffset) => {
+            this.setState({
+              offset: theOffset
+            });
+          });
+            break;
+        case 'creators':
+          // set data
+          db.creators.bulkDocs(updatedArray).then((docs) => {
+            console.log(`creators buldDocs`);
+            console.log(docs);
+            // return updatedArray;
+          }).then(() => {
+            db.creators.allDocs({include_docs: true}).then((results) => {
+              console.log(`geta all creators database`);
+              console.log(results);
+              return results;
+            }).then((results) => {
+              var data = [];
+              results.rows.map((val, i) => {
+                data.push(val.doc);
+              });
+              this.setState({
+                data: data
+              });
+            });
+          });
+
+          //set offset
+          dbOffsets.get('creators').then((doc) => {
+            console.log(`creators offset database`);
+            console.log(doc);
+            dbOffsets.put({
+              _id: 'creators',
+              _rev: doc._rev,
+              offset: theOffset
+            });
+            return theOffset;
+          }).then((theOffset) => {
+            this.setState({
+              offset: theOffset
+            });
+          });
+            break;
       }
-
-      this.setState({
-          data: theData.data,
-          offset: theData.offset
-      });
-
       theButton.style.display = 'block';
       theLoading.style.display = 'none';
-
-      // console.log(this.state);
-    }, (error) => {
-      console.log(error);
     });
   }
 
   render() {
-    console.log(this.state);
-    // console.log(document.getElementById('logo').dataset.arr);
-    // var arr = document.getElementById('logo').dataset.arr;
+    // console.log(`landing page state`);
+    // console.log(this.state);
+    // console.log(this.props.match.params.Category);
 
-    // let data = ``;
+    if(this.state.cat !== this.props.match.params.Category){
+      // console.log(`cats don't match`);
+      window.location.reload();
+    }
+
     let li =``;
     let cat  = this.props.match.params.Category;
     if(this.state.data !== undefined){
@@ -277,11 +471,16 @@ export class LandingPage extends React.Component {
       var listItems = this.state.data;
       li = listItems.map(function(val, i){
         let id = val.id;
-        let href = `/apps/marvel-comics#/${cat}/${id}`;
-        let name = val.name;
-        //console.log(name);
-        if(name === undefined){
-          name = val.title;
+        let href = `/apps/marvel-comics/#/${cat}/${id}`;
+        var name = ``;
+        if(cat == 'creators'){
+          name = val.fullName;
+        } else {
+          name = val.name;
+          //console.log(name);
+          if(name === undefined){
+            name = val.title;
+          }
         }
 
         return(
@@ -292,7 +491,6 @@ export class LandingPage extends React.Component {
             </a>
           </li>
         )
-
       });
     }
 
@@ -305,11 +503,15 @@ export class LandingPage extends React.Component {
     if(loading !== undefined){
       loading.style.display = 'none';
     }
+    // <FontAwesomeIcon icon={faCheckSquare} size="2x"/>
+    // <FontAwesomeIcon icon={faSquare} size="2x"/>
+    // <FontAwesomeIcon icon={faTimesCircle} size="2x"/>
 
     return (
       <React.Fragment>
         <div className="landing-page">
           <h1>{cat}</h1>
+          <FilterIcon data={this.state.data} cat={this.state.cat} $this={this}/>
           <ul>
             {li}
           </ul>

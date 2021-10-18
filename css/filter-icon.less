@@ -1,0 +1,96 @@
+svg.fa-filter {
+	@media screen and (max-width: 1680px) {
+		top: 8px;
+	}
+	@media screen and (max-width: 1024px) {
+		top: 36px;
+	}
+	@media screen and (max-width: 810px) {
+		top: 26px;
+	}
+	@media screen and (max-width: 428px) {
+		top: 11px;
+	}
+	position: absolute;
+	// top: 0.7%;
+	right: 4.7%;
+	top: 19px;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.filter-container {
+	@media screen and (max-width: 1024px) {
+		top: 80px;
+	}
+	@media screen and (max-width: 428px) {
+		width: 100%;
+		right: 0;
+		top: 96px;
+	}
+	display: none;
+	position: absolute;
+	background: #fff;
+	top: 2%;
+	top: 62px;
+	right: 4%;
+	z-index: 9997;
+	padding: 0.5% 2%;
+	// display: flex;
+	flex-wrap: wrap;
+	border: 5px solid #000;
+	justify-content: space-evenly;
+
+	.fa-times-circle {
+		position: absolute;
+		top: -25%;
+		right: -12%;
+	}
+
+	h2 {
+		flex-basis: 100%;
+		text-align: center;
+		border-bottom: 1px solid #000;
+		margin: 0 0 6%;
+	}
+
+	div {
+		flex-basis: 100%;
+		display: flex;
+		justify-content: center;
+
+		svg {
+			position: relative;
+			top: 0;
+			left: 0;
+			margin: 0 6% 5% 0;
+
+			&.fa-check-square {
+				display: none;
+			}
+
+			&.fa-sort-alpha-down,
+			&.fa-sort-alpha-down-alt {
+				&:hover {
+					cursor: default;
+				}
+			}
+		}
+
+		button {
+			margin: 0 6%;
+			display: inline-block;
+			border: none;
+			background: none;
+			text-decoration: underline;
+			text-transform: capitalize;
+			color: #000;
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}

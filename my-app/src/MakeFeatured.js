@@ -11,61 +11,64 @@ export default class MakeFeatured extends React.Component {
   }
 
   render() {
-	//console.log(`from MakeFeatured`);
+	  //console.log(`from MakeFeatured`);
     //console.log(this.props.arr);
 
-	var title = this.props.title;
-	var baseURL = this.props.url;
+	  var title = this.props.title;
+	  var baseURL = this.props.url;
     var arr = this.props.arr;
-	var num = Number(this.props.number);
-	var id = this.props.id;
+	  var num = Number(this.props.number);
+	  var id = this.props.id;
 
-	//console.log(`title`);
-	//console.log(title);
-
+	  //console.log(`title`);
+	  //console.log(title);
     //var arrLength = arr.length;
 
-	if(title === 'comics'){
-		if(num === 20){
-			num = num - 1;
-		} else if(num === 0){
-			num = num + 2;
-		}else {
-			num = num + 1;
-		}
-	}
+	  // if(title === 'comics'){
+		//   if(num === 20){
+		// 	  num = num - 1;
+		//   } else if(num === 0){
+		// 	  num = num + 2;
+		//   }else {
+		// 	  num = num + 1;
+		//   }
+	  // }
 
-  var featured = ``;
-	var featuredImg =``;
-	var featuredURL = baseURL;
-	featured = arr[num];
+    var featured = ``;
+	  var featuredImg =``;
+	  var featuredURL = baseURL;
+    // console.log(arr);
+    // console.log(num);
+	  featured = arr[num];
+    // console.log(featured);
 
+	  var featuredImgURL = featured.thumbnail.path;
+	  // if(featuredImgURL === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
+		//   featured = arr[num +1];
+    //   // console.log('no image get next one');
+    //   // console.log(featured);
+		//   featuredImgURL = featured.thumbnail.path;
+	  // }
 
-	var featuredImgURL = featured.thumbnail.path;
-	if(featuredImgURL === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'){
-		featured = arr[num +1];
-		featuredImgURL = featured.thumbnail.path;
-	}
+	  featuredImg =  <Image name={featured.title} href={featuredImgURL} ext={featured.thumbnail.extension} size="portrait_uncanny" />
 
-	featuredImg =  <Image name={featured.title} href={featuredImgURL} ext={featured.thumbnail.extension} size="portrait_uncanny" />
+	  var featuredStyle = {
+		  backgroundImage: `url(${featuredImgURL}.${featured.thumbnail.extension})`, backgroundRepeat: `no-repeat`, backgroundSize:`cover`
+	  };
+	  // console.log(featuredStyle);
 
-	var featuredStyle = {
-		backgroundImage: `url(${featuredImgURL}.${featured.thumbnail.extension})`, backgroundRepeat: `no-repeat`, backgroundSize:`cover`
-	};
-	// console.log(featuredStyle);
-
-	if(id === "true"){
-		featuredURL = baseURL + featured.id;
-	} else {
-		featuredURL = baseURL;
-	}
+	  if(id === "true"){
+		  featuredURL = baseURL + featured.id;
+	  } else {
+		  featuredURL = baseURL;
+	  }
 
     return (
       <React.Fragment>
-		<h2>{title}</h2>
-		<a href={featuredURL} style={featuredStyle}>
-			{featuredImg}
-		</a>
+		    <h2>{title}</h2>
+		      <a href={featuredURL} style={featuredStyle}>
+			      {featuredImg}
+		      </a>
       </React.Fragment>
     );
   }

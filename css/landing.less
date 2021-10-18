@@ -1,4 +1,5 @@
 @import 'vars.less';
+@import 'filter-icon.less';
 @featured_2_cta-color: #000;
 
 .landing-page {
@@ -10,8 +11,12 @@
 	background: #fff;
 	padding: 1%;
 	display: none;
+	position: relative;
 
 	h1 {
+		@media screen and (max-width: 1024px) {
+			margin: 0 0 6%;
+		}
 		text-transform: uppercase;
 		margin: 0 0 2%;
 		text-align: center;
@@ -24,10 +29,10 @@
 	}
 
 	button {
-		@media screen and (max-width: 768px) {
+		@media screen and (max-width: 810px) {
 			padding: 2% 3%;
 		}
-		@media screen and (max-width: 414px) {
+		@media screen and (max-width: 428px) {
 			padding: 4% 6%;
 		}
 		display: block;
@@ -38,6 +43,10 @@
 		background: darkred;
 		color: #fff;
 		border: none;
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 
 	ul {
@@ -49,7 +58,7 @@
 			@media screen and (max-width: 1024px) {
 				flex-basis: 33%;
 			}
-			@media screen and (max-width: 768px) {
+			@media screen and (max-width: 810px) {
 				flex-basis: 50%;
 			}
 			flex-basis: 25%;
