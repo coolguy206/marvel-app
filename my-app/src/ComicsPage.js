@@ -26,7 +26,7 @@ export class ComicsPage extends React.Component {
   componentDidMount() {
     let $this = this;
     let id  = this.props.match.params.Id;
-    let baseURL = `http://gateway.marvel.com/v1/public/comics`;
+    let baseURL = `https://gateway.marvel.com/v1/public/comics`;
 
     //comic book
     let comicURL = `${baseURL}/${id}?apikey=${Api}`;

@@ -90,7 +90,7 @@ export class HomePage extends React.Component {
     //   console.log(info);
     // });
 
-    let baseURL = `http://gateway.marvel.com/v1/public/`;
+    let baseURL = `https://gateway.marvel.com/v1/public/`;
 
     //get set comics
     let comicsUrl = `${baseURL}comics?apikey=${Api}`;

@@ -15,7 +15,7 @@ var PutData = ($this, arr, str, database, isArr, func) => {
       var id = arr.resourceURI;
       id = id.split('/');
       id = id[id.length -1];
-      let theUrl = `http://gateway.marvel.com/v1/public/${str}/${id}?apikey=${Api}`;
+      let theUrl = `https://gateway.marvel.com/v1/public/${str}/${id}?apikey=${Api}`;
       fetch(theUrl).then(res => res.json()).then((results) => {
         // console.log(results);
         var data = results.data.results[0];
@@ -58,7 +58,7 @@ var PutData = ($this, arr, str, database, isArr, func) => {
 
         // console.log(goFetch);
         if(goFetch == true){
-          let theUrl = `http://gateway.marvel.com/v1/public/${str}/${id}?apikey=${Api}`;
+          let theUrl = `https://gateway.marvel.com/v1/public/${str}/${id}?apikey=${Api}`;
           // console.log(theUrl);
           fetch(theUrl).then(res => res.json()).then((results) => {
             if(results.data !== undefined){

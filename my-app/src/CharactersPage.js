@@ -27,7 +27,7 @@ export class CharactersPage extends React.Component {
   componentDidMount() {
     let $this = this;
     let id  = this.props.match.params.Id;
-    let baseURL = `http://gateway.marvel.com/v1/public/characters`;
+    let baseURL = `https://gateway.marvel.com/v1/public/characters`;
 
     //character data
     let characterURL = `${baseURL}/${id}?apikey=${Api}`;

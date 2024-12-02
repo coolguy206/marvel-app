@@ -24,7 +24,7 @@ export class LandingPage extends React.Component {
   componentDidMount() {
     var offset = Math.floor(Math.random() * 900);
     let cat  = this.props.match.params.Category;
-    let baseURL = `http://gateway.marvel.com/v1/public/${cat}?apikey=${Api}`;
+    let baseURL = `https://gateway.marvel.com/v1/public/${cat}?apikey=${Api}`;
 
     var dbOffsets = new PouchDB('marvel-offsets');
     dbOffsets.bulkDocs([
@@ -169,7 +169,7 @@ export class LandingPage extends React.Component {
 		//console.log(url, urlArr, cat, id);
 
 
-		let baseURL = `http://gateway.marvel.com/v1/public/${cat}`;
+		let baseURL = `https://gateway.marvel.com/v1/public/${cat}`;
 
 		// on page load data
 		let dataURL = `${baseURL}/${id}?apikey=${Api}`;
@@ -195,7 +195,7 @@ export class LandingPage extends React.Component {
     theLoading.style.display = 'block';
     var offset = this.state.offset;
     let cat  = this.props.match.params.Category;
-    let baseURL = `http://gateway.marvel.com/v1/public/${cat}?apikey=${Api}&offset=${offset}`;
+    let baseURL = `https://gateway.marvel.com/v1/public/${cat}?apikey=${Api}&offset=${offset}`;
     var dbOffsets = new PouchDB('marvel-offsets');
 
     fetch(baseURL).then(res => res.json()).then((results) => {
